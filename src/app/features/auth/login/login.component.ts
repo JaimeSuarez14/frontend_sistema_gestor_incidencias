@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, computed, linkedSignal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { SessionThema } from '../../../shared/utilsa/session-tema';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +15,13 @@ export class LoginComponent {
   password = signal('');
   error = signal('');
   loading = signal(false);
+  sessionThema = inject(SessionThema);
 
-  constructor(private authService: AuthService, private router: Router) {}
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   onSubmit(): void {
     this.error.set('');
