@@ -1,0 +1,79 @@
+import { Component, model } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+@Component({
+  selector: 'app-sidebar',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive],
+  template: `
+    <aside 
+      class="fixed left-0 top-0 h-screen bg-slate-900 text-white transition-all duration-300 ease-in-out z-40"
+      [class.w-64]="!collapsed()"
+      [class.w-16]="collapsed()"
+    >
+      <div class="flex flex-col h-full">
+        <div class="p-4 border-b border-slate-700">
+          <h1 class="text-xl font-bold truncate" [class.hidden]="collapsed()">
+           Gestor Incidencias
+          </h1>
+          <div *ngIf="collapsed()" class="text-2xl font-bold text-center">GI</div>
+        </div>
+        
+        <nav class="flex-1 p-2 space-y-1">
+          <a 
+            routerLink="/dashboard" 
+            routerLinkActive="bg-slate-800"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors"
+            [class.justify-center]="collapsed()"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+            <span *ngIf="!collapsed()">Dashboard</span>
+          </a>
+          
+          <a 
+            routerLink="/users" 
+            routerLinkActive="bg-slate-800"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors"
+            [class.justify-center]="collapsed()"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            <span *ngIf="!collapsed()">Usuarios</span>
+          </a>
+          
+          <a 
+            routerLink="/incidents" 
+            routerLinkActive="bg-slate-800"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors"
+            [class.justify-center]="collapsed()"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <span *ngIf="!collapsed()">Incidencias</span>
+          </a>
+        </nav>
+        
+        <button 
+          (click)="toggleCollapse()"
+          class="p-3 border-t border-slate-700 hover:bg-slate-800 transition-colors"
+        >
+          <svg class="w-5 h-5 mx-auto transition-transform" [class.rotate-180]="collapsed()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+  `
+})
+export class SidebarComponent {
+  collapsed = model(false);
+  
+  toggleCollapse(): void {
+    this.collapsed.update(v => !v);
+  }
+}

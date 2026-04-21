@@ -11,9 +11,11 @@ export class AuthService {
   readonly isAdmin = computed(() => this._currentUser()?.role === 'admin');
 
   private readonly MOCK_USERS: (User & { password: string })[] = [
-    { id: '1', email: 'admin@test.com', password: 'admin123', name: 'Administrador', role: 'admin' },
-    { id: '2', email: 'user@test.com', password: 'user123', name: 'Usuario Test', role: 'user' },
-    { id: '3', email: 'tecnico@test.com', password: 'tec123', name: 'Técnico Test', role: 'tecnico' },
+    { id: "1", email: 'juan.perez@empresa.com', password: 'admin123', name: 'Juan Pérez', role: 'admin' },
+    { id: "2", email: 'maria.lopez@empresa.com', password: 'support123', name: 'María López', role: 'support' },
+    { id: "3", email: 'carlos.ramirez@empresa.com', password: 'user123', name: 'Carlos Ramírez', role: 'user' },
+    { id: "4", email: 'ana.torres@empresa.com', password: 'support123', name: 'Ana Torres', role: 'support' },
+    { id: "5", email: 'luis.fernandez@empresa.com', password: 'user123', name: 'Luis Fernández', role: 'user' },
   ];
 
   login(credentials: LoginCredentials): boolean {
@@ -28,6 +30,15 @@ export class AuthService {
       return true;
     }
     return false;
+  }
+
+  logout(): void {screen
+    this._currentUser.set(null);
+    this._isAuthenticated.set(false);
+  }
+
+  getUserById(id: string): User | undefined {
+    return this.MOCK_USERS.find(u => u.id === id);
   }
 
   register(data: RegisterData): User | null {
@@ -49,10 +60,5 @@ export class AuthService {
 
     this.MOCK_USERS.push({ ...newUser, password: data.password });
     return newUser;
-  }
-
-  logout(): void {
-    this._currentUser.set(null);
-    this._isAuthenticated.set(false);
   }
 }

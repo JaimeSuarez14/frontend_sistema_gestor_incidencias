@@ -1,11 +1,12 @@
-import { Component, signal, inject, computed, linkedSignal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
-import { SessionThema } from '../../../shared/utilsa/session-tema';
+import { SessionThema } from '../../../shared/utils/session-tema';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -38,12 +39,8 @@ export class LoginComponent {
       if (success) {
         this.router.navigate(['/dashboard']);
       } else {
-        this.error.set('Credenciales inválidas. Intenta con admin@test.com / admin123');
+        this.error.set('Credenciales inválidas. Intenta con juan.perez@empresa.com / admin123');
       }
     }, 800);
-  }
-
-  goToRegister(): void {
-    this.router.navigate(['/auth/register']);
   }
 }

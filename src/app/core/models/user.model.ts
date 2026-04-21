@@ -1,8 +1,8 @@
 export interface User {
   id: string;
-  email: string;
   name: string;
-  role: 'admin' | 'user' | 'tecnico';
+  email: string;
+  role: 'admin' | 'support' | 'user';
 }
 
 export interface LoginCredentials {
