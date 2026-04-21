@@ -9,26 +9,26 @@ import { RouterOutlet } from '@angular/router';
   imports: [SidebarComponent, HeaderComponent, RouterOutlet],
   template: `
     <div class="min-h-screen bg-gray-50">
-      <app-sidebar [collapsed]="sidebarCollapsed()" />
-      
-      <div 
-        class="transition-all duration-300 ease-in-out"
-        [class.ml-64]="!sidebarCollapsed()"
-        [class.ml-16]="sidebarCollapsed()"
+      <app-sidebar [(collapsed)]="sidebarCollapsed" />
+
+      <div
+        [class]="
+          (sidebarCollapsed() ? 'pl-16' : 'pl-64') + ' transition-all transform duration-300 ease-in-out'
+        "
       >
         <app-header (toggleSidebar)="toggleSidebar()" />
-        
+
         <main class="p-6">
           <router-outlet />
         </main>
       </div>
     </div>
-  `
+  `,
 })
 export class MainLayoutComponent {
   sidebarCollapsed = signal(false);
-  
+
   toggleSidebar(): void {
-    this.sidebarCollapsed.update(v => !v);
+    this.sidebarCollapsed.update((v) => !v);
   }
 }
