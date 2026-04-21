@@ -7,7 +7,7 @@ import { UserService } from '../../core/services/user.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [ RouterLink],
   template: `
     <div class="space-y-6">
       <div>
