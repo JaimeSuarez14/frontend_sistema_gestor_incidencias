@@ -2,7 +2,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'admin' | 'support' | 'user';
+  role: "ADMIN" | "EMPLEADO" | "TECNICO_NIVEL_1" | "TECNICO_NIVEL_2" |  "TECNICO_NIVEL_3";
+  estado : "ACTIVO" | "INACTIVO";
 }
 
 export interface LoginCredentials {
@@ -15,4 +16,6 @@ export interface RegisterData {
   email: string;
   password: string;
   confirmPassword: string;
+  role: "ADMIN" | "EMPLEADO" | "TECNICO_NIVEL_1" | "TECNICO_NIVEL_2" |  "TECNICO_NIVEL_3";
+  estado : "ACTIVO" | "INACTIVO";
 }

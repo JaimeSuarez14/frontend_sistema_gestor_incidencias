@@ -8,14 +8,14 @@ export class AuthService {
 
   readonly currentUser = this._currentUser.asReadonly();
   readonly isAuthenticated = this._isAuthenticated.asReadonly();
-  readonly isAdmin = computed(() => this._currentUser()?.role === 'admin');
+  readonly isAdmin = computed(() => this._currentUser()?.role === 'ADMIN');
 
   private readonly MOCK_USERS: (User & { password: string })[] = [
-    { id: "1", email: 'juan.perez@empresa.com', password: 'admin123', name: 'Juan Pérez', role: 'admin' },
-    { id: "2", email: 'maria.lopez@empresa.com', password: 'support123', name: 'María López', role: 'support' },
-    { id: "3", email: 'carlos.ramirez@empresa.com', password: 'user123', name: 'Carlos Ramírez', role: 'user' },
-    { id: "4", email: 'ana.torres@empresa.com', password: 'support123', name: 'Ana Torres', role: 'support' },
-    { id: "5", email: 'luis.fernandez@empresa.com', password: 'user123', name: 'Luis Fernández', role: 'user' },
+    { id: "1", email: 'juan.perez@empresa.com', password: 'admin123', name: 'Juan Pérez', estado : "ACTIVO" , role: 'ADMIN' },
+    { id: "2", email: 'maria.lopez@empresa.com', password: 'support123', name: 'María López',estado : "ACTIVO" , role: 'TECNICO_NIVEL_1' },
+    { id: "3", email: 'carlos.ramirez@empresa.com', password: 'user123', name: 'Carlos Ramírez', estado : "ACTIVO" , role: 'ADMIN' },
+    { id: "4", email: 'ana.torres@empresa.com', password: 'support123', name: 'Ana Torres',estado : "ACTIVO" , role: 'ADMIN' },
+    { id: "5", email: 'luis.fernandez@empresa.com', password: 'user123', name: 'Luis Fernández', estado : "ACTIVO" ,role: 'EMPLEADO' },
   ];
 
   login(credentials: LoginCredentials): boolean {
@@ -55,7 +55,8 @@ export class AuthService {
       id: crypto.randomUUID(),
       email: data.email,
       name: data.name,
-      role: 'user',
+      estado: "ACTIVO",
+      role: 'EMPLEADO',
     };
 
     this.MOCK_USERS.push({ ...newUser, password: data.password });

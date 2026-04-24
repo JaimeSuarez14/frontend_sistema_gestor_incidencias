@@ -40,6 +40,8 @@ export class RegisterComponent {
         name: this.name(),
         email: this.email(),
         password: this.password(),
+        role: "EMPLEADO",
+        estado: "ACTIVO",
         confirmPassword: this.confirmPassword(),
       });
 
