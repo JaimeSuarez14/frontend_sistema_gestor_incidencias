@@ -38,14 +38,14 @@ import { UserService } from '../../core/services/user.service';
                   </td>
                   <td class="py-4 px-6 text-sm text-gray-600">{{ user.email }}</td>
                   <td class="py-4 px-6">
-                    <span 
+                    <span
                       class="px-3 py-1 text-xs font-medium rounded-full"
-                      [class.bg-indigo-100]="user.role === 'admin'"
-                      [class.text-indigo-700]="user.role === 'admin'"
-                      [class.bg-blue-100]="user.role === 'support'"
-                      [class.text-blue-700]="user.role === 'support'"
-                      [class.bg-gray-100]="user.role === 'user'"
-                      [class.text-gray-700]="user.role === 'user'"
+                      [class.bg-indigo-100]="user.role === 'ADMIN'"
+                      [class.text-indigo-700]="user.role === 'ADMIN'"
+                      [class.bg-blue-100]="user.role === 'TECNICO_NIVEL_1' "
+                      [class.text-blue-700]="user.role === 'TECNICO_NIVEL_1'"
+                      [class.bg-gray-100]="user.role === 'EMPLEADO'"
+                      [class.text-gray-700]="user.role === 'EMPLEADO'"
                     >
                       {{ getRoleLabel(user.role) }}
                     </span>

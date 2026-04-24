@@ -1,7 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -17,8 +17,9 @@ export class RegisterComponent {
   error = signal('');
   success = signal(false);
   loading = signal(false);
+  authService = inject (AuthService);
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor( private router: Router) {}
 
   onSubmit(): void {
     this.error.set('');
