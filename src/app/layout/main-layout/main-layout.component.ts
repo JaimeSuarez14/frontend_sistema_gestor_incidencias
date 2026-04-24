@@ -18,7 +18,7 @@ import { RouterOutlet } from '@angular/router';
       >
         <app-header (toggleSidebar)="toggleSidebar()" />
 
-        <main class="p-6">
+        <main class="">
           <router-outlet />
         </main>
       </div>

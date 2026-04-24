@@ -1,19 +1,25 @@
 import { Component, inject, output } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { SessionThema } from 'src/app/shared/utils/session-tema';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   template: `
     <header
-      class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm"
+      class="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 shadow-sm"
     >
       <button
         (click)="toggleSidebar.emit()"
-        class="p-2 rounded-lg hover:bg-gray-100 transition-colors lg:hidden"
+        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors lg:hidden"
       >
-        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-6 h-6 text-gray-600 dark:text-gray-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -23,23 +29,65 @@ import { Router } from '@angular/router';
         </svg>
       </button>
 
-      <div class="flex items-center gap-4 ml-auto group">
+      <div class="flex items-center gap-4 ml-auto">
+        <label class="inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            class="sr-only peer"
+            [checked]="sessionThema._isDark()"
+            (change)="sessionThema.cambiarThema()"
+          />
+
+          <!-- Contenedor del switch -->
+          <div
+            class="relative w-14 h-6 bg-gray-300 dark:bg-gray-700 rounded-full border-2 border-gray-400/90 dark:border-gray-500 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-500 transition-colors duration-300"
+          >
+            <!-- Texto dentro -->
+            <span
+              [class]="
+                'absolute top-0.5 text-[10px] font-semibold transition-all duration-300 ' +
+                (sessionThema._isDark()
+                  ? 'right-1 text-white'
+                  : 'left-1 text-gray-700 dark:text-gray-300')
+              "
+            >
+              {{ sessionThema._isDark() ? 'Dark' : 'Light' }}
+            </span>
+
+            <!-- Bolita -->
+            <div
+              [class]="
+                'absolute w-5 h-5 bg-white dark:bg-gray-200 rounded-full transform transition-transform duration-300 ' +
+                (!sessionThema._isDark() ? 'translate-x-8' : '')
+              "
+            ></div>
+          </div>
+        </label>
+
         <div class="flex items-center gap-3 group">
           <div class="text-right">
-            <p class="text-sm font-medium text-gray-900">{{ authService.currentUser()?.name }}</p>
-            <p class="text-xs text-gray-500 capitalize">{{ authService.currentUser()?.role }}</p>
+            <p class="text-sm font-medium text-gray-900 dark:text-white">
+              {{ authService.currentUser()?.name }}
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 capitalize">
+              {{ authService.currentUser()?.role }}
+            </p>
           </div>
-          <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+
+          <div
+            class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-gray-700 flex items-center justify-center"
+          >
             <img
               src="https://i.pravatar.cc/150?img=3"
               alt="Avatar"
               class="w-10 h-10 rounded-full object-cover"
             />
           </div>
-          <div class=" group-hover:bg-gray-300 relative rounded-lg">
+
+          <div class="group-hover:bg-gray-300 dark:group-hover:bg-gray-700 relative rounded-lg">
             <svg
               data-testid="cc-icon__svg"
-              class="cc-icon group-hover:rotate-90 group-hover:cursor-pointer"
+              class="cc-icon text-gray-700 dark:text-gray-300 group-hover:rotate-90 group-hover:cursor-pointer"
               width="24"
               height="24"
               viewBox="0 0 1024 1024"
@@ -48,15 +96,18 @@ import { Router } from '@angular/router';
                 d="M797.867 354.133c-17.067-17.067-42.667-17.067-59.733 0l-226.133 226.133-226.133-226.133c-17.067-17.067-42.667-17.067-59.733 0s-17.067 42.667 0 59.733l256 256c8.533 8.533 21.333 12.8 29.867 12.8s21.333-4.267 29.867-12.8l256-256c17.067-17.067 17.067-42.667 0-59.733z"
               ></path>
             </svg>
+
             <div
-              class="flex flex-col p-2 rounded-lg absolute right-0 top-8 bg-red-950 text-white opacity-0 -translate-y-2.5 scale-95 pointer-events-none transition-all duration-300 ease-out
-         group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100
-         group-hover:pointer-events-auto w-44"
+              class="flex flex-col p-2 rounded-lg absolute right-0 top-8 bg-white dark:bg-gray-800 text-gray-800 dark:text-white shadow-lg opacity-0 -translate-y-2.5 scale-95 pointer-events-none transition-all duration-300 ease-out
+          group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100
+          group-hover:pointer-events-auto w-44 border border-gray-200 dark:border-gray-700"
             >
-              <button type="button" (click)="cerrarSession()"
+              <button
+                type="button"
+                (click)="cerrarSession()"
                 routerLink="/incidents"
                 routerLinkActive="bg-slate-800"
-                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:cursor-pointer hover:bg-slate-800 transition-colors"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -80,11 +131,12 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   toggleSidebar = output<void>();
   router = inject(Router);
+  sessionThema = inject(SessionThema);
 
   constructor(public authService: AuthService) {}
 
-  cerrarSession(){
+  cerrarSession() {
     this.authService.logout();
-    this.router.navigate(['/auth/login'])
+    this.router.navigate(['/auth/login']);
   }
 }
