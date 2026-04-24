@@ -75,26 +75,26 @@
         </div>
       </div>
     </div>
-    <button type="button" title="Cambiar Tema"
-      class="block absolute bg-black dark:bg-white right-1 top-1 py-0.5 px-2 border-2 border-gray-300 dark:border-gray-400/50 hover:bg-gray-400/30 rounded-2xl cursor-pointer transition duration-300 "
-      (click)="sessionThema.cambiarThema()">
-      @if (sessionThema._isDark()) {
-      <span>light</span>
-      }@else {
-      <span class="text-white">Dark</span>
-      }
-    </button>
 
-    <label class="inline-flex items-center cursor-pointer absolute right-3 top-9 ">
+
+    <label class="inline-flex items-center cursor-pointer absolute right-1 top-1">
       <input type="checkbox" class="sr-only peer" [checked]="sessionThema._isDark()"
-        (change)="sessionThema.cambiarThema()">
-      <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-500 transition-colors duration-300"></div>
-      <div
-        class="absolute w-5 h-5 bg-white rounded-full left-0.5 top-0.5 peer-checked:translate-x-full transform transition-transform duration-300">
+        (change)="sessionThema.cambiarThema()" />
+
+      <!-- Contenedor del switch -->
+      <div class="relative w-14 h-6 bg-gray-300 rounded-full border-2 border-gray-500  peer-checked:bg-blue-950 transition-colors duration-300">
+
+        <!-- Texto dentro -->
+        <span [class]="'absolute top-0.5   text-[10px] font-semibold transition-all duration-300 ' + (sessionThema._isDark() ? 'right-1 text-white' : 'left-1 text-gray-700')" >
+          {{ sessionThema._isDark() ? 'Dark' : 'Light' }}
+        </span>
+
+        <!-- Bolita -->
+        <div
+          [class]="'absolute w-5 h-5 bg-white rounded-full    transform transition-transform duration-300 ' +(!sessionThema._isDark() ? 'translate-x-8' : '')">
+        </div>
+
       </div>
-      <span class="ml-3 text-sm font-medium text-gray-900">
-        {{ sessionThema._isDark() ? 'Activado' : 'Desactivado' }}
-      </span>
     </label>
   </div>
 </div>
