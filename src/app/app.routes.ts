@@ -29,6 +29,12 @@ export const routes: Routes = [
           import('./features/incidents/incidents.component').then((m) => m.IncidentsComponent),
       },
       {
+        path: 'perfil-usuario',
+        title: "Perfil Usuario",
+        loadComponent: () =>
+          import('./features/perfil-usuario/perfil-usuario').then((m) => m.PerfilUsuario),
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',

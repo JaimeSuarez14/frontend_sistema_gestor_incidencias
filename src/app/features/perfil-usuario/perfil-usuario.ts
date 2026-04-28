@@ -1,4 +1,5 @@
 import { Component, computed, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 interface UserSettings {
   nombre: string;
@@ -11,13 +12,12 @@ interface UserSettings {
 
 @Component({
   selector: 'app-perfil-usuario',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './perfil-usuario.html',
   styleUrl: './perfil-usuario.css',
 })
 export class PerfilUsuario {
-// 🌙 Modo dark/light
-  darkMode = signal(true);
+
 
   // ✏️ Modo edición
   editMode = signal(false);
@@ -49,13 +49,7 @@ export class PerfilUsuario {
     this.editMode.set(false);
   }
 
-  toggleTheme() {
-    this.darkMode.update(v => !v);
-  }
 
-  containerClass = computed(() =>
-    this.darkMode()
-      ? 'bg-gray-900 text-white'
-      : 'bg-gray-100 text-gray-900'
-  );
+
+
 }
