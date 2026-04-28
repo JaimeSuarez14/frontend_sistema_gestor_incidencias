@@ -23,8 +23,8 @@
           <tr class="border-b border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/90 transition-colors">
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">#{{ incident.id }}</td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ incident.title }}</td>
-            <td class="py-4 px-6 text-sm text-gray-600 max-w-xs truncate">{{ incident.description }}</td>
-            <td class="py-4 px-6">
+            <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">{{ incident.description }}</td>
+            <td class="py-3 px-4">
               <span class="px-3 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.status === 'open'"
                 [class.text-red-700]="incident.status === 'open'"
                 [class.bg-amber-100]="incident.status === 'in_progress'"
@@ -34,7 +34,7 @@
                 {{ getStatusLabel(incident.status) }}
               </span>
             </td>
-            <td class="py-4 px-6">
+            <td class="py-3 px-4 dark:text-gray-400">
               <span class="px-3 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.priority === 'high'"
                 [class.text-red-700]="incident.priority === 'high'"
                 [class.bg-amber-100]="incident.priority === 'medium'"
@@ -43,8 +43,8 @@
                 {{ getPriorityLabel(incident.priority) }}
               </span>
             </td>
-            <td class="py-4 px-6 text-sm text-gray-600">{{ getUserName(incident.assignedTo) }}</td>
-            <td class="py-4 px-6 text-sm text-gray-600">{{ incident.createdAt }}</td>
+            <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">{{ getUserName(incident.assignedTo) }}</td>
+            <td class="py-3 px-4 text-sm dark:text-gray-400 text-gray-600">{{ incident.createdAt }}</td>
           </tr>
           }
         </tbody>
