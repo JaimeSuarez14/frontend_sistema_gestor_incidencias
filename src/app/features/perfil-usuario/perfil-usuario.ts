@@ -49,7 +49,10 @@ export class PerfilUsuario {
     this.editMode.set(false);
   }
 
-
+  tabs = signal([true, false, false])
+  moveTab(i: number){
+    this.tabs.update(t => t.map((_, index) => i==index ? true: false))
+  }
 
 
 }
