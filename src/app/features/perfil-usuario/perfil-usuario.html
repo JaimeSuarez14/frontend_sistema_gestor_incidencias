@@ -1,97 +1,109 @@
 <div
   [class]=" ' dark:text-white min-h-screen flex flex-col items-center justify-center p-6 transition-all dark:bg-gray-800 duration-300'">
 
-  <div class="w-full overflow-hidden bg-slate-900 rounded-xl">
-    <div class="flex relative border-b border-green-500">
+  <div class="w-full overflow-hidden rounded-xl
+            bg-white dark:bg-slate-900
+            border border-gray-200 dark:border-slate-700 shadow-sm">
+
+    <!-- Tabs -->
+    <div class="flex relative border-b border-gray-200 dark:border-slate-700">
+
       <div (click)="moveTab(0)"
-        class="flex-1 text-center bg-red-200 p-2 cursor-pointer transition-all duration-300 text-white/60 hover:bg-blue-500/90 ">
-        <span class="text-black">Perfil</span>
+        [class]="'flex-1 text-center p-3 cursor-pointer transition-all duration-300 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 ' +(tabs()[0] ? 'text-blue-600 dark:text-blue-400 font-medium': '')">
+        Perfil
       </div>
+
       <div (click)="moveTab(1)"
-        class="flex-1 text-center bg-green-200 p-2 cursor-pointer transition-all duration-300 text-white/60 hover:bg-blue-500/90 ">
-        <span class="text-black">Ajustes</span>
+        [class]="'flex-1 text-center p-3 cursor-pointer transition-all duration-300 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 ' +(tabs()[0] ? 'text-blue-600 dark:text-blue-400 font-medium': '')">
+        Ajustes
       </div>
-      <div id="indicator" [class]="'absolute bottom-0 h-1.5 bg-blue-500   transition-all duration-300 w-1/2 '+ (
-        tabs()[0] ? 'left-0' :  tabs()[1] ? 'left-[50%]': ''
-      ) ">
+
+      <!-- Indicator -->
+      <div [class]="'absolute bottom-0 h-0.75 bg-blue-500 transition-all duration-300 w-1/2 ' +
+      (tabs()[0] ? 'left-0' : tabs()[1] ? 'left-1/2' : '')">
       </div>
 
     </div>
 
-    <div [class]="' flex w-[300%] transition-transform border duration-500 ease-in-out '+ (tabs()[0] ? 'translate-x-0' : tabs()[1] ? '-translate-x-1/2' : '')"
-      >
-      <div class="w-full min-h-32">
-        Sobre
-      </div>
-      <div class="w-full min-h-32">
-        Manila
-      </div>
-    </div>
-  </div>
+    <!-- Content -->
+    <div [class]="'flex w-[200%] transition-transform duration-500 ease-in-out ' +
+    (tabs()[0] ? 'translate-x-0' : '-translate-x-1/2')">
 
-  <div class="w-full max-w-xl rounded-2xl shadow-2xl p-6 bg-white dark:bg-slate-950 transition-all">
+      <div class="w-full p-4 text-gray-700 dark:text-gray-300">
+        <div class="w-full m-auto max-w-xl rounded-2xl shadow-2xl p-6 bg-white dark:bg-slate-950 transition-all">
 
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-xl font-semibold">Configuración de Usuario</h2>
+          <!-- Header -->
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold">Configuración de Usuario</h2>
 
 
-    </div>
-
-    <!-- Campos -->
-    <div class="space-y-4">
-
-      @for (field of ['nombre','correo','usuario','clave','rol','area']; track $index) {
-      <div>
-        <div>
-          <label class="text-sm opacity-70 capitalize">{{ field }}</label>
-
-          <!-- Vista -->
-          @if (!editMode()) {
-          <div class="mt-1 p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
-            {{ $any(user())[field] }}
           </div>
-          }
+
+          <!-- Campos -->
+          <div class="space-y-4">
+
+            @for (field of ['nombre','correo','usuario','clave','rol','area']; track $index) {
+            <div>
+              <div>
+                <label class="text-sm opacity-70 capitalize">{{ field }}</label>
+
+                <!-- Vista -->
+                @if (!editMode()) {
+                <div class="mt-1 p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                  {{ $any(user())[field] }}
+                </div>
+                }
 
 
-          <!-- Edición -->
-          @if (editMode()) {
-          <input [(ngModel)]="$any(tempUser())[field]"
-            class="w-full mt-1 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 outline-none" />
-          }
+                <!-- Edición -->
+                @if (editMode()) {
+                <input [(ngModel)]="$any(tempUser())[field]"
+                  class="w-full mt-1 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 outline-none" />
+                }
+              </div>
+            </div>
+            }
+
+          </div>
+
+          <!-- Botones -->
+          <div class="flex justify-end gap-3 mt-6">
+
+            <!-- Modo vista -->
+            @if (!editMode())
+            {
+            <button (click)="toggleEdit()" class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
+              Editar
+            </button>
+            }
+
+
+            <!-- Modo edición -->
+            @if (editMode()) {
+            <div class="space-x-1">
+              <button (click)="cancel()" class="px-4 py-2 rounded-xl bg-gray-500 hover:bg-gray-600">
+                Cancelar
+              </button>
+
+              <button (click)="save()" class="px-4 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700">
+                Guardar
+              </button>
+            </div>
+            }
+
+          </div>
+
         </div>
       </div>
-      }
 
-    </div>
-
-    <!-- Botones -->
-    <div class="flex justify-end gap-3 mt-6">
-
-      <!-- Modo vista -->
-      @if (!editMode())
-      {
-      <button (click)="toggleEdit()" class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
-        Editar
-      </button>
-      }
-
-
-      <!-- Modo edición -->
-      @if (editMode()) {
-      <div class="space-x-1">
-        <button (click)="cancel()" class="px-4 py-2 rounded-xl bg-gray-500 hover:bg-gray-600">
-          Cancelar
-        </button>
-
-        <button (click)="save()" class="px-4 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700">
-          Guardar
-        </button>
+      <div class="w-full p-4 text-gray-700 dark:text-gray-300">
+        Ajustes Principales del sistema
       </div>
-      }
 
     </div>
 
   </div>
+
+
 
 </div>

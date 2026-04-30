@@ -1,5 +1,7 @@
-<aside class="fixed left-0 top-0 h-screen bg-slate-900 text-white transition-all duration-300 ease-in-out z-40"
-  [class.w-64]="!collapsed()" [class.w-16]="collapsed()">
+<div (click)="setIsOpen()" [class.hidden]="!isOpen()" class="fixed inset-0 bg-black/50 z-30 md:hidden"></div>
+
+<aside [class]="'fixed left-0 top-0 h-screen bg-slate-900 text-white transition-all duration-300 ease-in-out z-40 ' + (collapsed() ? 'md:w-16 ' : 'md:w-64 ') + (isOpen() ? 'w-64 translate-x-0 ' : 'w-64 -translate-x-full md:translate-x-0 ')"
+>
   <div class="flex flex-col h-full">
     <div class="p-4 border-b border-slate-700">
       <h1 class="text-xl font-bold truncate" [class.hidden]="collapsed()">
@@ -20,7 +22,7 @@
         </svg>
         @if (!collapsed()) {
 
-        <span>Dashboard</span>
+        <span class="">Dashboard</span>
         }
       </a>
 

@@ -1,5 +1,4 @@
 import { Component, model } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -10,8 +9,19 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class SidebarDashboardComponent {
   collapsed = model(false);
+  isOpen =  model(false);
 
-  toggleCollapse(): void {
-    this.collapsed.update(v => !v);
+  public toggleCollapse(): void {
+    if(this.isOpen()){
+      this.setIsOpen();
+      this.collapsed.set(false)
+    }else {
+      this.collapsed.update(v => !v);
+    }
   }
+
+  public setIsOpen(){
+    this.isOpen.update(o => !o);
+  }
+
 }
