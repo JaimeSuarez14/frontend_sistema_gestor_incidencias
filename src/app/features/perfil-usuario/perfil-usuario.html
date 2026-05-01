@@ -1,9 +1,7 @@
-<div
-  [class]=" ' dark:text-white min-h-screen flex flex-col items-center justify-center p-6 transition-all dark:bg-gray-800 duration-300'">
+<div [class]=" ' dark:text-white min-h-screen flex flex-col items-center  p-6  dark:bg-gray-800 '">
 
-  <div class="w-full overflow-hidden rounded-xl
-            bg-white dark:bg-slate-900
-            border border-gray-200 dark:border-slate-700 shadow-sm">
+  <div
+    class="w-full overflow-hidden rounded-xl h-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 shadow-sm">
 
     <!-- Tabs -->
     <div class="flex relative border-b border-gray-200 dark:border-slate-700">
@@ -30,7 +28,7 @@
     (tabs()[0] ? 'translate-x-0' : '-translate-x-1/2')">
 
       <div class="w-full p-4 text-gray-700 dark:text-gray-300">
-        <div class="w-full m-auto max-w-xl rounded-2xl shadow-2xl p-6 bg-white dark:bg-slate-950 transition-all">
+        <div class=" md:w-full m-auto  rounded-2xl shadow-2xl p-6 bg-white dark:bg-slate-950 transition-all">
 
           <!-- Header -->
           <div class="flex justify-between items-center mb-6">
@@ -41,9 +39,9 @@
 
           <!-- Campos -->
           <div class="space-y-4">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              @for (field of ['nombre','correo','usuario','clave','rol','area']; track $index) {
 
-            @for (field of ['nombre','correo','usuario','clave','rol','area']; track $index) {
-            <div>
               <div>
                 <label class="text-sm opacity-70 capitalize">{{ field }}</label>
 
@@ -61,8 +59,8 @@
                   class="w-full mt-1 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 outline-none" />
                 }
               </div>
+              }
             </div>
-            }
 
           </div>
 
@@ -80,12 +78,12 @@
 
             <!-- Modo edición -->
             @if (editMode()) {
-            <div class="space-x-1">
-              <button (click)="cancel()" class="px-4 py-2 rounded-xl bg-gray-500 hover:bg-gray-600">
+            <div class="space-x-1 text-white">
+              <button (click)="cancel()" class="px-4 py-2 rounded-xl  bg-gray-500 hover:bg-gray-600">
                 Cancelar
               </button>
 
-              <button (click)="save()" class="px-4 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700">
+              <button (click)="save()" class="px-4 py-2 rounded-xl bg-green-600  hover:bg-green-700">
                 Guardar
               </button>
             </div>
