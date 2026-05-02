@@ -1,16 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IncidentService } from '../../core/services/incident.service';
+import { IncidenciaService } from '../../core/services/incident.service';
 import { UserService } from '../../core/services/user.service';
+import { DetalleIncidencia } from "./detalle-incidencia/detalle-incidencia";
 
 @Component({
   selector: 'app-incidents',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './incidents.component.html'
+  imports: [CommonModule, DetalleIncidencia],
+  templateUrl: './incidencia.component.html'
 })
-export class IncidentsComponent {
-  incidentService = inject(IncidentService);
+export class IncidenciaComponent {
+  incidentService = inject(IncidenciaService);
   userService = inject(UserService);
 
   getStatusLabel(status: string): string {
@@ -35,4 +36,6 @@ export class IncidentsComponent {
     const user = this.userService.getUserById(userId);
     return user?.name || 'Sin asignar';
   }
+
+  verDetalle = signal(false);
 }

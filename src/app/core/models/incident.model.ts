@@ -1,4 +1,4 @@
-export interface Incident {
+export interface Incidencia {
   id: number;
   title: string;
   description: string;

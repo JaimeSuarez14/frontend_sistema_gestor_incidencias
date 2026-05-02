@@ -11,11 +11,12 @@
           <tr class="bg-gray-50 dark:bg-gray-950 border-b border-gray-200 dark:border-gray-700">
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">ID</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Título</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Descripción</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Estado</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Prioridad</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Asignado a</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Fecha</th>
+            <th class="text-left py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">Detalle</th>
+            <th class="text-left py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">Seguir</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +24,6 @@
           <tr class="border-b border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/90 transition-colors">
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">#{{ incident.id }}</td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ incident.title }}</td>
-            <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">{{ incident.description }}</td>
             <td class="py-3 px-4">
               <span class="px-3 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.status === 'open'"
                 [class.text-red-700]="incident.status === 'open'"
@@ -45,6 +45,14 @@
             </td>
             <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">{{ getUserName(incident.assignedTo) }}</td>
             <td class="py-3 px-4 text-sm dark:text-gray-400 text-gray-600">{{ incident.createdAt }}</td>
+            <td class="px-2">
+              <button class="dark:text-white px-1 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500" (click)="verDetalle.update(v => !v)">Ver</button>
+            </td>
+            <td class="px-2">
+              <button class="dark:text-white px-1 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500">
+                <svg class="dark:text-white" aria-hidden="true" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" width="14" height="18" ><path fill="currentColor" d="M3.645 13.792h6.708v-1.25H3.645v1.25Zm0-3.542h6.708V9H3.645v1.25Zm-2.063 7.083a1.2 1.2 0 0 1-.875-.375 1.2 1.2 0 0 1-.375-.875V1.917a1.2 1.2 0 0 1 .375-.875 1.2 1.2 0 0 1 .875-.375h7.52l4.563 4.562v10.854a1.2 1.2 0 0 1-.375.875 1.2 1.2 0 0 1-.875.375H1.582ZM8.478 5.792V1.917H1.582v14.166h10.833V5.792H8.478Z"></path></svg>
+              </button>
+            </td>
           </tr>
           }
         </tbody>
@@ -52,3 +60,5 @@
     </div>
   </div>
 </div>
+
+<app-detalle-incidencia [(modal)]="verDetalle" />

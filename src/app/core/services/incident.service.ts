@@ -1,9 +1,9 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { Incident } from '../models/incident.model';
+import { Incidencia } from '../models/incident.model';
 
 @Injectable({ providedIn: 'root' })
-export class IncidentService {
-  private readonly _incidents = signal<Incident[]>([
+export class IncidenciaService {
+  private readonly _incidents = signal<Incidencia[]>([
     { id: 101, title: 'Error en login', description: 'Usuarios no pueden iniciar sesión', status: 'open', priority: 'high', assignedTo: "2", createdAt: '2026-04-15' },
     { id: 102, title: 'Página lenta', description: 'El dashboard carga muy lento', status: 'in_progress', priority: 'medium', assignedTo: "4", createdAt: '2026-04-14' },
     { id: 103, title: 'Error 500 en API', description: 'Falla en endpoint de usuarios', status: 'closed', priority: 'high', assignedTo: "2", createdAt: '2026-04-13' },

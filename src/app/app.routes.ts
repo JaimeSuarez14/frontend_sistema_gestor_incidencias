@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes, Router } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -24,9 +24,9 @@ export const routes: Routes = [
           import('./features/users/users.component').then((m) => m.UsersComponent),
       },
       {
-        path: 'incidents',
-        loadComponent: () =>
-          import('./features/incidents/incidents.component').then((m) => m.IncidentsComponent),
+        path: 'incidencia',
+        loadChildren: () =>
+          import('@features/incidencia/incidencia.routes').then((m) => m.routes),
       },
       {
         path: 'perfil-usuario',

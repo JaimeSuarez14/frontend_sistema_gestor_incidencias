@@ -1,0 +1,39 @@
+@if (modal()) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+  animate.leave="animate-scale-down" (click)="openBox()">
+  <div class="bg-gray-500 p-6 space-y-3 rounded-lg relative w-lg animate-scale-up border-2 border-blue-800"
+    (click)="$event.stopPropagation()">
+    <button class="absolute top-3 right-3 cursor-pointer text-red-500 hover:text-red-700 transition-all duration-300 text-2xl hover:scale-105"
+      (click)="openBox()">
+      <svg xmlns="http://www.w3.org/2000/svg" id="close-medium" fill="currentColor" data-supported-dps="24x24" viewBox="0 0 24 24" data-token-id="98" width="24" height="24" class="" role="img" style="width: 24px; min-width: 24px; height: 24px; min-height: 24px;"><path d="M13.42 12 20 18.58 18.58 20 12 13.42 5.42 20 4 18.58 10.58 12 4 5.42 5.42 4 12 10.58 18.58 4 20 5.42z"></path></svg>
+    </button>
+    <div class="dark:bg-gray-950 rounded-lg dark:text-white p-2">
+      <h2>Detalle de la Incidencias</h2>
+      <div>
+        🚀 <span>Titulo</span>
+      </div>
+      <div>
+        🚀 <span>Descripcion</span>
+      </div>
+      <div>
+        🚀 <span>Estado</span>
+      </div>
+      <div>
+        🚀 <span>Prioridad</span>
+      </div>
+      <div>
+        🚀 <span>Tecnico</span>
+      </div>
+      <div>
+        🚀 <span>Usuario</span>
+      </div>
+      <div>
+        🚀 <span>Fecha</span>
+      </div>
+    </div>
+    <a class="w-full rounded p-2 block text-center bg-green-500 text-white" routerLink="incidencia/seguimiento">
+      Ver Seguimiento
+    </a>
+  </div>
+</div>
+}

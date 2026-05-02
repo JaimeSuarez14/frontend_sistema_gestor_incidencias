@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IncidentService } from '../../core/services/incident.service';
+import { IncidenciaService } from '../../core/services/incident.service';
 import { UserService } from '../../core/services/user.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { UserService } from '../../core/services/user.service';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
-  incidentService = inject(IncidentService);
+  incidentService = inject(IncidenciaService);
   userService = inject(UserService);
 
   getStatusLabel(status: string): string {
