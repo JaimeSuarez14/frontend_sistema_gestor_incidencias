@@ -21,7 +21,8 @@
         </thead>
         <tbody>
           @for (incident of incidentService.incidents(); track incident.id) {
-          <tr class="border-b border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/90 transition-colors">
+          <tr
+            class="border-b border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/90 transition-colors">
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">#{{ incident.id }}</td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ incident.title }}</td>
             <td class="py-3 px-4">
@@ -46,12 +47,22 @@
             <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">{{ getUserName(incident.assignedTo) }}</td>
             <td class="py-3 px-4 text-sm dark:text-gray-400 text-gray-600">{{ incident.createdAt }}</td>
             <td class="px-2">
-              <button class="dark:text-white px-1 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500" (click)="verDetalle.update(v => !v)">Ver</button>
+              <button
+                class="dark:text-white p-2 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500"
+                (click)="openModal(incident.id)">Ver</button>
             </td>
-            <td class="px-2">
-              <button class="dark:text-white px-1 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500">
-                <svg class="dark:text-white" aria-hidden="true" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" width="14" height="18" ><path fill="currentColor" d="M3.645 13.792h6.708v-1.25H3.645v1.25Zm0-3.542h6.708V9H3.645v1.25Zm-2.063 7.083a1.2 1.2 0 0 1-.875-.375 1.2 1.2 0 0 1-.375-.875V1.917a1.2 1.2 0 0 1 .375-.875 1.2 1.2 0 0 1 .875-.375h7.52l4.563 4.562v10.854a1.2 1.2 0 0 1-.375.875 1.2 1.2 0 0 1-.875.375H1.582ZM8.478 5.792V1.917H1.582v14.166h10.833V5.792H8.478Z"></path></svg>
-              </button>
+            <td class="p-2 ">
+              <a routerLink="/incidencia/seguimiento" class="flex items-center justify-start h-full ">
+                <span class="p-2 rounded-full  hover:bg-black/20 hover:cursor-pointer dark:hover:text-gray-500">
+                  <svg class="dark:text-white" aria-hidden="true" fill="none" stroke="currentColor"
+                    xmlns="http://www.w3.org/2000/svg" width="14" height="18">
+                    <path fill="currentColor"
+                      d="M3.645 13.792h6.708v-1.25H3.645v1.25Zm0-3.542h6.708V9H3.645v1.25Zm-2.063 7.083a1.2 1.2 0 0 1-.875-.375 1.2 1.2 0 0 1-.375-.875V1.917a1.2 1.2 0 0 1 .375-.875 1.2 1.2 0 0 1 .875-.375h7.52l4.563 4.562v10.854a1.2 1.2 0 0 1-.375.875 1.2 1.2 0 0 1-.875.375H1.582ZM8.478 5.792V1.917H1.582v14.166h10.833V5.792H8.478Z">
+                    </path>
+                  </svg>
+                </span>
+
+              </a>
             </td>
           </tr>
           }
@@ -61,4 +72,4 @@
   </div>
 </div>
 
-<app-detalle-incidencia [(modal)]="verDetalle" />
+<app-detalle-incidencia [(modal)]="verDetalle" [(incidenciaId)]="idIncidencia"/>

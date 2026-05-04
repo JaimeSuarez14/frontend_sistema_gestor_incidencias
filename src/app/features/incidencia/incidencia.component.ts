@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { IncidenciaService } from '../../core/services/incident.service';
 import { UserService } from '../../core/services/user.service';
 import { DetalleIncidencia } from "./detalle-incidencia/detalle-incidencia";
+import { RouterLink } from "@angular/router";
+import { signalGetFn } from 'node_modules/@angular/core/types/_effect-chunk';
 
 @Component({
   selector: 'app-incidents',
   standalone: true,
-  imports: [CommonModule, DetalleIncidencia],
+  imports: [CommonModule, DetalleIncidencia, RouterLink],
   templateUrl: './incidencia.component.html'
 })
 export class IncidenciaComponent {
@@ -38,4 +40,10 @@ export class IncidenciaComponent {
   }
 
   verDetalle = signal(false);
+  idIncidencia =  signal<number | null>(null);
+
+  openModal(id: number){
+    this.verDetalle.update(v => !v);
+    this.idIncidencia.set(id);
+  }
 }

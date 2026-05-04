@@ -35,4 +35,8 @@ export class IncidenciaService {
   readonly recentIncidents = computed(() =>
     [...this._incidents()].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5)
   );
+
+  public getIncidencia(id: number){
+    return this._incidents().find(inci => inci.id ===id);
+  }
 }
