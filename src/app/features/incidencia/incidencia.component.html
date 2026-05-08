@@ -4,6 +4,16 @@
     <p class="text-gray-500 dark:text-gray-400">Listado completo de incidencias</p>
   </div>
 
+  <div class="max-w-sm">
+    <app-buscador
+      [items]="incidentService.incidents()"
+      [searchFields]="['title', 'description', 'status']"
+      placeholder="Buscar por título, descripción o estado..."
+      [debounceTime]="300"
+      (filteredResults)="onSearchResults($event)"
+    />
+  </div>
+
   <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-0 overflow-hidden">
     <div class="overflow-x-auto">
       <table class="w-full">
@@ -20,7 +30,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (incident of incidentService.incidents(); track incident.id) {
+          @for (incident of filteredIncidents(); track incident.id) {
           <tr
             class="border-b border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/90 transition-colors">
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">#{{ incident.id }}</td>
@@ -63,6 +73,13 @@
                 </span>
 
               </a>
+            </td>
+          </tr>
+          }
+          @if (filteredIncidents().length === 0) {
+          <tr>
+            <td colspan="8" class="py-8 text-center text-gray-500 dark:text-gray-400">
+              No se encontraron incidencias que coincidan con la búsqueda
             </td>
           </tr>
           }
