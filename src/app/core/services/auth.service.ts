@@ -9,6 +9,8 @@ export class AuthService {
   readonly currentUser = this._currentUser.asReadonly();
   readonly isAuthenticated = this._isAuthenticated.asReadonly();
   readonly isAdmin = computed(() => this._currentUser()?.role === 'ADMIN');
+  readonly isEmpleado = computed(() => this._currentUser()?.role === 'EMPLEADO');
+  readonly isTecnico = computed(() => this._currentUser()?.role?.startsWith('TECNICO') ?? false);
 
   private readonly MOCK_USERS: (User & { password: string })[] = [
     { id: "1", email: 'juan.perez@empresa.com', password: 'admin123', name: 'Juan Pérez', estado : "ACTIVO" , role: 'ADMIN' },

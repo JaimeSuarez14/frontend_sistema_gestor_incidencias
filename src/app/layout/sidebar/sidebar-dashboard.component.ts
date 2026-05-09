@@ -1,4 +1,5 @@
-import { Component, model } from '@angular/core';
+import { AuthService } from '@services/auth.service';
+import { Component, inject, model } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -10,6 +11,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class SidebarDashboardComponent {
   collapsed = model(false);
   isOpen =  model(false);
+  authService = inject(AuthService);
 
   public toggleCollapse(): void {
     if(this.isOpen()){
