@@ -1,44 +1,23 @@
+import { AuthService } from './../../core/services/auth.service';
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { IncidenciaService } from '../../core/services/incident.service';
-import { UserService } from '../../core/services/user.service';
+import { Admin } from "./admin/admin";
+import { Usuario } from "./usuario/usuario";
+import { Tecnico } from "./tecnico/tecnico";
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
-  imports: [RouterLink],
-  templateUrl: './dashboard.component.html',
+  imports: [Admin, Usuario, Tecnico],
+  template: `
+
+    @if(authService.isAdmin()){
+      <app-admin />
+    }@else if(authService.isEmpleado()){
+      <app-usuario />
+    }@else {
+      <app-tecnico />
+    }
+  `,
 })
 export class DashboardComponent {
-  incidentService = inject(IncidenciaService);
-  userService = inject(UserService);
-
-  getStatusLabel(status: string): string {
-    const labels: Record<string, string> = {
-      open: 'Abierta',
-      in_progress: 'En Progreso',
-      closed: 'Cerrada',
-    };
-    return labels[status] || status;
-  }
-
-  getPriorityLabel(priority: string): string {
-    const labels: Record<string, string> = {
-      high: 'Alta',
-      medium: 'Media',
-      low: 'Baja',
-    };
-    return labels[priority] || priority;
-  }
-
-  getUserName(userId: string): string {
-    const user = this.userService.getUserById(userId);
-    return user?.name || 'Sin asignar';
-  }
-
-  getPriorityPercentage(priority: 'high' | 'medium' | 'low'): number {
-    const total = this.incidentService.totalIncidents();
-    if (total === 0) return 0;
-    return (this.incidentService.incidentsByPriority()[priority] / total) * 100;
-  }
+  authService = inject(AuthService);
 }

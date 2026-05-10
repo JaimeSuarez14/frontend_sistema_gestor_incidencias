@@ -15,7 +15,7 @@ export class AuthService {
   private readonly MOCK_USERS: (User & { password: string })[] = [
     { id: "1", email: 'juan.perez@empresa.com', password: 'admin123', name: 'Juan Pérez', estado : "ACTIVO" , role: 'ADMIN' },
     { id: "2", email: 'maria.lopez@empresa.com', password: 'support123', name: 'María López',estado : "ACTIVO" , role: 'TECNICO_NIVEL_1' },
-    { id: "3", email: 'carlos.ramirez@empresa.com', password: 'user123', name: 'Carlos Ramírez', estado : "ACTIVO" , role: 'ADMIN' },
+    { id: "3", email: 'carlos.ramirez@empresa.com', password: 'user123', name: 'Carlos Ramírez', estado : "ACTIVO" , role: 'EMPLEADO' },
     { id: "4", email: 'ana.torres@empresa.com', password: 'support123', name: 'Ana Torres',estado : "ACTIVO" , role: 'ADMIN' },
     { id: "5", email: 'luis.fernandez@empresa.com', password: 'user123', name: 'Luis Fernández', estado : "ACTIVO" ,role: 'EMPLEADO' },
   ];
