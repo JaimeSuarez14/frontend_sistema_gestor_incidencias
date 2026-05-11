@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../core/services/user.service';
 import { BuscadorComponent } from '../../shared/components/buscador/buscador.component';
@@ -10,12 +10,16 @@ import { User } from '../../core/models/user.model';
   imports: [CommonModule, BuscadorComponent],
   templateUrl: './users.component.html',
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit{
   userService = inject(UserService);
   filteredUsers = signal<User[]>([]);
 
   constructor() {
     this.filteredUsers.set(this.userService.users());
+  }
+
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
   }
 
   getRoleLabel(role: string): string {
