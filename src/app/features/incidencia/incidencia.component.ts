@@ -42,8 +42,7 @@ export class IncidenciaComponent {
   }
 
   getUserName(userId: string): string {
-    const user = this.userService.getUserById(userId);
-    return user?.name || 'Sin asignar';
+        return 'Sin asignar';
   }
 
   verDetalle = signal(false);

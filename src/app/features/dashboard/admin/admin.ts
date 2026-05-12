@@ -33,8 +33,7 @@ export class Admin {
   }
 
   getUserName(userId: string): string {
-    const user = this.userService.getUserById(userId);
-    return user?.name || 'Sin asignar';
+       return 'Sin asignar';
   }
 
   getPriorityPercentage(priority: 'high' | 'medium' | 'low'): number {

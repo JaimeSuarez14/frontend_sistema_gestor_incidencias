@@ -42,4 +42,12 @@
       transform: scale(0);
     }
   }
+
+  --animate-skeleton: shimmer 1000ms infinite;
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }
