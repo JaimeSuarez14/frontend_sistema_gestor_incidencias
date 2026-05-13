@@ -1,8 +1,8 @@
-import { Component, effect, inject, linkedSignal, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, linkedSignal, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '@services/user.service';
 import { Page, Usuario } from 'src/app/core/models/usuario.model';
-import { BuscadorComponent } from "src/app/shared/components/buscador/buscador.component";
+import { BuscadorComponent } from 'src/app/shared/components/buscador/buscador.component';
 
 @Component({
   selector: 'app-users',
@@ -10,39 +10,28 @@ import { BuscadorComponent } from "src/app/shared/components/buscador/buscador.c
   imports: [CommonModule, BuscadorComponent],
   templateUrl: './users.component.html',
 })
-export class UsersComponent implements OnInit{
+export class UsersComponent implements OnInit {
   userService = inject(UserService);
-  usuarios = signal< Usuario []>([]);
-  loading = signal ( true );
-  error = signal ( '' );
-  filteredUsers = linkedSignal<Usuario[]>(
-    () => this.usuarios()
-  );
+  usuarios = signal<Usuario[]>([]);
+  loading = signal(true);
+  error = signal('');
+  filteredUsers = linkedSignal<Usuario[]>(() => this.usuarios());
 
   constructor() {
     effect(() => {
-      this.getUsuarios()
-    })
+      this.getUsuarios();
+    });
   }
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(
-      {
-        next:(data => { this.usuarios.set(data); this.loading.set(false) }),
-        error:(err => {
-          console.error(err);
-          this.error.set(err);
-          this.loading.set(false);
-        })
-      }
-    )
+
   }
 
   getRoleLabel(role: string): string {
     const labels: Record<string, string> = {
       TECNICO_NIVEL_1: 'Técnico Nivel 1',
       TECNICO_NIVEL_2: 'Técnico Nivel 2',
-      EMPLEADO: 'Empleado'
+      EMPLEADO: 'Empleado',
     };
     return labels[role] || role;
   }
@@ -55,39 +44,34 @@ export class UsersComponent implements OnInit{
   page = signal<Page | null>(null);
   size = signal(5);
   getUsuarios(): void {
-    this.userService.getUsersPaginados(this.pageCurrent() , this.size()).subscribe(
-      {
-        next:(data => {
-          console.log(data);
-          this.usuarios.set(data?.content);
-          this.page.set(data?.page);
-          this.loading.set(false)
-        }),
-        error:(err => {
-          console.error(err);
-          this.error.set(err);
-          this.loading.set(false);
-        })
-      }
-    )
+    this.userService.getUsersPaginados(this.pageCurrent(), this.size()).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.usuarios.set(data?.content);
+        this.page.set(data?.page);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this.error.set(err);
+        this.loading.set(false);
+      },
+    });
   }
 
-  onPageChange(pagina: number){
+  onPageChange(pagina: number) {
     this.pageCurrent.set(pagina);
   }
 
-  onChangeNumberPorPagina(e : Event){
-  }
+  onChangeNumberPorPagina(e: Event) {}
 
-  botones() : number[]{
-    const numero = this.page()?.totalPages || 1;
-    if(numero===3) return [0,1,2];
-
-    const paginas = []
-    for(let i = 0; i<numero; i++){
-      paginas.push(0);
+  botones = computed(() => {
+    const total = this.page()?.totalPages || 1;
+    if (total <= 3) {
+      const paginas = Array.from({ length: total }, (_, i) => i);
+      return { paginas, total}
     }
-    return paginas;
-  }
-}
 
+    return { paginas: [0,1,2], total }
+  });
+}
