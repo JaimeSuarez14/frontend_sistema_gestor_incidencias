@@ -7,15 +7,25 @@
     <app-buscador [items]="usuarios()" [searchFields]="['nombre', 'correo']"
       placeholder="Buscar usuario por nombre y correo" (filteredResults)="onSearchResults($event)" />
   </div>
+  <div class="dark:text-amber-50 space-x-1">
+    <label for="pageSize">Registros por página:</label>
+    <select id="pageSize" class="rounded-lg border border-gray-400 " [value]="size()" (change)="size.set($any($event.target).value); pageCurrent.set(0)">
+      <option class="text-black" [value]="2">2</option>
+      <option class="text-black" [value]="5">5</option>
+      <option class="text-black" [value]="10">10</option>
+      <option class="text-black" [value]="20">20</option>
+    </select>
+  </div>
+
   <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-0 overflow-hidden">
     <div class="overflow-x-auto">
       <table class="w-full">
         <thead>
-          <tr class="bg-gray-50 dark:bg-gray-950 border-b border-gray-200 dark:border-gray-700">
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">ID</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Nombre</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Correo</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Rol</th>
+          <tr class="bg-gray-200 dark:bg-gray-950 border-b border-gray-100 dark:border-gray-700">
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">N°</th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Nombre</th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Correo</th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Rol</th>
           </tr>
         </thead>
         <tbody class="">
@@ -24,10 +34,10 @@
             <td colspan="4" class="p-0">
               <div
                 class="before:absolute before:inset-0 before:-translate-x-full before:animate-skeleton before:bg-linear-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent relative overflow-hidden bg-gray-200  dark:bg-gray-900 text-center text-gray-500">
-                <div class="grid grid-cols-4">
+                <div class="grid grid-cols-2">
                   @for (item of [1,2,3,4,5,6,7,8]; track $index) {
-                  <div class="py-8 border-b dark:border-gray-800 border-gray-300"></div>
-                }
+                  <div class="py-6 border-b dark:border-gray-800 border-gray-300"></div>
+                  }
                 </div>
               </div>
             </td>
@@ -50,7 +60,7 @@
           @for (user of filteredUsers(); track user.id) {
           <tr
             class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/90 transition-colors">
-            <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ user.id }}</td>
+            <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ $index + 1 }}</td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
@@ -75,6 +85,60 @@
 
         </tbody>
       </table>
+      <!-- Pagination -->
+      <div class="flex items-center justify-center p-6">
+        <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-gray-100 px-6 py-5 shadow-md
+           dark:border-gray-700 dark:bg-gray-900">
+
+          <!-- Previous -->
+          <button
+            class="rounded-xl border border-gray-300 text-sm md:text-base disabled:bg-gray-200 bg-white px-5 py-3 font-medium disabled:text-gray-400 text-gray-800 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-500 dark:hover:text-indigo-400 disabled:dark:bg-gray-800"
+            (click)="onPageChange(pageCurrent() - 1)" [disabled]="pageCurrent()===0">
+            « Anterior
+          </button>
+
+          <!-- Active Page -->
+          <button class="rounded-xl border border-gray-300 text-sm md:text-base bg-white px-4 py-2.5 font-medium text-gray-700
+             transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600
+             dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-indigo-500 dark:hover:text-indigo-400">
+            1
+          </button>
+
+          <!-- Normal Pages -->
+          <button
+            class="h-11 w-11 rounded-xl border text-sm md:text-base border-gray-300 bg-white font-medium text-gray-700
+             transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600
+             dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-indigo-500 dark:hover:text-indigo-400">
+            2
+          </button>
+
+          <button
+            class="h-11 w-11 rounded-xl text-sm md:text-base border border-gray-300 bg-white font-medium text-gray-700
+             transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600
+             dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-indigo-500 dark:hover:text-indigo-400">
+            3
+          </button>
+
+          <!-- Dots -->
+          <span class="px-1 text-lg text-gray-400 dark:text-gray-500">...</span>
+
+          <!-- Last Page -->
+          <button
+            class="rounded-xl border border-gray-300 text-sm md:text-base bg-white px-4 py-2.5 font-medium text-gray-700
+             transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600
+             dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-indigo-500 dark:hover:text-indigo-400">
+            474
+          </button>
+
+          <!-- Next -->
+          <button
+            class="rounded-xl border border-gray-300 text-sm md:text-base bg-white disabled:bg-gray-200 px-5 py-3 font-medium text-gray-800 disabled:text-gray-400 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-500 dark:hover:text-indigo-400 disabled:dark:bg-gray-800"
+            (click)="onPageChange(pageCurrent() + 1)" [disabled]="page()?.totalPages === pageCurrent() + 1">
+            Siguiente »
+          </button>
+
+        </div>
+      </div>
     </div>
   </div>
 </div>

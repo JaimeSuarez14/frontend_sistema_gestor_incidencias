@@ -1,9 +1,8 @@
-import { Component, inject, linkedSignal, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, linkedSignal, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService } from '../../core/services/user.service';
-import { BuscadorComponent } from '../../shared/components/buscador/buscador.component';
-import { User } from '../../core/models/user.model';
-import { Usuario } from 'src/app/core/models/usuario.model';
+import { UserService } from '@services/user.service';
+import { Page, Usuario } from 'src/app/core/models/usuario.model';
+import { BuscadorComponent } from "src/app/shared/components/buscador/buscador.component";
 
 @Component({
   selector: 'app-users',
@@ -21,7 +20,9 @@ export class UsersComponent implements OnInit{
   );
 
   constructor() {
-
+    effect(() => {
+      this.getUsuarios()
+    })
   }
 
   ngOnInit(): void {
@@ -40,6 +41,7 @@ export class UsersComponent implements OnInit{
   getRoleLabel(role: string): string {
     const labels: Record<string, string> = {
       TECNICO_NIVEL_1: 'Técnico Nivel 1',
+      TECNICO_NIVEL_2: 'Técnico Nivel 2',
       EMPLEADO: 'Empleado'
     };
     return labels[role] || role;
@@ -48,4 +50,44 @@ export class UsersComponent implements OnInit{
   onSearchResults(results: Usuario[]): void {
     this.filteredUsers.set(results);
   }
+
+  pageCurrent = signal(0);
+  page = signal<Page | null>(null);
+  size = signal(5);
+  getUsuarios(): void {
+    this.userService.getUsersPaginados(this.pageCurrent() , this.size()).subscribe(
+      {
+        next:(data => {
+          console.log(data);
+          this.usuarios.set(data?.content);
+          this.page.set(data?.page);
+          this.loading.set(false)
+        }),
+        error:(err => {
+          console.error(err);
+          this.error.set(err);
+          this.loading.set(false);
+        })
+      }
+    )
+  }
+
+  onPageChange(pagina: number){
+    this.pageCurrent.set(pagina);
+  }
+
+  onChangeNumberPorPagina(e : Event){
+  }
+
+  botones() : number[]{
+    const numero = this.page()?.totalPages || 1;
+    if(numero===3) return [0,1,2];
+
+    const paginas = []
+    for(let i = 0; i<numero; i++){
+      paginas.push(0);
+    }
+    return paginas;
+  }
 }
+

@@ -20,7 +20,8 @@
       "@incidencia/*": ["src/app/features/incidencia/*"],
       "@usuarios/*": ["src/app/features/users/*"],
       "@services/*": ["src/app/core/services/*"],
-      "@features/*": ["src/app/features/*"]
+      "@features/*": ["src/app/features/*"],
+      "@shared/*": ["src/app/shared/*"]
     }
   },
   "angularCompilerOptions": {
