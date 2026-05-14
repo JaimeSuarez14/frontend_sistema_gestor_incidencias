@@ -27,12 +27,14 @@
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Nombre</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Correo</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Rol</th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Detalle</th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Editar</th>
           </tr>
         </thead>
         <tbody class="">
           @if(loading()){
           <tr>
-            <td colspan="4" class="p-0">
+            <td colspan="6" class="p-0">
               <div
                 class="before:absolute before:inset-0 before:-translate-x-full before:animate-skeleton before:bg-linear-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent relative overflow-hidden bg-gray-200  dark:bg-gray-900 text-center text-gray-500">
                 <div class="grid grid-cols-2">
@@ -47,13 +49,13 @@
 
           }@else if (error()) {
           <tr>
-            <td colspan="4" class="py-8 text-center text-gray-500 dark:text-gray-400">
+            <td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">
               {{ error() }}
             </td>
           </tr>
           }@else if(filteredUsers().length === 0) {
           <tr>
-            <td colspan="4" class="py-8 text-center text-gray-500 dark:text-gray-400">
+            <td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">
               No se encontraron usuarios que coincidan con la búsqueda
             </td>
           </tr>
@@ -79,6 +81,24 @@
                 [class.text-gray-700]="user.rol === 'EMPLEADO'">
                 {{ getRoleLabel(user.rol) }}
               </span>
+            </td>
+            <td class="px-2">
+              <button
+                class="dark:text-white p-2 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500"
+                (click)="openModal()">Ver</button>
+            </td>
+            <td class="p-2 ">
+              <a routerLink="" class="flex items-center justify-start h-full ">
+                <span class="p-2 rounded-full  hover:bg-black/20 hover:cursor-pointer dark:hover:text-gray-500">
+                  <svg class="dark:text-white" aria-hidden="true" fill="none" stroke="currentColor"
+                    xmlns="http://www.w3.org/2000/svg" width="14" height="18">
+                    <path fill="currentColor"
+                      d="M3.645 13.792h6.708v-1.25H3.645v1.25Zm0-3.542h6.708V9H3.645v1.25Zm-2.063 7.083a1.2 1.2 0 0 1-.875-.375 1.2 1.2 0 0 1-.375-.875V1.917a1.2 1.2 0 0 1 .375-.875 1.2 1.2 0 0 1 .875-.375h7.52l4.563 4.562v10.854a1.2 1.2 0 0 1-.375.875 1.2 1.2 0 0 1-.875.375H1.582ZM8.478 5.792V1.917H1.582v14.166h10.833V5.792H8.478Z">
+                    </path>
+                  </svg>
+                </span>
+
+              </a>
             </td>
           </tr>
           }

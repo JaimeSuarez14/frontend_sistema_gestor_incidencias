@@ -74,4 +74,6 @@ export class UsersComponent implements OnInit {
 
     return { paginas: [0,1,2], total }
   });
+
+  openModal(){}
 }
