@@ -121,7 +121,7 @@
           </button>
 
           @for(pag of botones().paginas; track $index){
-          <button
+          <button (click)="onPageChange(pag)"
             [class]="'rounded-xl border border-gray-300 text-sm md:text-base  px-4 py-2.5 font-medium  transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-indigo-500 dark:hover:text-indigo-400 ' + (pag === pageCurrent() ? 'dark:bg-indigo-600 bg-indigo-600 text-white disabled:hover:text-white' : 'bg-white text-gray-700')"
             [disabled]="pag === pageCurrent()">
             {{ pag + 1}}
