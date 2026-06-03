@@ -18,11 +18,12 @@
 
       <form (ngSubmit)="onSubmit()" class="space-y-5">
         <div>
-          <label for="email" class="block text-sm font-medium text-purple-900 dark:text-purple-100 mb-1.5">Correo
-            electrónico</label>
-          <input type="email" id="email" [value]="email()" (input)="email.set($any($event.target).value)" required
+          <label for="email" class="block text-sm font-medium text-purple-900 dark:text-purple-100 mb-1.5">Nombre
+            de Usuario
+          </label>
+          <input type="email" id="email" [value]="usuario()" (input)="usuario.set($any($event.target).value)" required
             class="w-full px-4 py-3 dark:bg-white/10 border dark:border-white/20 rounded-lg text-purple-900 dark:text-white dark:placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-            placeholder="correo@empresa.com" />
+            placeholder="pepito21" />
         </div>
 
         <div>

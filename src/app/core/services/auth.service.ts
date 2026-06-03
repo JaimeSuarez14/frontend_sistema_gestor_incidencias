@@ -1,8 +1,12 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { User, LoginCredentials, RegisterData } from '../models/user.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private http =  inject(HttpClient);
+  private url = 'http://localhost:8080';
+
   private _currentUser = signal<User | null>(null);
   private _isAuthenticated = signal(false);
 
@@ -20,18 +24,15 @@ export class AuthService {
     { id: "5", email: 'luis.fernandez@empresa.com', password: 'user123', name: 'Luis Fernández', estado : "ACTIVO" ,role: 'EMPLEADO' },
   ];
 
-  login(credentials: LoginCredentials): boolean {
-    const user = this.MOCK_USERS.find(
-      (u) => u.email === credentials.email && u.password === credentials.password
-    );
+  login(credentials: LoginCredentials){
+    this.http.post(`${this.url}/login`, credentials).subscribe({
+      next: (e) => {
+        console.log(e);
+      },
 
-    if (user) {
-      const { password: _, ...userWithoutPassword } = user;
-      this._currentUser.set(userWithoutPassword);
-      this._isAuthenticated.set(true);
-      return true;
-    }
-    return false;
+      error: () => {
+      }
+    })
   }
 
   logout(): void {screen

@@ -12,36 +12,27 @@ import { SessionThema } from '../../../shared/utils/session-tema';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  email = signal('');
+  usuario = signal('');
   password = signal('');
   error = signal('');
   loading = signal(false);
   sessionThema = inject(SessionThema);
-
 
   constructor(
     private authService: AuthService,
     private router: Router,
   ) {}
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     this.error.set('');
     this.loading.set(true);
+    const success = await this.authService.login({
+      username: this.usuario(),
+      password: this.password(),
+    });
 
-    setTimeout(() => {
-      const success = this.authService.login({
-        email: this.email(),
-        password: this.password(),
-      });
+    this.loading.set(false);
 
-      this.loading.set(false);
-
-      if (success) {
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.error.set('Credenciales inválidas. Intenta con juan.perez@empresa.com / admin123');
-      }
-    }, 800);
   }
 
   goToRegister(): void {

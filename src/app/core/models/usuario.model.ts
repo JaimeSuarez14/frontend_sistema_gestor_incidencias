@@ -15,10 +15,10 @@ export interface Usuario {
 }
 
 export interface Page {
-  number: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
+  number: number; //pagina
+  size: number; //cuantos por pagina
+  totalElements: number; //numero de items
+  totalPages: number; //numero totla de paginas
 }
 
 export interface PaginatedResponse<T> {
