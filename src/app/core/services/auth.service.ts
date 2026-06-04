@@ -1,5 +1,6 @@
+import { PerfilUsuario } from './../../features/perfil-usuario/perfil-usuario';
 import { Injectable, signal, computed, inject } from '@angular/core';
-import { User, LoginCredentials, RegisterData } from '../models/user.model';
+import { CurrentUser, LoginCredentials, RegisterData } from '../models/usuario.model';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { Decoded, LoginResponse } from '../models/auth.response';
@@ -10,14 +11,14 @@ export class AuthService {
   private http =  inject(HttpClient);
   private url = 'http://localhost:8080';
 
-  private _currentUser = signal<User | null>(null);
+  private _currentUser = signal<CurrentUser | null>(null);
   private _isAuthenticated = signal(false);
 
   readonly currentUser = this._currentUser.asReadonly();
   readonly isAuthenticated = this._isAuthenticated.asReadonly();
-  readonly isAdmin = computed(() => this._currentUser()?.role[0] === 'ROLE_ADMIN');
-  readonly isEmpleado = computed(() => this._currentUser()?.role[0] === 'ROLE_EMPLEADO');
-  readonly isTecnico = computed(() => this._currentUser()?.role[0]?.startsWith('ROLE_TECNICO') ?? false);
+  readonly isAdmin = computed(() =>  this._currentUser()?.roles.includes("ROLE_ADMIN"));
+  readonly isEmpleado = computed(() => this._currentUser()?.roles.includes('ROLE_EMPLEADO'));
+  readonly isTecnico = computed(() => this._currentUser()?.roles[0]?.startsWith('ROLE_TECNICO') ?? false);
 
 
 
@@ -26,7 +27,6 @@ export class AuthService {
     .pipe(
       tap(response => {
         this.registerSession(response.token);
-
       })
     )
   }
@@ -35,9 +35,11 @@ export class AuthService {
     localStorage.setItem("token", token);
     const decoded: Decoded = jwtDecode(token);
     console.log(decoded);
-
-    this._currentUser.update(u => u !=null ? { ...u  ,  username : decoded.sub , role: decoded.authorities } : null)
+    this._currentUser.set({ username : decoded.sub , roles: decoded.authorities });
     this._isAuthenticated.set(true);
+    console.log(this.isAdmin());
+    console.log(this._currentUser());
+
   }
 
   logout(): void {screen

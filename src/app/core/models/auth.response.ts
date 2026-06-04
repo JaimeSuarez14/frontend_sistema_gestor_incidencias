@@ -1,4 +1,4 @@
-import { Roles } from "./user.model";
+import { Role } from "./usuario.model";
 
 export interface LoginResponse{
   token:string
@@ -6,5 +6,5 @@ export interface LoginResponse{
 
 export interface Decoded{
   sub: string;
-  authorities: Roles[];
+  authorities: Role[];
 }

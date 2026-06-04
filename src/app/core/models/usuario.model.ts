@@ -25,3 +25,25 @@ export interface PaginatedResponse<T> {
   content: T[],
   page: Page
 }
+
+export interface LoginCredentials {
+  username: string;
+  password: string;
+}
+
+export type Role = "ROLE_ADMIN" | "ROLE_EMPLEADO" | "ROLE_TECNICO_NIVEL_1" | "ROLE_TECNICO_NIVEL_2" |  "ROLE_TECNICO_NIVEL_3" | "FACTOR_PASSWORD";
+
+export interface RegisterData {
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  roles: Role[];
+  estado : "ACTIVO" | "INACTIVO";
+}
+
+export interface CurrentUser {
+  username: string;
+  roles: Role[];
+}

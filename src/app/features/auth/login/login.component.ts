@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { SessionThema } from '../../../shared/utils/session-tema';
-import { LoginCredentials } from 'src/app/core/models/user.model';
+import { LoginCredentials } from 'src/app/core/models/usuario.model';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +34,6 @@ export class LoginComponent {
     };
     this.authService.login(credenciales).subscribe({
       next: (e) => {
-        console.log(e);
         this.router.navigate(['/dashboard']);
       },
 
