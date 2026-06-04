@@ -37,23 +37,7 @@ export class RegisterComponent {
     this.loading.set(true);
 
     setTimeout(() => {
-      const user = this.authService.register({
-        name: this.name(),
-        email: this.email(),
-        password: this.password(),
-        role: "EMPLEADO",
-        estado: "ACTIVO",
-        confirmPassword: this.confirmPassword(),
-      });
 
-      this.loading.set(false);
-
-      if (user) {
-        this.success.set(true);
-        setTimeout(() => this.router.navigate(['/auth/login']), 2000);
-      } else {
-        this.error.set('El correo ya está registrado o los datos son inválidos');
-      }
     }, 800);
   }
 

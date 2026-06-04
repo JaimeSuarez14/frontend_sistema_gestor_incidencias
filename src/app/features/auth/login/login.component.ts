@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { SessionThema } from '../../../shared/utils/session-tema';
+import { LoginCredentials } from 'src/app/core/models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -23,16 +24,26 @@ export class LoginComponent {
     private router: Router,
   ) {}
 
-  async onSubmit(): Promise<void> {
+  onSubmit() {
     this.error.set('');
     this.loading.set(true);
-    const success = await this.authService.login({
+
+    const credenciales: LoginCredentials = {
       username: this.usuario(),
       password: this.password(),
+    };
+    this.authService.login(credenciales).subscribe({
+      next: (e) => {
+        console.log(e);
+        this.router.navigate(['/dashboard']);
+      },
+
+      error: (e) => {
+        this.error.set(e.error.message);
+      },
     });
 
     this.loading.set(false);
-
   }
 
   goToRegister(): void {

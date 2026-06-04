@@ -1,8 +1,9 @@
 export interface User {
   id: string;
   name: string;
+  username: string;
   email: string;
-  role: "ADMIN" | "EMPLEADO" | "TECNICO_NIVEL_1" | "TECNICO_NIVEL_2" |  "TECNICO_NIVEL_3";
+  role: Roles[];
   estado : "ACTIVO" | "INACTIVO";
 }
 
@@ -11,11 +12,14 @@ export interface LoginCredentials {
   password: string;
 }
 
+export type Roles = "ROLE_ADMIN" | "ROLE_EMPLEADO" | "ROLE_TECNICO_NIVEL_1" | "ROLE_TECNICO_NIVEL_2" |  "ROLE_TECNICO_NIVEL_3" | "FACTOR_PASSWORD";
+
 export interface RegisterData {
   name: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
-  role: "ADMIN" | "EMPLEADO" | "TECNICO_NIVEL_1" | "TECNICO_NIVEL_2" |  "TECNICO_NIVEL_3";
+  role: Roles[];
   estado : "ACTIVO" | "INACTIVO";
 }
