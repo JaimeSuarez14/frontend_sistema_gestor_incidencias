@@ -75,11 +75,20 @@
             </td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ user.correo }}</td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
-              <span class="px-3 py-1 text-xs font-medium rounded-full" [class.bg-indigo-100]="user.rol === 'ADMIN'"
-                [class.text-indigo-700]="user.rol === 'ADMIN'" [class.bg-blue-100]="user.rol === 'TECNICO_NIVEL_1' "
-                [class.text-blue-700]="user.rol === 'TECNICO_NIVEL_1'" [class.bg-gray-100]="user.rol === 'EMPLEADO'"
-                [class.text-gray-700]="user.rol === 'EMPLEADO'">
-                {{ getRoleLabel(user.rol) }}
+              <span [class]="'px-3 py-1 text-xs font-medium rounded-full ' + (user.roles[0].name === 'ROLE_ADMIN' ? 'bg-green-100 text-green-700' : user.roles[0].name === 'ROLE_TECNICO_NIVEL_1' ? 'bg-blue-100 text-blue-700' : user.roles[0].name === 'ROLE_EMPLEADO' ? 'bg-orange-100 text-orange-700' : '')
+              "  >
+                @switch (user.roles[0].name) {
+                  @case ('ROLE_ADMIN'){
+                    Admin
+                  }
+                  @case ('ROLE_TECNICO_NIVEL_1'){
+                    Tecnico 1
+                  }
+                  @case ('ROLE_EMPLEADO'){
+                  Empleado
+
+                  }
+                }
               </span>
             </td>
             <td class="px-2">

@@ -1,7 +1,7 @@
 import { Component, effect, inject, linkedSignal, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '@services/user.service';
-import { Page, Usuario } from 'src/app/core/models/usuario.model';
+import { Page, Role, Usuario } from 'src/app/core/models/usuario.model';
 import { BuscadorComponent } from 'src/app/shared/components/buscador/buscador.component';
 
 @Component({
@@ -25,15 +25,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
 
-  }
-
-  getRoleLabel(role: string): string {
-    const labels: Record<string, string> = {
-      TECNICO_NIVEL_1: 'Técnico Nivel 1',
-      TECNICO_NIVEL_2: 'Técnico Nivel 2',
-      EMPLEADO: 'Empleado',
-    };
-    return labels[role] || role;
   }
 
   onSearchResults(results: Usuario[]): void {

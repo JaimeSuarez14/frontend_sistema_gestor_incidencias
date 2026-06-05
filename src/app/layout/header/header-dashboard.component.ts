@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, computed, inject, output } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { SessionThema } from 'src/app/shared/utils/session-tema';
@@ -19,4 +19,6 @@ export class HeaderDashboardComponent {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
   }
+
+  rol = computed(() => this.authService.currentUser()?.roles[0]);
 }

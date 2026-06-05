@@ -2,7 +2,7 @@ export interface Usuario {
   id: bigint;
   nombre: string;
   correo: string;
-  rol: 'ADMIN' | 'EMPLEADO' | 'TECNICO_NIVEL_1' | 'TECNICO_NIVEL_2' | 'TECNICO_NIVEL_3';
+  roles: Rol [];
   estado: 'ACTIVO' | 'INACTIVO';
   area:
     | 'RRHH'
@@ -46,4 +46,10 @@ export interface RegisterData {
 export interface CurrentUser {
   username: string;
   roles: Role[];
+}
+
+interface Rol {
+  id: bigint;
+  name: Role;
+
 }
