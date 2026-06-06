@@ -34,6 +34,7 @@ export class UsersComponent implements OnInit {
   pageCurrent = signal(0);
   page = signal<Page | null>(null);
   size = signal(5);
+
   getUsuarios(): void {
     this.userService.getUsersPaginados(this.pageCurrent(), this.size()).subscribe({
       next: (data) => {

@@ -34,15 +34,17 @@ export class LoginComponent {
     };
     this.authService.login(credenciales).subscribe({
       next: (e) => {
+        this.loading.set(false);
         this.router.navigate(['/dashboard']);
       },
 
       error: (e) => {
+        this.loading.set(false);
         this.error.set(e.error.message);
       },
     });
 
-    this.loading.set(false);
+
   }
 
   goToRegister(): void {

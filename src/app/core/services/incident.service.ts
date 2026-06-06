@@ -1,42 +1,33 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { Incidencia } from '../models/incident.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { PaginatedResponse } from '../models/usuario.model';
+import { tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class IncidenciaService {
-  private readonly _incidents = signal<Incidencia[]>([
-    { id: 101, title: 'Error en login', description: 'Usuarios no pueden iniciar sesión', status: 'open', priority: 'high', assignedTo: "2", createdAt: '2026-04-15' },
-    { id: 102, title: 'Página lenta', description: 'El dashboard carga muy lento', status: 'in_progress', priority: 'medium', assignedTo: "4", createdAt: '2026-04-14' },
-    { id: 103, title: 'Error 500 en API', description: 'Falla en endpoint de usuarios', status: 'closed', priority: 'high', assignedTo: "2", createdAt: '2026-04-13' },
-    { id: 104, title: 'Problema de UI', description: 'Botón no responde en mobile', status: 'open', priority: 'low', assignedTo: "4", createdAt: '2026-04-12' },
-    { id: 105, title: 'Datos no sincronizados', description: 'Información desactualizada', status: 'in_progress', priority: 'high', assignedTo: "2", createdAt: '2026-04-11' },
-    { id: 106, title: 'Error en reportes', description: 'No se generan PDFs', status: 'closed', priority: 'medium', assignedTo: "4", createdAt: '2026-04-10' },
-    { id: 107, title: 'Fallo en notificaciones', description: 'No llegan correos', status: 'open', priority: 'high', assignedTo: "2", createdAt: '2026-04-09' },
+  private http = inject(HttpClient);
+  private readonly apiUrl = 'http://localhost:8080/api/incidencia';
+
+  private readonly _incidencias = signal<Incidencia[]>([
   ]);
 
-  readonly incidents = this._incidents.asReadonly();
+  readonly incidencias = this._incidencias.asReadonly();
 
-  readonly totalIncidents = computed(() => this._incidents().length);
-  readonly openIncidents = computed(() => this._incidents().filter(i => i.status === 'open').length);
-  readonly inProgressIncidents = computed(() => this._incidents().filter(i => i.status === 'in_progress').length);
-  readonly closedIncidents = computed(() => this._incidents().filter(i => i.status === 'closed').length);
-
-  readonly incidentsByStatus = computed(() => ({
-    open: this._incidents().filter(i => i.status === 'open').length,
-    in_progress: this._incidents().filter(i => i.status === 'in_progress').length,
-    closed: this._incidents().filter(i => i.status === 'closed').length,
-  }));
-
-  readonly incidentsByPriority = computed(() => ({
-    high: this._incidents().filter(i => i.priority === 'high').length,
-    medium: this._incidents().filter(i => i.priority === 'medium').length,
-    low: this._incidents().filter(i => i.priority === 'low').length,
-  }));
-
-  readonly recentIncidents = computed(() =>
-    [...this._incidents()].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5)
-  );
 
   public getIncidencia(id: number){
-    return this._incidents().find(inci => inci.id ===id);
+    return this._incidencias().find(inci => inci.id ===id);
+  }
+
+  getIncidencias(page: number = 0, size: number = 4){
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<PaginatedResponse<Incidencia>>(this.apiUrl+"/paginado", {params}).
+    pipe(
+      tap(data => {
+        this._incidencias.set(data.content);
+      })
+    );
   }
 }

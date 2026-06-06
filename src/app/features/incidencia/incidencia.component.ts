@@ -1,48 +1,44 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, linkedSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IncidenciaService } from '../../core/services/incident.service';
 import { UserService } from '../../core/services/user.service';
 import { BuscadorComponent } from '../../shared/components/buscador/buscador.component';
 import { Incidencia } from '../../core/models/incident.model';
-import { DetalleIncidencia } from "./detalle-incidencia/detalle-incidencia";
-import { RouterLink } from "@angular/router";
+import { DetalleIncidencia } from './detalle-incidencia/detalle-incidencia';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-incidents',
   standalone: true,
   imports: [CommonModule, DetalleIncidencia, RouterLink, BuscadorComponent],
-  templateUrl: './incidencia.component.html'
+  templateUrl: './incidencia.component.html',
 })
 export class IncidenciaComponent {
   incidentService = inject(IncidenciaService);
   userService = inject(UserService);
-
-  filteredIncidents = signal<Incidencia[]>([]);
+  filteredIncidents = linkedSignal<Incidencia[]>(() => this.incidentService.incidencias());
 
   constructor() {
-    this.filteredIncidents.set(this.incidentService.incidents());
+    effect(() => {
+      this.getIncidencias();
+    });
   }
 
-  getStatusLabel(status: string): string {
-    const labels: Record<string, string> = {
-      'open': 'Abierta',
-      'in_progress': 'En Progreso',
-      'closed': 'Cerrada'
-    };
-    return labels[status] || status;
+  getIncidencias() {
+    this.incidentService.getIncidencias().subscribe();
   }
 
   getPriorityLabel(priority: string): string {
     const labels: Record<string, string> = {
-      'high': 'Alta',
-      'medium': 'Media',
-      'low': 'Baja'
+      high: 'Alta',
+      medium: 'Media',
+      low: 'Baja',
     };
     return labels[priority] || priority;
   }
 
   getUserName(userId: string): string {
-        return 'Sin asignar';
+    return 'Sin asignar';
   }
 
   verDetalle = signal(false);
@@ -53,7 +49,7 @@ export class IncidenciaComponent {
   }
 
   openModal(id: number): void {
-    this.verDetalle.update(v => !v);
+    this.verDetalle.update((v) => !v);
     this.idIncidencia.set(id);
   }
 }

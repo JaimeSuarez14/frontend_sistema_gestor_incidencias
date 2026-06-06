@@ -1,9 +1,12 @@
+import { Usuario } from "./usuario.model";
+
 export interface Incidencia {
   id: number;
-  title: string;
-  description: string;
-  status: 'open' | 'in_progress' | 'closed';
-  priority: 'low' | 'medium' | 'high';
-  assignedTo: string;
-  createdAt: string;
+  titulo: string;
+  descripcion: string;
+  estado: Status;
+  usuario: Usuario;
+  tecnico: Usuario;
 }
+
+type Status = "ABIERTO" | "PENDIENTE" | "CERRADO";

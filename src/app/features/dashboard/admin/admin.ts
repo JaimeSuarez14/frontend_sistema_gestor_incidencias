@@ -32,13 +32,11 @@ export class Admin {
     return labels[priority] || priority;
   }
 
-  getUserName(userId: string): string {
+  getUserName(userId: bigint): string {
        return 'Sin asignar';
   }
 
   getPriorityPercentage(priority: 'high' | 'medium' | 'low'): number {
-    const total = this.incidentService.totalIncidents();
-    if (total === 0) return 0;
-    return (this.incidentService.incidentsByPriority()[priority] / total) * 100;
+    return 0;
   }
 }

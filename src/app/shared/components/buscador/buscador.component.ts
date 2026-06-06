@@ -4,16 +4,16 @@ import { FormsModule } from '@angular/forms';
 
 /**
  * Componente reutilizable de búsqueda para tablas
- * 
+ *
  * Características:
  * - Búsqueda en tiempo real con signals
  * - Configurable para buscar en múltiples campos
  * - Debounce para optimizar rendimiento
  * - Diseño Tailwind CSS
  * - Compatible con Angular 21 standalone
- * 
+ *
  * Ejemplo de uso:
- * <app-buscador 
+ * <app-buscador
  *   [items]="incidentService.incidents()"
  *   [searchFields]="['title', 'description', 'status']"
  *   placeholder="Buscar incidencias..."
@@ -33,7 +33,7 @@ export class BuscadorComponent<T extends Record<string, any>> {
   items = input<T[]>([]);
   searchFields = input<(keyof T)[]>([]);
   placeholder = input<string>('Buscar...');
-  debounceTime = input<number>(300);
+  debounceTime = input<number>(800);
   minCharsToSearch = input<number>(1);
 
   // Outputs
@@ -63,7 +63,7 @@ export class BuscadorComponent<T extends Record<string, any>> {
         if (value === null || value === undefined) {
           return false;
         }
-        
+
         // Convertir a string y hacer búsqueda case-insensitive
         return String(value).toLowerCase().includes(term);
       });

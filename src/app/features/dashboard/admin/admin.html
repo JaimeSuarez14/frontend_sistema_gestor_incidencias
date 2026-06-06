@@ -10,7 +10,7 @@
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Total Incidencias</p>
           <p class="text-3xl font-bold text-gray-900 dark:text-white">
-            {{ incidentService.totalIncidents() }}
+            25
           </p>
         </div>
         <div class="w-12 h-12 bg-indigo-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
@@ -27,7 +27,7 @@
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Abiertas</p>
           <p class="text-3xl font-bold text-red-600 dark:text-red-400">
-            {{ incidentService.openIncidents() }}
+            12
           </p>
         </div>
         <div class="w-12 h-12 bg-red-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
@@ -44,7 +44,7 @@
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">En Progreso</p>
           <p class="text-3xl font-bold text-amber-600 dark:text-amber-400">
-            {{ incidentService.inProgressIncidents() }}
+            12
           </p>
         </div>
         <div class="w-12 h-12 bg-amber-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
@@ -61,7 +61,7 @@
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Cerradas</p>
           <p class="text-3xl font-bold text-green-600 dark:text-green-400">
-            {{ incidentService.closedIncidents() }}
+            15
           </p>
         </div>
         <div class="w-12 h-12 bg-green-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
@@ -84,7 +84,7 @@
           <div class="text-center">
             <div class="w-20 h-20 rounded-full border-4 border-red-500 flex items-center justify-center mb-2">
               <span class="text-xl font-bold text-red-600 dark:text-red-400">
-                {{ incidentService.incidentsByStatus().open }}
+                abierto
               </span>
             </div>
             <span class="text-sm text-gray-500 dark:text-gray-400">Abiertas</span>
@@ -93,7 +93,7 @@
           <div class="text-center">
             <div class="w-20 h-20 rounded-full border-4 border-amber-500 flex items-center justify-center mb-2">
               <span class="text-xl font-bold text-amber-600 dark:text-amber-400">
-                {{ incidentService.incidentsByStatus().in_progress }}
+                pendiente
               </span>
             </div>
             <span class="text-sm text-gray-500 dark:text-gray-400">En Progreso</span>
@@ -102,7 +102,7 @@
           <div class="text-center">
             <div class="w-20 h-20 rounded-full border-4 border-green-500 flex items-center justify-center mb-2">
               <span class="text-xl font-bold text-green-600 dark:text-green-400">
-                {{ incidentService.incidentsByStatus().closed }}
+                cerrado
               </span>
             </div>
             <span class="text-sm text-gray-500 dark:text-gray-400">Cerradas</span>
@@ -121,7 +121,7 @@
           <div class="flex justify-between mb-1">
             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Alta</span>
             <span class="text-sm font-medium text-red-600 dark:text-red-400">
-              {{ incidentService.incidentsByPriority().high }}
+              baja
             </span>
           </div>
           <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
@@ -133,7 +133,7 @@
           <div class="flex justify-between mb-1">
             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Media</span>
             <span class="text-sm font-medium text-amber-600 dark:text-amber-400">
-              {{ incidentService.incidentsByPriority().medium }}
+              medio
             </span>
           </div>
           <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
@@ -145,7 +145,7 @@
           <div class="flex justify-between mb-1">
             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Baja</span>
             <span class="text-sm font-medium text-blue-600 dark:text-blue-400">
-              {{ incidentService.incidentsByPriority().low }}
+              alta
             </span>
           </div>
           <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
@@ -191,42 +191,38 @@
         </thead>
 
         <tbody>
-          @for (incident of incidentService.recentIncidents(); track incident.id) {
+          @for (incident of incidentService.incidencias(); track incident.id) {
           <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
               #{{ incident.id }}
             </td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
-              {{ incident.title }}
+              {{ incident.titulo }}
             </td>
 
             <td class="py-3 px-4">
-              <span class="px-2 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.status === 'open'"
-                [class.text-red-700]="incident.status === 'open'"
-                [class.bg-amber-100]="incident.status === 'in_progress'"
-                [class.text-amber-700]="incident.status === 'in_progress'"
-                [class.bg-green-100]="incident.status === 'closed'"
-                [class.text-green-700]="incident.status === 'closed'">
-                {{ getStatusLabel(incident.status) }}
+              <span class="px-2 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.estado === 'ABIERTO'"
+                [class.text-red-700]="incident.estado === 'ABIERTO'"
+                [class.bg-amber-100]="incident.estado === 'PENDIENTE'"
+                [class.text-amber-700]="incident.estado === 'PENDIENTE'"
+                [class.bg-green-100]="incident.estado === 'CERRADO'"
+                [class.text-green-700]="incident.estado === 'CERRADO'">
+                {{ getStatusLabel(incident.estado) }}
               </span>
             </td>
 
             <td class="py-3 px-4">
-              <span class="px-2 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.priority === 'high'"
-                [class.text-red-700]="incident.priority === 'high'"
-                [class.bg-amber-100]="incident.priority === 'medium'"
-                [class.text-amber-700]="incident.priority === 'medium'"
-                [class.bg-blue-100]="incident.priority === 'low'" [class.text-blue-700]="incident.priority === 'low'">
-                {{ getPriorityLabel(incident.priority) }}
+              <span class="px-2 py-1 text-xs font-medium rounded-full" >
+                {{ "Urgente"}}
               </span>
             </td>
 
             <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">
-              {{ getUserName(incident.assignedTo) }}
+              {{ getUserName(incident.usuario.id) }}
             </td>
 
             <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">
-              {{ incident.createdAt }}
+
             </td>
           </tr>
           }

@@ -6,8 +6,8 @@
 
   <div class="max-w-sm">
     <app-buscador
-      [items]="incidentService.incidents()"
-      [searchFields]="['title', 'description', 'status']"
+      [items]="incidentService.incidencias()"
+      [searchFields]="['titulo', 'descripcion', 'estado']"
       placeholder="Buscar por título, descripción o estado..."
       [debounceTime]="300"
       (filteredResults)="onSearchResults($event)"
@@ -34,28 +34,24 @@
           <tr
             class="border-b border-gray-100 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/90 transition-colors">
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">#{{ incident.id }}</td>
-            <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ incident.title }}</td>
+            <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ incident.titulo }}</td>
             <td class="py-3 px-4">
-              <span class="px-3 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.status === 'open'"
-                [class.text-red-700]="incident.status === 'open'"
-                [class.bg-amber-100]="incident.status === 'in_progress'"
-                [class.text-amber-700]="incident.status === 'in_progress'"
-                [class.bg-green-100]="incident.status === 'closed'"
-                [class.text-green-700]="incident.status === 'closed'">
-                {{ getStatusLabel(incident.status) }}
+             <span class="px-2 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.estado === 'ABIERTO'"
+                [class.text-red-700]="incident.estado === 'ABIERTO'"
+                [class.bg-amber-100]="incident.estado === 'PENDIENTE'"
+                [class.text-amber-700]="incident.estado === 'PENDIENTE'"
+                [class.bg-green-100]="incident.estado === 'CERRADO'"
+                [class.text-green-700]="incident.estado === 'CERRADO'">
+                vacio
               </span>
             </td>
             <td class="py-3 px-4 dark:text-gray-400">
-              <span class="px-3 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.priority === 'high'"
-                [class.text-red-700]="incident.priority === 'high'"
-                [class.bg-amber-100]="incident.priority === 'medium'"
-                [class.text-amber-700]="incident.priority === 'medium'"
-                [class.bg-blue-100]="incident.priority === 'low'" [class.text-blue-700]="incident.priority === 'low'">
-                {{ getPriorityLabel(incident.priority) }}
+              <span class="px-3 py-1 text-xs font-medium rounded-full" >
+
               </span>
             </td>
-            <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">{{ getUserName(incident.assignedTo) }}</td>
-            <td class="py-3 px-4 text-sm dark:text-gray-400 text-gray-600">{{ incident.createdAt }}</td>
+            <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">eeeee</td>
+            <td class="py-3 px-4 text-sm dark:text-gray-400 text-gray-600">eee</td>
             <td class="px-2">
               <button
                 class="dark:text-white p-2 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500"
