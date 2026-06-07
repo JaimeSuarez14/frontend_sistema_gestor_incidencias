@@ -36,13 +36,8 @@
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">#{{ incident.id }}</td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ incident.titulo }}</td>
             <td class="py-3 px-4">
-             <span class="px-2 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.estado === 'ABIERTO'"
-                [class.text-red-700]="incident.estado === 'ABIERTO'"
-                [class.bg-amber-100]="incident.estado === 'PENDIENTE'"
-                [class.text-amber-700]="incident.estado === 'PENDIENTE'"
-                [class.bg-green-100]="incident.estado === 'CERRADO'"
-                [class.text-green-700]="incident.estado === 'CERRADO'">
-                vacio
+             <span [class]="'px-2 py-1 text-xs font-medium rounded-full ' + (incident.estado === 'ABIERTO' ? 'bg-red-100 text-red-700' : incident.estado === 'PENDIENTE' ? 'bg-amber-100 text-amber-700' : incident.estado === 'CERRADO' ? 'bg-green-100 text-green-700' : '')" >
+                {{ incident.estado }}
               </span>
             </td>
             <td class="py-3 px-4 dark:text-gray-400">

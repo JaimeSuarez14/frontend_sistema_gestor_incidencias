@@ -20,7 +20,12 @@ export class AuthService {
   readonly isEmpleado = computed(() => this._currentUser()?.roles.includes('ROLE_EMPLEADO'));
   readonly isTecnico = computed(() => this._currentUser()?.roles[0]?.startsWith('ROLE_TECNICO') ?? false);
 
-
+  constructor(){
+    const token = localStorage.getItem("token");
+    if(token){
+      this.registerSession(token);
+    }
+  }
 
   login(credentials: LoginCredentials){
     return this.http.post<LoginResponse>(`${this.url}/login`, credentials)
@@ -45,8 +50,12 @@ export class AuthService {
   logout(): void {screen
     this._currentUser.set(null);
     this._isAuthenticated.set(false);
+    localStorage.removeItem("token");
   }
 
+  registerNewUser(newUser: RegisterData){
+    return this.http.post(`${this.url}/api/auth/register`, newUser);
+  }
 
 
 

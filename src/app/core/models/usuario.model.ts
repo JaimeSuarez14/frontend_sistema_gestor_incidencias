@@ -4,15 +4,17 @@ export interface Usuario {
   correo: string;
   roles: Rol [];
   estado: 'ACTIVO' | 'INACTIVO';
-  area:
-    | 'RRHH'
+  area: Area;
+
+}
+
+type Area = 'RRHH'
     | 'ADMINISTRACION'
     | 'SISTEMAS'
     | 'MANTENIMIENTO'
     | 'CONTABILIDAD'
     | 'GERENCIA'
     | 'LOGISTICA';
-}
 
 export interface Page {
   number: number; //pagina
@@ -34,13 +36,12 @@ export interface LoginCredentials {
 export type Role = "ROLE_ADMIN" | "ROLE_EMPLEADO" | "ROLE_TECNICO_NIVEL_1" | "ROLE_TECNICO_NIVEL_2" |  "ROLE_TECNICO_NIVEL_3" | "FACTOR_PASSWORD";
 
 export interface RegisterData {
-  name: string;
+  nombre: string;
   username: string;
-  email: string;
+  correo: string;
   password: string;
   confirmPassword: string;
-  roles: Role[];
-  estado : "ACTIVO" | "INACTIVO";
+  area : Area;
 }
 
 export interface CurrentUser {
