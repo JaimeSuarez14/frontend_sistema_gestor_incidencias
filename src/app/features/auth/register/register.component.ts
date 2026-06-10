@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { RegisterData } from 'src/app/core/models/usuario.model';
-import {form, FormField, required, email, min, minLength} from '@angular/forms/signals';
+import {form, FormField, required, email, min, minLength, validate} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-register',
@@ -36,6 +36,13 @@ export class RegisterComponent {
     minLength(schemaPath.username, 4, {message: 'Tu usuario debe tener al menos 4 caracteres'});
     required(schemaPath.password);
     required(schemaPath.confirmPassword);
+    validate(schemaPath.username, ({ value }) => {
+    const username = value();
+    if (username.includes(' ')) {
+      return customError({ kind: 'no-spaces', message: 'Name cannot contain spaces' });
+    }
+    return undefined; // no error
+  });
   });
 
 
