@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { RegisterData } from 'src/app/core/models/usuario.model';
-import {form, FormField, required, email, min, minLength, validate} from '@angular/forms/signals';
+import {form, FormField, required, email, min, minLength, validate, SchemaPath, FormRoot} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule , FormField],
+  imports: [FormsModule , FormField, FormRoot],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -36,15 +36,33 @@ export class RegisterComponent {
     minLength(schemaPath.username, 4, {message: 'Tu usuario debe tener al menos 4 caracteres'});
     required(schemaPath.password);
     required(schemaPath.confirmPassword);
-    validate(schemaPath.username, ({ value }) => {
+    this.notSpaces(schemaPath.username, {message: 'Tu usuario no puede contener espacios'})
+  },{
+    submission:{
+      action: async (field) => {
+        const newUser: RegisterData = {
+          area: field.area().value(),
+          nombre: field.nombre().value(),
+          correo: field.correo().value(),
+          username: field.username().value(),
+          password: field.password().value(),
+          confirmPassword: field.confirmPassword().value()
+        }
+        console.log(newUser);
+
+
+    }
+  }});
+
+  notSpaces(path: SchemaPath<string>, options?:{message?: string}) {
+    validate(path, ({ value }) => {
     const username = value();
     if (username.includes(' ')) {
-      return customError({ kind: 'no-spaces', message: 'Name cannot contain spaces' });
+      return { kind: 'no-spaces', message: 'Name cannot contain spaces' };
     }
     return undefined; // no error
   });
-  });
-
+  }
 
 
   onSubmit(): void {
