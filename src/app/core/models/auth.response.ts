@@ -1,10 +1,23 @@
-import { Role } from "./usuario.model";
+import { Role } from './usuario.model';
 
-export interface LoginResponse{
-  token:string
+export interface LoginResponse {
+  token: string;
 }
 
-export interface Decoded{
+export interface Decoded {
   sub: string;
   authorities: Role[];
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message: String;
+  status: number;
+  data: T;
+}
+
+export interface UsuarioResponseDto {
+  username: string;
+  correo: String;
+  roles: string[];
 }
