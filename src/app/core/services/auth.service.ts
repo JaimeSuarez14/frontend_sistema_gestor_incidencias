@@ -1,5 +1,5 @@
 import { PerfilUsuario } from './../../features/perfil-usuario/perfil-usuario';
-import { Injectable, signal, computed, inject } from '@angular/core';
+import { Injectable, signal, computed, inject, resource } from '@angular/core';
 import { CurrentUser, LoginCredentials, RegisterData } from '../models/usuario.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
@@ -62,6 +62,7 @@ export class AuthService {
   }
 
   verificarUsername(username : String ){
-    return this.http.get<boolean>(this.url+username).pipe(e => e)
+    return this.http.get<ApiResponse<boolean>>(this.url+"/"+username).pipe(e => e)
+
   }
 }

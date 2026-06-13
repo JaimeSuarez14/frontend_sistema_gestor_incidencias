@@ -1,5 +1,6 @@
+import { Admin } from './../../dashboard/admin/admin';
 import { appConfig } from './../../../app.config';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, resource, Signal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
@@ -17,6 +18,7 @@ import {
   validateTree,
   SchemaPathTree,
   PathKind,
+  validateAsync,
 } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 
@@ -31,7 +33,7 @@ export class RegisterComponent {
     area: 'ADMINISTRACION',
     nombre: '',
     correo: '',
-    username: '',
+    username: "",
     password: '',
     confirmPassword: '',
   });
@@ -69,6 +71,29 @@ export class RegisterComponent {
         }
         return null;
       });
+      /*validateAsync(schemaPath.username, {
+        params: ({ value }) => {
+          const username = value();
+          // validateAsync expects a string return; return empty string when not valid
+          return username.length >= 3 ? username : "";
+        },
+        factory: this.validUsername,
+        onSuccess: (result) => {
+          return result?.data
+            ? null
+            : {
+                kind: 'usernameTaken',
+                message: 'Username taken',
+              };
+        },
+        onError: (error) => {
+          console.error('Validation failed:', error);
+          return {
+            kind: 'serverError',
+            message: 'Could not verify username',
+          };
+        },
+      });*/
     },
     {
       submission: {
@@ -77,7 +102,7 @@ export class RegisterComponent {
             area: field.area().value(),
             nombre: field.nombre().value(),
             correo: field.correo().value(),
-            username: field.username().value(),
+            username: field.username!().value(),
             password: field.password().value(),
             confirmPassword: field.confirmPassword().value(),
           };
@@ -91,6 +116,26 @@ export class RegisterComponent {
       },
     },
   );
+
+  private cache = new Map<string, {data: boolean}>();
+
+
+  validUsername = (usernameSignal: Signal<string | undefined>) => {
+    return resource({
+      params: () => usernameSignal(),
+      loader: async ({ params: username }) => {
+        if (!username) return undefined;
+        // Check cache first
+        const cached = this.cache.get(username);
+        if (cached !== undefined) return cached;
+        // Use injected service for validation
+        const result = await firstValueFrom(this.authService.verificarUsername(username));
+        // Cache result
+        this.cache.set(username, {data: result.data});
+        return result;
+      },
+    });
+  };
 
   notSpaces(path: SchemaPath<string>, options: { message: string }) {
     validate(path, ({ value }) => {

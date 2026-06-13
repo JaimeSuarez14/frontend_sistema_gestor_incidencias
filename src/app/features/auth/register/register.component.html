@@ -17,6 +17,17 @@
         ¡Cuenta creada exitosamente! Redirigiendo al login...
       </div>
       }
+      @if (usuarioForm().errors().length) {
+      <div class="error">
+        @for (err of usuarioForm().errors() ; track $index){
+        <span>
+          {{ err.message }}
+        </span>
+        }
+
+      </div>
+      }
+
 
       <form [formRoot]="usuarioForm" class="space-y-5">
         <div>
@@ -60,6 +71,8 @@
           </span>
           }
           }
+
+
         </div>
 
         <div>
