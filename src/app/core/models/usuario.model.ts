@@ -37,7 +37,7 @@ export type Role = "ROLE_ADMIN" | "ROLE_EMPLEADO" | "ROLE_TECNICO_NIVEL_1" | "RO
 
 export interface RegisterData {
   nombre: string;
-  username: string;
+  username: string ;
   correo: string;
   password: string;
   confirmPassword: string;
