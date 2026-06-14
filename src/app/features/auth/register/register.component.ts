@@ -1,8 +1,5 @@
-import { Admin } from './../../dashboard/admin/admin';
-import { appConfig } from './../../../app.config';
 import { Component, inject, resource, Signal, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { RegisterData } from 'src/app/core/models/usuario.model';
 import {
@@ -10,21 +7,18 @@ import {
   FormField,
   required,
   email,
-  min,
   minLength,
   validate,
   SchemaPath,
   FormRoot,
-  validateTree,
-  SchemaPathTree,
-  PathKind,
-  validateAsync,
+  debounce,
+  validateHttp,
 } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, FormField, FormRoot],
+  imports: [FormField, FormRoot],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -33,7 +27,7 @@ export class RegisterComponent {
     area: 'ADMINISTRACION',
     nombre: '',
     correo: '',
-    username: "",
+    username: '',
     password: '',
     confirmPassword: '',
   });
@@ -51,12 +45,16 @@ export class RegisterComponent {
 
       required(schemaPath.nombre, { message: 'Tu nombre es requerido' });
       minLength(schemaPath.nombre, 4, { message: 'Tu nombre debe tener al menos 4 caracteres' });
+      this.notSpacesOnly(schemaPath.nombre, {
+        message: 'Tu nombre no solo debe tener espacios vacios',
+      });
 
       required(schemaPath.username, { message: 'Tu username es requerido' });
       minLength(schemaPath.username, 4, { message: 'Tu usuario debe tener al menos 4 caracteres' });
       this.notSpaces(schemaPath.username, { message: 'Tu usuario no puede contener espacios' });
 
-      required(schemaPath.password, { message: 'Tu password es requerido' });
+      required(schemaPath.password, { message: 'Tu password es reqsuerido' });
+      this.notSpaces(schemaPath.password, { message: 'Tu password no puede contener espacios' });
       minLength(schemaPath.password, 6, {
         message: 'Tu contraseña debe tener al menos 6 caracteres',
       });
@@ -71,29 +69,24 @@ export class RegisterComponent {
         }
         return null;
       });
-      /*validateAsync(schemaPath.username, {
-        params: ({ value }) => {
-          const username = value();
-          // validateAsync expects a string return; return empty string when not valid
-          return username.length >= 3 ? username : "";
-        },
-        factory: this.validUsername,
-        onSuccess: (result) => {
-          return result?.data
-            ? null
-            : {
+      debounce(schemaPath.username, 500);
+
+      validateHttp(schemaPath.username, {
+        request: ({ value }) => `http://localhost:8080/api/auth/${value()}`,
+
+        onSuccess: (response: { exists: boolean }) =>
+          response.exists
+            ? {
                 kind: 'usernameTaken',
-                message: 'Username taken',
-              };
-        },
-        onError: (error) => {
-          console.error('Validation failed:', error);
-          return {
-            kind: 'serverError',
-            message: 'Could not verify username',
-          };
-        },
-      });*/
+                message: 'Usuario ya registrado',
+              }
+            : null,
+
+        onError: () => ({
+          kind: 'serverError',
+          message: 'Error al validar',
+        }),
+      });
     },
     {
       submission: {
@@ -117,8 +110,7 @@ export class RegisterComponent {
     },
   );
 
-  private cache = new Map<string, {data: boolean}>();
-
+  private cache = new Map<string, { data: boolean }>();
 
   validUsername = (usernameSignal: Signal<string | undefined>) => {
     return resource({
@@ -131,7 +123,7 @@ export class RegisterComponent {
         // Use injected service for validation
         const result = await firstValueFrom(this.authService.verificarUsername(username));
         // Cache result
-        this.cache.set(username, {data: result.data});
+        this.cache.set(username, { data: result.data });
         return result;
       },
     });
@@ -147,8 +139,14 @@ export class RegisterComponent {
     });
   }
 
-  onSubmit(): void {
-    this.loading.set(true);
+  notSpacesOnly(path: SchemaPath<string>, options: { message: string }) {
+    validate(path, ({ value }) => {
+      const username = value();
+      if (username.trim() === '') {
+        return { kind: 'no-spaces', message: options.message };
+      }
+      return undefined; // no error
+    });
   }
 
   goToLogin(): void {

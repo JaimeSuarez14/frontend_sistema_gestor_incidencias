@@ -64,6 +64,10 @@
           <input type="text" id="usuario" [formField]="usuarioForm.username"
             class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
             placeholder="Tu usuario" />
+          @if(usuarioForm.username().pending()) {
+          <span>Verificando usuario...</span>
+          }
+
           @if (usuarioForm.username().touched() && usuarioForm.username().invalid()) {
           @for (error of usuarioForm.username().errors() ; track $index) {
           <span class="text-red-500 text-sm" style="display: block">
