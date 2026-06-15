@@ -15,10 +15,12 @@ import {
   validateHttp,
 } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
+import { StatusIcon } from "@shared/components/status-icon/status-icon";
 
 @Component({
   selector: 'app-register',
-  imports: [FormField, FormRoot],
+  imports: [FormField, FormRoot, StatusIcon],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -53,11 +55,12 @@ export class RegisterComponent {
       minLength(schemaPath.username, 4, { message: 'Tu usuario debe tener al menos 4 caracteres' });
       this.notSpaces(schemaPath.username, { message: 'Tu usuario no puede contener espacios' });
 
-      required(schemaPath.password, { message: 'Tu password es reqsuerido' });
+      required(schemaPath.password, { message: 'Tu password es requerido' });
       this.notSpaces(schemaPath.password, { message: 'Tu password no puede contener espacios' });
       minLength(schemaPath.password, 6, {
         message: 'Tu contraseña debe tener al menos 6 caracteres',
       });
+      required(schemaPath.confirmPassword, { message: 'Tu confirmacion de password es requerido' });
       validate(schemaPath.confirmPassword, ({ value, valueOf }) => {
         const confirmPassword = value();
         const password = valueOf(schemaPath.password);
@@ -69,16 +72,36 @@ export class RegisterComponent {
         }
         return null;
       });
+
       debounce(schemaPath.username, 500);
 
       validateHttp(schemaPath.username, {
-        request: ({ value }) => `http://localhost:8080/api/auth/${value()}`,
+        request: ({ value }) => `${environment.apiUrl}/api/auth/${value()}`,
 
         onSuccess: (response: { exists: boolean }) =>
           response.exists
             ? {
                 kind: 'usernameTaken',
                 message: 'Usuario ya registrado',
+              }
+            : null,
+
+        onError: () => ({
+          kind: 'serverError',
+          message: 'Error al validar',
+        }),
+      });
+
+      debounce(schemaPath.correo, 500);
+
+      validateHttp(schemaPath.correo, {
+        request: ({ value }) => `${environment.apiUrl}/api/auth/${value()}/validacion`,
+
+        onSuccess: (response: { exists: boolean }) =>
+          response.exists
+            ? {
+                kind: 'usernameTaken',
+                message: 'Correo ya registrado',
               }
             : null,
 
