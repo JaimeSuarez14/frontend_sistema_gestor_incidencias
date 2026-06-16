@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 
 @Component({
   selector: 'app-modal-generic',
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './modal-generic.css',
 })
 export class ModalGeneric {
-
+  isOpen = model<boolean>(false);
+  toogleModal(){
+    this.isOpen.set(false);
+  }
 }
+

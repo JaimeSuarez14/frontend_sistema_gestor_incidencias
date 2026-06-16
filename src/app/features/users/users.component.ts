@@ -1,13 +1,15 @@
 import { Component, effect, inject, linkedSignal, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '@services/user.service';
-import { Page, Role, Usuario } from 'src/app/core/models/usuario.model';
+import { Page, RegisterData, Role, Usuario } from 'src/app/core/models/usuario.model';
 import { BuscadorComponent } from 'src/app/shared/components/buscador/buscador.component';
+import { ModalGeneric } from '@shared/components/modal-generic/modal-generic';
+import { UserFormComponent } from "@shared/components/user-form-component/user-form-component";
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, BuscadorComponent],
+  imports: [CommonModule, BuscadorComponent, ModalGeneric, UserFormComponent],
   templateUrl: './users.component.html',
 })
 export class UsersComponent implements OnInit {
@@ -23,9 +25,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   onSearchResults(results: Usuario[]): void {
     this.filteredUsers.set(results);
@@ -61,11 +61,21 @@ export class UsersComponent implements OnInit {
     const total = this.page()?.totalPages || 1;
     if (total <= 3) {
       const paginas = Array.from({ length: total }, (_, i) => i);
-      return { paginas, total}
+      return { paginas, total };
     }
 
-    return { paginas: [0,1,2], total }
+    return { paginas: [0, 1, 2], total };
   });
 
-  openModal(){}
+  openModal() {}
+
+  isCreate = signal(false);
+  toogleIsCreate() {
+    this.isCreate.update((c) => !c);
+  }
+
+  handleRegister(event: RegisterData){
+    console.log(event);
+
+  }
 }

@@ -16,6 +16,11 @@
       <option class="text-black" [value]="10">10</option>
       <option class="text-black" [value]="20">20</option>
     </select>
+    <button
+            class="rounded-xl border border-gray-300 text-sm md:text-base bg-white disabled:bg-gray-200 px-5 py-3 font-medium text-gray-800 disabled:text-gray-400 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-500 dark:hover:text-indigo-400 disabled:dark:bg-gray-800"
+            (click)="toogleIsCreate()">
+            + Crear Usuario
+          </button>
   </div>
 
   <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-0 overflow-hidden">
@@ -76,18 +81,18 @@
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ user.correo }}</td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
               <span [class]="'px-3 py-1 text-xs font-medium rounded-full ' + (user.roles[0].name === 'ROLE_ADMIN' ? 'bg-green-100 text-green-700' : user.roles[0].name === 'ROLE_TECNICO_NIVEL_1' ? 'bg-blue-100 text-blue-700' : user.roles[0].name === 'ROLE_EMPLEADO' ? 'bg-orange-100 text-orange-700' : '')
-              "  >
+              ">
                 @switch (user.roles[0].name) {
-                  @case ('ROLE_ADMIN'){
-                    Admin
-                  }
-                  @case ('ROLE_TECNICO_NIVEL_1'){
-                    Tecnico 1
-                  }
-                  @case ('ROLE_EMPLEADO'){
-                  Empleado
+                @case ('ROLE_ADMIN'){
+                Admin
+                }
+                @case ('ROLE_TECNICO_NIVEL_1'){
+                Tecnico 1
+                }
+                @case ('ROLE_EMPLEADO'){
+                Empleado
 
-                  }
+                }
                 }
               </span>
             </td>
@@ -163,3 +168,9 @@
     </div>
   </div>
 </div>
+
+<app-modal-generic [(isOpen)]="isCreate" >
+  <h2 class="text-2xl font-semibold text-white text-center mx-6">Crear Cuenta</h2>
+  <app-user-form-component [isAdmin]="true" (submitForm)="handleRegister($event)"/>
+</app-modal-generic>
+s

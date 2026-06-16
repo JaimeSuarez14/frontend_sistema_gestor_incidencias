@@ -16,26 +16,49 @@
       </div>
       }
 
-      <form (ngSubmit)="onSubmit()" class="space-y-5">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
         <div>
-          <label for="email" class="block text-sm font-medium text-purple-900 dark:text-purple-100 mb-1.5">Nombre
+          <label for="usuario" class="block text-sm font-medium text-purple-900 dark:text-purple-100 mb-1.5">Nombre
             de Usuario
           </label>
-          <input type="email" id="email" [value]="usuario()" (input)="usuario.set($any($event.target).value)" required
+          <input type="text" id="usuario" formControlName="usuario"
             class="w-full px-4 py-3 dark:bg-white/10 border dark:border-white/20 rounded-lg text-purple-900 dark:text-white dark:placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
             placeholder="pepito21" />
+          @let touched = loginForm.get('usuario')?.touched;
+          @let errorsUser = loginForm.get('usuario')?.errors;
+          <div>
+            @if (touched && errorsUser) {
+            @if (errorsUser['required']) {
+            <span class="text-red-500">El campo es requerido</span>
+            }
+            @if(errorsUser['minlength']){
+            <span class="text-red-500">Minino 4 caracteres</span>
+            }
+            }
+          </div>
         </div>
 
         <div>
           <label for="password"
             class="block text-sm font-medium text-purple-900 dark:text-purple-100 mb-1.5">Contraseña</label>
-          <input type="password" id="password" [value]="password()" (input)="password.set($any($event.target).value)"
-            required
+          <input type="password" id="password" formControlName="password"
             class="w-full px-4 py-3 dark:bg-white/10 border dark:border-white/20 rounded-lg text-purple-900  dark:text-white dark:placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
             placeholder="••••••••" />
+          @let touchedPassword = loginForm.get('password')?.touched;
+          @let errorsPassword = loginForm.get('password')?.errors;
+          <div>
+            @if (touchedPassword && errorsPassword) {
+            @if (errorsPassword['required']) {
+            <span class="text-red-500">El campo es requerido</span>
+            }
+            @if(errorsPassword['minlength']){
+            <span class="text-red-500">Minino 6 caracteres</span>
+            }
+            }
+          </div>
         </div>
 
-        <button type="submit" [disabled]="loading()"
+        <button type="submit" [disabled]="loading() || !loginForm.valid"
           class="w-full py-3 px-4 bg-linear-to-r from-cyan-600 to-blue-800 hover:from-cyan-500 hover:to-indigo-500 text-white font-semibold rounded-lg shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200">
           @if (loading()) {
           <span class="flex items-center justify-center gap-2">
@@ -50,6 +73,7 @@
           }
         </button>
       </form>
+
       <div class="mt-6 text-center">
         <p class="dark:text-purple-200 text-yellow-700 text-sm">
           ¿No tienes cuenta?
@@ -83,10 +107,12 @@
         (change)="sessionThema.cambiarThema()" />
 
       <!-- Contenedor del switch -->
-      <div class="relative w-14 h-6 bg-gray-300 rounded-full border-2 border-gray-400/90 dark:border-gray-500  peer-checked:bg-blue-950 transition-colors duration-300">
+      <div
+        class="relative w-14 h-6 bg-gray-300 rounded-full border-2 border-gray-400/90 dark:border-gray-500  peer-checked:bg-blue-950 transition-colors duration-300">
 
         <!-- Texto dentro -->
-        <span [class]="'absolute top-0.5   text-[10px] font-semibold transition-all duration-300 ' + (sessionThema._isDark() ? 'right-1 text-white' : 'left-1 text-gray-700')" >
+        <span
+          [class]="'absolute top-0.5   text-[10px] font-semibold transition-all duration-300 ' + (sessionThema._isDark() ? 'right-1 text-white' : 'left-1 text-gray-700')">
           {{ sessionThema._isDark() ? 'Dark' : 'Light' }}
         </span>
 
