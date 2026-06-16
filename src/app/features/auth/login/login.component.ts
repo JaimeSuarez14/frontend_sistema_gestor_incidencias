@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { SessionThema } from '../../../shared/utils/session-tema';
 import { LoginCredentials } from 'src/app/core/models/usuario.model';
+import { delay, timeout } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -36,6 +37,7 @@ export class LoginComponent {
       next: (e) => {
         this.loading.set(false);
         this.router.navigate(['/dashboard']);
+
       },
 
       error: (e) => {
