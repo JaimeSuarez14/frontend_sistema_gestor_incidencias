@@ -1,14 +1,14 @@
 export interface Usuario {
   id: bigint;
   nombre: string;
+  username: string;
   correo: string;
   roles: Rol [];
   estado: 'ACTIVO' | 'INACTIVO';
   area: Area;
-
 }
 
-type Area = 'RRHH'
+export type Area = 'RRHH'
     | 'ADMINISTRACION'
     | 'SISTEMAS'
     | 'MANTENIMIENTO'
@@ -20,7 +20,7 @@ export interface Page {
   number: number; //pagina
   size: number; //cuantos por pagina
   totalElements: number; //numero de items
-  totalPages: number; //numero totla de paginas
+  totalPages: number; //numero total de paginas
 }
 
 export interface PaginatedResponse<T> {
@@ -52,6 +52,13 @@ export interface CurrentUser {
 interface Rol {
   id: bigint;
   name: Role;
+}
 
+export interface UserUpdate {
+  nombre: string;
+  username: string ;
+  correo: string;
+  estado: 'ACTIVO' | 'INACTIVO';
+  area : Area;
 }
 

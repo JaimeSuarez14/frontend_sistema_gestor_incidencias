@@ -18,4 +18,15 @@ export class UserService {
       .set('size', size);
     return this.http.get< PaginatedResponse<Usuario> >(`${this.apiUrl}/paginado`, {params});
   }
+
+  updateUsuario(id: bigint, usuario: Usuario){
+    return this.http.put<Usuario>(`${this.apiUrl}/${id}`, usuario);
+  }
+
+  getUser(id: bigint){
+    return this.http.get<Usuario>(`${this.apiUrl}/${id}`);
+  }
+
+
+
 }

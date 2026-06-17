@@ -5,14 +5,15 @@ import { Page, RegisterData, Role, Usuario } from 'src/app/core/models/usuario.m
 import { BuscadorComponent } from 'src/app/shared/components/buscador/buscador.component';
 import { ModalGeneric } from '@shared/components/modal-generic/modal-generic';
 import { UserFormComponent } from "@shared/components/user-form-component/user-form-component";
+import { UpdateUserForm } from "./update-user-form/update-user-form";
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, BuscadorComponent, ModalGeneric, UserFormComponent],
+  imports: [CommonModule, BuscadorComponent, ModalGeneric, UserFormComponent, UpdateUserForm],
   templateUrl: './users.component.html',
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent {
   userService = inject(UserService);
   usuarios = signal<Usuario[]>([]);
   loading = signal(true);
@@ -25,15 +26,11 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
-
   onSearchResults(results: Usuario[]): void {
     this.filteredUsers.set(results);
   }
 
-  pageCurrent = signal(0);
-  page = signal<Page | null>(null);
-  size = signal(5);
+
 
   getUsuarios(): void {
     this.userService.getUsersPaginados(this.pageCurrent(), this.size()).subscribe({
@@ -51,11 +48,14 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  /* PAGINACION */
+  pageCurrent = signal(0);
+  page = signal<Page | null>(null);
+  size = signal(5);
+
   onPageChange(pagina: number) {
     this.pageCurrent.set(pagina);
   }
-
-  onChangeNumberPorPagina(e: Event) {}
 
   botones = computed(() => {
     const total = this.page()?.totalPages || 1;
@@ -67,8 +67,10 @@ export class UsersComponent implements OnInit {
     return { paginas: [0, 1, 2], total };
   });
 
+  /**PARA VER DETALLES DEL USUARIO */
   openModal() {}
 
+  /**PARA CREAR NUEVO USUARIO */
   isCreate = signal(false);
   toogleIsCreate() {
     this.isCreate.update((c) => !c);
@@ -76,6 +78,27 @@ export class UsersComponent implements OnInit {
 
   handleRegister(event: RegisterData){
     console.log(event);
+  }
 
+  /**PARA ACTUALIZAR USUARIO */
+  isUpdateUser = signal(false);
+  idUser = signal<bigint >(0n);
+  toogleIsUpdate(id:bigint) {
+    this.isUpdateUser.update((c) => !c);
+    this.idUser.set(id);
+  }
+
+  handleUpdate(event: Usuario){
+    this.userService.updateUsuario(this.idUser(), event).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.getUsuarios();
+        this.isUpdateUser.update((c) => !c);
+      },
+      error: (err) => {
+        console.error(err);
+        this.error.set(err);
+      },
+    });
   }
 }

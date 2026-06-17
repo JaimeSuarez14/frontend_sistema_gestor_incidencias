@@ -31,7 +31,7 @@
             @if (errorsUser['required']) {
             <span class="text-red-500">El campo es requerido</span>
             }
-            @if(errorsUser['minlength']){
+            @else if(errorsUser['minlength']){
             <span class="text-red-500">Minino 4 caracteres</span>
             }
             }
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <button type="submit" [disabled]="loading() || !loginForm.valid"
+        <button type="submit" [disabled]=""
           class="w-full py-3 px-4 bg-linear-to-r from-cyan-600 to-blue-800 hover:from-cyan-500 hover:to-indigo-500 text-white font-semibold rounded-lg shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200">
           @if (loading()) {
           <span class="flex items-center justify-center gap-2">
