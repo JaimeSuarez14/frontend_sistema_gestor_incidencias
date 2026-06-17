@@ -6,6 +6,7 @@ import { BuscadorComponent } from 'src/app/shared/components/buscador/buscador.c
 import { ModalGeneric } from '@shared/components/modal-generic/modal-generic';
 import { UserFormComponent } from "@shared/components/user-form-component/user-form-component";
 import { UpdateUserForm } from "./update-user-form/update-user-form";
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -15,6 +16,7 @@ import { UpdateUserForm } from "./update-user-form/update-user-form";
 })
 export class UsersComponent {
   userService = inject(UserService);
+  authService = inject(AuthService)
   usuarios = signal<Usuario[]>([]);
   loading = signal(true);
   error = signal('');
@@ -77,7 +79,17 @@ export class UsersComponent {
   }
 
   handleRegister(event: RegisterData){
-    console.log(event);
+    this.authService.registerNewUser( event).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.getUsuarios();
+        this.isCreate.update((c) => !c);
+      },
+      error: (err) => {
+        console.error(err);
+        this.error.set(err);
+      },
+    });
   }
 
   /**PARA ACTUALIZAR USUARIO */
