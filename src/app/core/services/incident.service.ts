@@ -8,15 +8,11 @@ import { tap } from 'rxjs';
 export class IncidenciaService {
   private http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost:8080/api/incidencia';
-
-  private readonly _incidencias = signal<Incidencia[]>([
-  ]);
-
+  private readonly _incidencias = signal<Incidencia[]>([]);
   readonly incidencias = this._incidencias.asReadonly();
 
-
   public getIncidencia(id: number){
-    return this._incidencias().find(inci => inci.id ===id);
+    return this.http.get<Incidencia>(this.apiUrl+id);
   }
 
   getIncidencias(page: number = 0, size: number = 4){

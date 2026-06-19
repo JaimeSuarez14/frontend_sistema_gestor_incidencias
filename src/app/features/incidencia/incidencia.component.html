@@ -22,7 +22,6 @@
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">ID</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Título</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Estado</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Prioridad</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Asignado a</th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Fecha</th>
             <th class="text-left py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">Detalle</th>
@@ -42,10 +41,9 @@
             </td>
             <td class="py-3 px-4 dark:text-gray-400">
               <span class="px-3 py-1 text-xs font-medium rounded-full" >
-
+                {{ incident.tecnico ? incident.tecnico.nombre : 'Sin Asignar'}}
               </span>
             </td>
-            <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">eeeee</td>
             <td class="py-3 px-4 text-sm dark:text-gray-400 text-gray-600">eee</td>
             <td class="px-2">
               <button
@@ -80,4 +78,4 @@
   </div>
 </div>
 
-<app-detalle-incidencia [(modal)]="verDetalle" [(incidenciaId)]="idIncidencia"/>
+<app-detalle-incidencia [searchFields]="['']" [(modal)]="verDetalle" [(idEntity)]="idIncidencia"/>

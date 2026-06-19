@@ -20,6 +20,11 @@
       <p class="text-sm text-gray-500 dark:text-gray-400">
         Información completa del registro seleccionado
       </p>
+      @if (error()) {
+      <span class="text-red-200 text-sm bg-red-600" style="display: block">
+        {{ error() }}
+      </span>
+      }
     </div>
 
     <!-- 📊 Contenido -->
@@ -27,32 +32,12 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        <!-- Item -->
-        <div class="space-y-1">
-          <span class="text-gray-500 dark:text-gray-400">Título</span>
-          <p class="font-medium text-gray-800 dark:text-white">
-            {{ incidencia()?.titulo }}
-          </p>
-        </div>
 
-        <div class="space-y-1">
-          <span class="text-gray-500 dark:text-gray-400">Estado</span>
-          <p class="font-medium text-gray-800 dark:text-white">
-            {{ incidencia()?.estado }}
-          </p>
-        </div>
-
-        <div class="space-y-1 md:col-span-2">
-          <span class="text-gray-500 dark:text-gray-400">Descripción</span>
-          <p class="font-medium text-gray-800 dark:text-white">
-            {{ incidencia()?.descripcion }}
-          </p>
-        </div>
 
         <div class="space-y-1">
           <span class="text-gray-500 dark:text-gray-400">Prioridad</span>
           <p class="font-medium text-gray-800 dark:text-white">
-vacio          </p>
+            vacio </p>
         </div>
 
         <div class="space-y-1">
@@ -68,14 +53,14 @@ vacio          </p>
             nombre de tecnico
           </p>
         </div>
-
+        @for (item of campos(); track $index) {
         <div class="space-y-1">
           <span class="text-gray-500 dark:text-gray-400">Usuario</span>
           <p class="font-medium text-gray-800 dark:text-white">
-            nombre de usuario
+            {{ item }}
           </p>
         </div>
-
+        }
       </div>
 
     </div>

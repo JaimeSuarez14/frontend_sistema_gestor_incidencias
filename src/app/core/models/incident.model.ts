@@ -5,8 +5,9 @@ export interface Incidencia {
   titulo: string;
   descripcion: string;
   estado: Status;
+  fechaCreacion: string;
   usuario: Usuario;
-  tecnico: Usuario;
+  tecnico?: Usuario;
 }
 
 type Status = "ABIERTO" | "PENDIENTE" | "CERRADO";

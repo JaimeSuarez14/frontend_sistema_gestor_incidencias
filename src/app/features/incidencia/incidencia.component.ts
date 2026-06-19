@@ -28,15 +28,6 @@ export class IncidenciaComponent {
     this.incidentService.getIncidencias().subscribe();
   }
 
-  getPriorityLabel(priority: string): string {
-    const labels: Record<string, string> = {
-      high: 'Alta',
-      medium: 'Media',
-      low: 'Baja',
-    };
-    return labels[priority] || priority;
-  }
-
   getUserName(userId: string): string {
     return 'Sin asignar';
   }

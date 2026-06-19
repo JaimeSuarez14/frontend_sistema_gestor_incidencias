@@ -35,6 +35,7 @@ export class UsersComponent {
 
 
   getUsuarios(): void {
+    this.loading.set(true);
     this.userService.getUsersPaginados(this.pageCurrent(), this.size()).subscribe({
       next: (data) => {
         console.log(data);
