@@ -7,7 +7,7 @@ export const routes: Routes = [
     loadComponent:  () => import('./incidencia.component').then(c => c.IncidenciaComponent),
   },
   {
-    path:"seguimiento",
+    path:"seguimiento/:id",
     title: "Seguimiento",
     loadComponent:  () => import('./seguimiento-incidencia/seguimiento-incidencia').then(c => c.SeguimientoIncidencia),
   }

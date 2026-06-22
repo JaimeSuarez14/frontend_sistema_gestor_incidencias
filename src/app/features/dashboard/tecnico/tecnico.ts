@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './tecnico.css',
 })
 export class Tecnico {
-
+  getPriorityPercentage(priority: 'high' | 'medium' | 'low'): number {
+    return 0;
+  }
 }

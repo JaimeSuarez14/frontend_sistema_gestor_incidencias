@@ -15,7 +15,7 @@ export class IncidenciaService {
     return this.http.get<Incidencia>(this.apiUrl + '/' + id);
   }
 
-  getIncidencias(page: number = 0, size: number = 4) {
+  public getIncidencias(page: number = 0, size: number = 4) {
     let params = new HttpParams().set('page', page).set('size', size);
     return this.http.get<PaginatedResponse<Incidencia>>(this.apiUrl + '/paginado', { params }).pipe(
       tap((data) => {
@@ -26,5 +26,13 @@ export class IncidenciaService {
 
   public createIncidencia(data: any) {
     return this.http.post<Incidencia>(this.apiUrl, data);
+  }
+
+  public misIncidencias(){
+    return this.http.get<Incidencia[]>(this.apiUrl + '/incidenciasPropias').pipe(
+      tap((data) => {
+        this._incidencias.set(data);
+      }),
+    );;
   }
 }

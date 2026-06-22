@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './usuario.css',
 })
 export class Usuario {
-
+  getPriorityPercentage(priority: 'high' | 'medium' | 'low'): number {
+    return 0;
+  }
 }

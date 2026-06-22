@@ -18,3 +18,9 @@ export interface SeguimientoResponseDto{
   estado: "ACTIVO" | "INACTIVO"
   nombreUsuario: string
 }
+
+export interface SeguimientoDTO{
+  comentario :string,
+  idIncidencia : string,
+  estado: "ACTIVO" | "INACTIVO"
+}

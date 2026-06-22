@@ -9,6 +9,7 @@ import { DetalleModal, DetalleField } from '../../shared/components/detalle-moda
 import { RouterLink } from '@angular/router';
 import { ModalGeneric } from "@shared/components/modal-generic/modal-generic";
 import { IncidenciaForm } from "@shared/components/incidencia-form/incidencia-form";
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-incidents',
@@ -17,6 +18,7 @@ import { IncidenciaForm } from "@shared/components/incidencia-form/incidencia-fo
   templateUrl: './incidencia.component.html',
 })
 export class IncidenciaComponent {
+  private authService = inject(AuthService);
   incidentService = inject(IncidenciaService);
   userService = inject(UserService);
   filteredIncidents = linkedSignal<Incidencia[]>(() => this.incidentService.incidencias());
@@ -28,7 +30,15 @@ export class IncidenciaComponent {
   }
 
   getIncidencias() {
-    this.incidentService.getIncidencias().subscribe();
+    if(this.authService.isEmpleado()){
+      this.incidentService.misIncidencias().subscribe();
+    }else if(this.authService.isTecnico()){
+      this.incidentService.misIncidencias().subscribe();
+    }else{
+      this.incidentService.getIncidencias().subscribe();
+    }
+
+
   }
 
   //Obtener de la busqueda
@@ -39,6 +49,7 @@ export class IncidenciaComponent {
   //PARA VER EL DETALLE DE LA INCIDENCIAS
   verDetalle = signal(false);
   dataForModal = signal<Incidencia | null>(null);
+  getIdIncidencia = signal(0);
 
   incidenciaFields: DetalleField<Incidencia>[] = [
     { label: 'Titulo', key: 'titulo' },
@@ -54,6 +65,7 @@ export class IncidenciaComponent {
   ];
 
   openModal(id: number): void {
+    this.getIdIncidencia.set(id);
     this.verDetalle.update((v) => !v);
     if (this.verDetalle()) {
       this.incidentService.getIncidencia(id).subscribe({
