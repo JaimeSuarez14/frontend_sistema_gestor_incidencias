@@ -2,9 +2,11 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { PaginatedResponse, Usuario } from '../models/usuario.model';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+  private readonly authService = inject(AuthService);
   private readonly http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost:8080/api/usuario';
 
@@ -27,6 +29,13 @@ export class UserService {
     return this.http.get<Usuario>(`${this.apiUrl}/${id}`);
   }
 
+  getUsuarioPrincipal(){
+    const username = this.authService.currentUser()?.username;
+    return this.http.get<Usuario>(`${this.apiUrl}/${username}/username`);
+  }
 
+  actualizarPerfil( usuario: {username: string, nombre: string, correo:string}){
+    return this.http.post<Usuario>(`${this.apiUrl}/updatePerfil`, usuario);
+  }
 
 }

@@ -1,0 +1,74 @@
+<section>
+  <h2 class="text-2xl font-semibold text-white text-center mx-6">
+    {{title()}}
+  </h2>
+
+  <form [formGroup]="incidenciaForm" (ngSubmit)="submitForm()" class="space-y-5">
+    @if (error()) {
+    <span class="text-red-200 text-sm bg-red-600" style="display: block">
+      {{ error() }}
+    </span>
+    }
+    @let isErrorTitulo = incidenciaForm.get("titulo")?.errors;
+    @let isTouchedTitulo = incidenciaForm.get("titulo")?.touched;
+    <div>
+      <label for="titulo" class="block text-sm font-medium text-purple-100 mb-1.5">Titulo:</label>
+      <input type="text" id="titulo" formControlName="titulo"
+        [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ' + (  !isErrorTitulo ? 'border-green-500' : (!isTouchedTitulo ? 'border-white/20' :'border-red-500'))"
+        placeholder="Escribe un titulo" />
+      @if ( isTouchedTitulo && isErrorTitulo) {
+      @if (isErrorTitulo['required']) {
+      <span class="text-red-500 text-sm" style="display: block">
+        Titulo requerido
+      </span>
+      }@else if (isErrorTitulo['minlength']){
+      <span class="text-red-500 text-sm" style="display: block">
+        Titulo debe tener minimo 4 caracteres
+      </span>
+      }@else if (incidenciaForm.get('titulo')?.hasError('onlyWhitespace')) {
+      <span class="text-red-500 text-sm" style="display: block">No se permiten textos compuestos únicamente por espacios
+        en blanco.</span>
+      }
+      }
+
+    </div>
+    @let isErrorsDescripcion = incidenciaForm.get("descripcion")?.errors;
+    @let isTouchedDescripcion = incidenciaForm.get("descripcion")?.touched;
+    <div class="relative">
+      <label for="descripcion" class="block text-sm font-medium text-purple-100 mb-1.5">Descripción:
+      </label>
+      <textarea id="descripcion" formControlName="descripcion"
+        [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ' + (  !isErrorsDescripcion ? 'border-green-500' : (!isTouchedDescripcion ? 'border-white/20' :'border-red-500'))"
+        placeholder="Ingresa el detalle de la incidencia"></textarea>
+      @if (isTouchedDescripcion && isErrorsDescripcion) {
+      @if (isErrorsDescripcion['required']) {
+      <span class="text-red-500 text-sm" style="display: block">
+        Descripcion requerido
+      </span>
+      }@else if (isErrorsDescripcion['email']){
+      <span class="text-red-500 text-sm" style="display: block">
+        Descripcion invalido
+      </span>
+      }@else if (incidenciaForm.get('descripcion')?.hasError('onlyWhitespace')) {
+      <span class="text-red-500 text-sm" style="display: block">No se permiten textos compuestos únicamente por espacios
+        en blanco.</span>
+      }
+      }
+    </div>
+
+    <button type="submit" [disabled]=" incidenciaForm.invalid || incidenciaForm.pending"
+      class="w-full py-3 px-4 bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold rounded-lg shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200">
+      @if ( incidenciaForm.pending) {
+      <span class="flex items-center justify-center gap-2">
+        <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        Creando Incidencia...
+      </span>
+      } @else {
+      Crear Incidencia
+      }
+    </button>
+  </form>
+</section>

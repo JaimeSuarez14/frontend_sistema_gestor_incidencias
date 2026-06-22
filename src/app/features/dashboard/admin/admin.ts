@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { IncidenciaService } from '@services/incident.service';
+import { IncidenciaService } from '@services/incidencia.service';
 import { UserService } from '@services/user.service';
 import { RouterLink } from '@angular/router';
 

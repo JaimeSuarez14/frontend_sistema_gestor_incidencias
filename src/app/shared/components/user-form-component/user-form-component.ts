@@ -72,7 +72,6 @@ export class UserFormComponent {
 
       validateHttp(schemaPath.username, {
         request: ({ value }) => `${environment.apiUrl}/api/auth/${value()}`,
-
         onSuccess: (response: { exists: boolean }) =>
           response.exists
             ? {
@@ -88,7 +87,6 @@ export class UserFormComponent {
       });
 
       debounce(schemaPath.correo, 500);
-
       validateHttp(schemaPath.correo, {
         request: ({ value }) => `${environment.apiUrl}/api/auth/${value()}/validacion`,
 

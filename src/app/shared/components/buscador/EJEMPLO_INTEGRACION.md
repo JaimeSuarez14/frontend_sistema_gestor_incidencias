@@ -54,13 +54,13 @@ import { IncidenciaService } from '../../core/services/incident.service';
 import { UserService } from '../../core/services/user.service';
 import { BuscadorComponent } from '../../shared/components/buscador/buscador.component';
 import { Incidencia } from '../../core/models/incident.model';
-import { DetalleIncidencia } from "./detalle-incidencia/detalle-incidencia";
+import { DetalleModal, DetalleField } from "./detalle-incidencia/detalle-incidencia";
 import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-incidents',
   standalone: true,
-  imports: [CommonModule, DetalleIncidencia, RouterLink, BuscadorComponent],
+  imports: [CommonModule, DetalleModal, RouterLink, BuscadorComponent],
   templateUrl: './incidencia.component.html'
 })
 export class IncidenciaComponent {
@@ -106,9 +106,26 @@ export class IncidenciaComponent {
     this.filteredIncidents.set(results);
   }
 
+  // Signal para almacenar datos del modal
+  dataForModal = signal<Incidencia | null>(null);
+
+  // Configuración de campos del modal
+  incidenciaFields: DetalleField<Incidencia>[] = [
+    { label: 'Título', key: 'titulo' as keyof Incidencia },
+    { label: 'Descripción', key: 'descripcion' as keyof Incidencia },
+    { label: 'Estado', key: 'estado' as keyof Incidencia },
+    { label: 'Usuario', key: 'usuario' as keyof Incidencia, format: (u: any) => u?.nombre ?? '' },
+    { label: 'Técnico', key: 'tecnico' as keyof Incidencia, format: (u: any) => u?.nombre ?? 'Sin asignar' },
+  ];
+
   openModal(id: number): void {
     this.verDetalle.update(v => !v);
     this.idIncidencia.set(id);
+    if (this.verDetalle()) {
+      this.incidentService.getIncidencia(id).subscribe({
+        next: (value) => this.dataForModal.set(value),
+      });
+    }
   }
 }
 ```
@@ -209,7 +226,22 @@ export class IncidenciaComponent {
   </div>
 </div>
 
-<app-detalle-incidencia [(modal)]="verDetalle" [(incidenciaId)]="idIncidencia"/>
+<app-detalle-modal
+  [(modal)]="verDetalle"
+  [data]="dataForModal()"
+  [fields]="incidenciaFields"
+  title="Detalle de la Incidencia"
+  description="Información completa del registro seleccionado"
+>
+  <div footer class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+    <a routerLink="/incidencia/seguimiento" class="px-5 py-2 rounded-lg text-sm font-medium
+             bg-blue-600 text-white
+             hover:bg-blue-700 hover:scale-105
+             transition-all duration-300">
+      Ver seguimiento →
+    </a>
+  </div>
+</app-detalle-modal>
 ```
 
 ---

@@ -101,7 +101,7 @@
             <td class="px-2">
               <button
                 class="dark:text-white p-2 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500"
-                (click)="openModal()">Ver</button>
+                (click)="openModal(user.id)">Ver</button>
             </td>
             <td class="p-2 ">
               <button (click)="toogleIsUpdate(user.id)" class="flex items-center justify-start h-full ">
@@ -180,3 +180,6 @@
   <h2 class="text-2xl font-semibold text-white text-center mx-6">Actualizar Usuario</h2>
   <app-update-user-form [idUsuario]="idUser()" (dataResponse)="handleUpdate($event)" />
 </app-modal-generic>
+
+<app-detalle-modal [(modal)]="verDetalle" [data]="dataForModal()" title="Detalle de Usuario"
+description="Informacion completa del registro seleccionado" [fields]="fieldsUser" />

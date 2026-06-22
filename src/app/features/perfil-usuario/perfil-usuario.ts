@@ -1,58 +1,92 @@
-import { Component, computed, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
 
-interface UserSettings {
-  nombre: string;
-  correo: string;
-  usuario: string;
-  clave: string;
-  rol: string;
-  area: string;
-}
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserService } from '@services/user.service';
+import { Usuario } from 'src/app/core/models/usuario.model';
+import { ModalGeneric } from "@shared/components/modal-generic/modal-generic";
+import { AuthService } from '@services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil-usuario',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule, ModalGeneric],
   templateUrl: './perfil-usuario.html',
-  styleUrl: './perfil-usuario.css',
 })
 export class PerfilUsuario {
+  private fb = inject(FormBuilder);
+  private usuarioService = inject(UserService);
+  private authService = inject(AuthService);
+  private router = inject(Router)
+  user = signal<Usuario | null>(null);
 
-
-  // ✏️ Modo edición
   editMode = signal(false);
 
-  // 📊 Datos hardcodeados
-  user = signal<UserSettings>({
-    nombre: 'Juan Pérez',
-    correo: 'juan@email.com',
-    usuario: 'juanp',
-    clave: '123456',
-    rol: 'Admin',
-    area: 'Sistemas'
+  form: FormGroup = this.fb.group({
+    nombre: ['', [Validators.required, Validators.minLength(4)]],
+    username: ['', [Validators.required, Validators.minLength(4)]],
+    correo: ['', [Validators.required, Validators.email]],
   });
 
-  // 🧠 Copia temporal para editar
-  tempUser = signal<UserSettings>({...this.user()});
+  constructor() {
+    this.cargarPerfil();
+  }
 
-  toggleEdit() {
-    this.tempUser.set({...this.user()});
+  cargarPerfil() {
+    this.usuarioService.getUsuarioPrincipal().subscribe({
+      next: (usuario) => {
+        this.user.set(usuario);
+        this.form.patchValue({
+          nombre: usuario.nombre,
+          username: usuario.username,
+          correo: usuario.correo,
+        });
+        this.form.disable();
+      },
+    });
+  }
+
+  editar() {
     this.editMode.set(true);
+    this.form.enable();
   }
 
-  save() {
-    this.user.set({...this.tempUser()});
+  cancelar() {
+    const usuario = this.user();
+    if (!usuario) return;
+    this.form.patchValue({
+      nombre: usuario.nombre,
+      username: usuario.username,
+      correo: usuario.correo,
+    });
+    this.form.disable();
     this.editMode.set(false);
   }
 
-  cancel() {
-    this.editMode.set(false);
-  }
+  async guardar() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
+    const payload = this.form.getRawValue();
+
+    this.usuarioService.actualizarPerfil(payload).subscribe({
+      next: (usuarioActualizado) => {
+        this.user.set(usuarioActualizado);
+        this.form.disable();
+        this.editMode.set(false);
+        this.openModal.set(true)
+        setTimeout(() => {
+          this.authService.logout();
+          this.router.navigate(['/auth/login']);
+        }, 5000);
+      },
+    });
+  }
+  //navegar en el tab
   tabs = signal([true, false, false])
-  moveTab(i: number){
-    this.tabs.update(t => t.map((_, index) => i==index ? true: false))
-  }
+  moveTab(i: number){ this.tabs.update(t => t.map((_, index) => i==index ? true: false)) }
 
-
+  //abri modal
+  openModal = signal(false);
 }

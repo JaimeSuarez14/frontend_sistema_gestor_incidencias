@@ -36,70 +36,128 @@
           </div>
 
           <!-- Campos -->
-          <div class="space-y-4">
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              @for (field of ['nombre','correo','usuario','clave','rol','area']; track $index) {
+          <form [formGroup]="form" (ngSubmit)="guardar()">
+            <div class="space-y-4">
+              <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                  <label>Nombre</label>
 
-              <div>
-                <label class="text-sm opacity-70 capitalize">{{ field }}</label>
+                  @if(!editMode()) {
+                  <div class="mt-1 p-2 rounded bg-gray-100 dark:text-gray-600">
+                    {{ user()?.nombre }}
+                  </div>
+                  }
 
-                <!-- Vista -->
-                @if (!editMode()) {
-                <div class="mt-1 p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
-                  {{ $any(user())[field] }}
+                  @if(editMode()) {
+                  <input type="text" formControlName="nombre" class="w-full border rounded p-2">
+                  }
                 </div>
-                }
+
+                <div>
+                  <label>Username</label>
+
+                  @if(!editMode()) {
+                  <div class="mt-1 p-2 rounded bg-gray-100 dark:text-gray-600">
+                    {{ user()?.username }}
+                  </div>
+                  }
+
+                  @if(editMode()) {
+                  <input type="text" formControlName="username" class="w-full border rounded p-2">
+                  }
+                </div>
+
+                <div>
+                  <label>Correo</label>
+
+                  @if(!editMode()) {
+                  <div class="mt-1 p-2 rounded bg-gray-100 dark:text-gray-600">
+                    {{ user()?.correo }}
+                  </div>
+                  }
+
+                  @if(editMode()) {
+                  <input type="email" formControlName="correo" class="w-full border rounded p-2">
+                  }
+                </div>
+                <div>
+                  <label>Estado</label>
+
+                  <div class="mt-1 p-2 rounded bg-gray-100 dark:text-gray-600">
+                    {{ user()?.estado }}
+                  </div>
+                </div>
+
+                <div>
+                  <label>Área</label>
+
+                  <div class="mt-1 p-2 rounded bg-gray-100 dark:text-gray-600">
+                    {{ user()?.area }}
+                  </div>
+                </div>
+
+                <div>
+                  <label>Roles</label>
+
+                  <div class="flex flex-wrap gap-2 mt-2">
+
+                    @for(role of user()?.roles; track role.id){
+
+                    <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700">
+                      {{ role.name }}
+                    </span>
+
+                    }
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+            <div class="py-3">
+              <span class="text-gray-400 text-sm">** Los campos que no son editables, solo puede ser actualizados por el administrador.</span>
+            </div>
+            <!-- Botones -->
+            <div class="flex justify-end gap-3 mt-6">
+
+              <!-- Modo vista -->
+              @if (!editMode())
+              {
+              <button type="button" (click)="editar()" class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
+                Editar
+              </button>
+              }
 
 
-                <!-- Edición -->
-                @if (editMode()) {
-                <input [(ngModel)]="$any(tempUser())[field]"
-                  class="w-full mt-1 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 outline-none" />
-                }
+              <!-- Modo edición -->
+              @if (editMode()) {
+              <div class="space-x-1 text-white">
+                <button type="button" (click)="cancelar()" class="px-4 py-2 rounded-xl  bg-gray-500 hover:bg-gray-600">
+                  Cancelar
+                </button>
+
+                <button type="submit" [disabled]="form.invalid" class="px-4 py-2 rounded-xl bg-green-600  hover:bg-green-700">
+                  Guardar
+                </button>
               </div>
               }
+
             </div>
-
-          </div>
-
-          <!-- Botones -->
-          <div class="flex justify-end gap-3 mt-6">
-
-            <!-- Modo vista -->
-            @if (!editMode())
-            {
-            <button (click)="toggleEdit()" class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
-              Editar
-            </button>
-            }
-
-
-            <!-- Modo edición -->
-            @if (editMode()) {
-            <div class="space-x-1 text-white">
-              <button (click)="cancel()" class="px-4 py-2 rounded-xl  bg-gray-500 hover:bg-gray-600">
-                Cancelar
-              </button>
-
-              <button (click)="save()" class="px-4 py-2 rounded-xl bg-green-600  hover:bg-green-700">
-                Guardar
-              </button>
-            </div>
-            }
-
-          </div>
-
+          </form>
         </div>
       </div>
 
       <div class="w-full p-4 text-gray-700 dark:text-gray-300">
         Ajustes Principales del sistema
       </div>
-
     </div>
-
   </div>
-
-
-
 </div>
+
+<app-modal-generic [(isOpen)]="openModal">
+  <h2 class="py-4 text-2xl font-bold text-white text-center">Advertencia</h2>
+  <div class="text-gray-400">
+   Se cerrará sesión en un instante 😢, vuelve a iniciar sesión para continuar 😉 ....
+  </div>
+</app-modal-generic>

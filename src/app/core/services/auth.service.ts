@@ -1,6 +1,6 @@
 import { PerfilUsuario } from './../../features/perfil-usuario/perfil-usuario';
 import { Injectable, signal, computed, inject, resource } from '@angular/core';
-import { CurrentUser, LoginCredentials, RegisterData } from '../models/usuario.model';
+import { CurrentUser, LoginCredentials, RegisterData, Usuario } from '../models/usuario.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { ApiResponse, Decoded, LoginResponse, UsuarioResponseDto } from '../models/auth.response';
@@ -37,6 +37,21 @@ export class AuthService {
     );
   }
 
+  registerNewUser(newUser: RegisterData): Observable<ApiResponse<UsuarioResponseDto>> {
+    return this.http.post<ApiResponse<UsuarioResponseDto>>(
+      `${this.url}/api/auth/register`,
+      newUser,
+    );
+  }
+
+  verificarUsername(username: String) {
+    return this.http.get<ApiResponse<boolean>>(this.url + '/' + username).pipe((e) => e);
+  }
+
+  verificarCorreo(correo: String) {
+    return this.http.get<ApiResponse<boolean>>(this.url + '/' + correo+'/validacion').pipe((e) => e);
+  }
+
   registerSession(token: string) {
     localStorage.setItem('token', token);
     const decoded: Decoded = jwtDecode(token);
@@ -52,17 +67,5 @@ export class AuthService {
     this._currentUser.set(null);
     this._isAuthenticated.set(false);
     localStorage.removeItem('token');
-  }
-
-  registerNewUser(newUser: RegisterData): Observable<ApiResponse<UsuarioResponseDto>> {
-    return this.http.post<ApiResponse<UsuarioResponseDto>>(
-      `${this.url}/api/auth/register`,
-      newUser,
-    );
-  }
-
-  verificarUsername(username : String ){
-    return this.http.get<ApiResponse<boolean>>(this.url+"/"+username).pipe(e => e)
-
   }
 }

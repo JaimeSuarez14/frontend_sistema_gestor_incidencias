@@ -1,16 +1,19 @@
 import { Component, effect, inject, linkedSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IncidenciaService } from '../../core/services/incident.service';
+import { IncidenciaService } from '../../core/services/incidencia.service';
 import { UserService } from '../../core/services/user.service';
 import { BuscadorComponent } from '../../shared/components/buscador/buscador.component';
 import { Incidencia } from '../../core/models/incident.model';
-import { DetalleIncidencia } from './detalle-incidencia/detalle-incidencia';
+import { Usuario } from '../../core/models/usuario.model';
+import { DetalleModal, DetalleField } from '../../shared/components/detalle-modal/detalle-modal';
 import { RouterLink } from '@angular/router';
+import { ModalGeneric } from "@shared/components/modal-generic/modal-generic";
+import { IncidenciaForm } from "@shared/components/incidencia-form/incidencia-form";
 
 @Component({
   selector: 'app-incidents',
   standalone: true,
-  imports: [CommonModule, DetalleIncidencia, RouterLink, BuscadorComponent],
+  imports: [CommonModule, DetalleModal, RouterLink, BuscadorComponent, ModalGeneric, IncidenciaForm],
   templateUrl: './incidencia.component.html',
 })
 export class IncidenciaComponent {
@@ -28,19 +31,56 @@ export class IncidenciaComponent {
     this.incidentService.getIncidencias().subscribe();
   }
 
-  getUserName(userId: string): string {
-    return 'Sin asignar';
-  }
-
-  verDetalle = signal(false);
-  idIncidencia = signal<number | null>(null);
-
+  //Obtener de la busqueda
   onSearchResults(results: Incidencia[]): void {
     this.filteredIncidents.set(results);
   }
 
+  //PARA VER EL DETALLE DE LA INCIDENCIAS
+  verDetalle = signal(false);
+  dataForModal = signal<Incidencia | null>(null);
+
+  incidenciaFields: DetalleField<Incidencia>[] = [
+    { label: 'Titulo', key: 'titulo' },
+    { label: 'Descripcion', key: 'descripcion' },
+    { label: 'Estado', key: 'estado' },
+    { label: 'Fecha de Creacion', key: 'fechaCreacion' },
+    { label: 'Usuario', key: 'usuario', format: (u: Usuario) => u.nombre },
+    {
+      label: 'Tecnico',
+      key: 'tecnico',
+      format: (u: Usuario | undefined) => u?.nombre ?? 'Sin asignar',
+    },
+  ];
+
   openModal(id: number): void {
     this.verDetalle.update((v) => !v);
-    this.idIncidencia.set(id);
+    if (this.verDetalle()) {
+      this.incidentService.getIncidencia(id).subscribe({
+        next: (value) => {
+          this.dataForModal.set(value);
+          console.log(value);
+        },
+      });
+    }
+  }
+
+  //PARA CREAR UNA DE LA INCIDENCIAS
+  isOpenCreate =  signal(false);
+  changeIsOpenCreate(){
+    this.isOpenCreate.update(i =>!i);
+  }
+
+  submitCreate(data:any){
+    this.incidentService.createIncidencia(data).subscribe({
+      next: (r) => {
+        this.getIncidencias();
+        this.isOpenCreate.set(false);
+      },
+      error:(e) => {
+        console.log(e);
+
+      }
+    })
   }
 }

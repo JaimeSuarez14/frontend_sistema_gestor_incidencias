@@ -4,19 +4,27 @@ import { UserService } from '@services/user.service';
 import { Page, RegisterData, Role, Usuario } from 'src/app/core/models/usuario.model';
 import { BuscadorComponent } from 'src/app/shared/components/buscador/buscador.component';
 import { ModalGeneric } from '@shared/components/modal-generic/modal-generic';
-import { UserFormComponent } from "@shared/components/user-form-component/user-form-component";
-import { UpdateUserForm } from "./update-user-form/update-user-form";
+import { UserFormComponent } from '@shared/components/user-form-component/user-form-component';
+import { UpdateUserForm } from './update-user-form/update-user-form';
 import { AuthService } from '@services/auth.service';
+import { DetalleModal, DetalleField } from '@shared/components/detalle-modal/detalle-modal';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, BuscadorComponent, ModalGeneric, UserFormComponent, UpdateUserForm],
+  imports: [
+    CommonModule,
+    BuscadorComponent,
+    ModalGeneric,
+    UserFormComponent,
+    UpdateUserForm,
+    DetalleModal,
+  ],
   templateUrl: './users.component.html',
 })
 export class UsersComponent {
   userService = inject(UserService);
-  authService = inject(AuthService)
+  authService = inject(AuthService);
   usuarios = signal<Usuario[]>([]);
   loading = signal(true);
   error = signal('');
@@ -31,8 +39,6 @@ export class UsersComponent {
   onSearchResults(results: Usuario[]): void {
     this.filteredUsers.set(results);
   }
-
-
 
   getUsuarios(): void {
     this.loading.set(true);
@@ -71,7 +77,29 @@ export class UsersComponent {
   });
 
   /**PARA VER DETALLES DEL USUARIO */
-  openModal() {}
+  verDetalle = signal(false);
+  dataForModal = signal<Usuario | null>(null);
+
+  fieldsUser: DetalleField<Usuario>[] = [
+    { label: 'Id', key: 'id' },
+    { label: 'Username', key: 'username' },
+    { label: 'Nombre', key: 'nombre' },
+    { label: 'Correo', key: 'correo' },
+    { label: 'Area', key: 'area' },
+    { label: 'Estado', key: 'estado' },
+  ];
+
+  openModal(id: bigint): void {
+    this.verDetalle.update((v) => !v);
+    if (this.verDetalle()) {
+      this.userService.getUser(id).subscribe({
+        next: (value) => {
+          this.dataForModal.set(value);
+          console.log(value);
+        },
+      });
+    }
+  }
 
   /**PARA CREAR NUEVO USUARIO */
   isCreate = signal(false);
@@ -79,8 +107,8 @@ export class UsersComponent {
     this.isCreate.update((c) => !c);
   }
 
-  handleRegister(event: RegisterData){
-    this.authService.registerNewUser( event).subscribe({
+  handleRegister(event: RegisterData) {
+    this.authService.registerNewUser(event).subscribe({
       next: (data) => {
         console.log(data);
         this.getUsuarios();
@@ -95,13 +123,13 @@ export class UsersComponent {
 
   /**PARA ACTUALIZAR USUARIO */
   isUpdateUser = signal(false);
-  idUser = signal<bigint >(0n);
-  toogleIsUpdate(id:bigint) {
+  idUser = signal<bigint>(0n);
+  toogleIsUpdate(id: bigint) {
     this.isUpdateUser.update((c) => !c);
     this.idUser.set(id);
   }
 
-  handleUpdate(event: Usuario){
+  handleUpdate(event: Usuario) {
     this.userService.updateUsuario(this.idUser(), event).subscribe({
       next: (data) => {
         console.log(data);

@@ -1,6 +1,7 @@
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '@services/user.service';
+import { noWhitespaceValidator } from '@shared/utils/validadores';
 import { Area } from 'src/app/core/models/usuario.model';
 
 @Component({
@@ -47,8 +48,8 @@ export class UpdateUserForm {
   }
 
   public updateUserForm = this.fb.group({
-    nombre: ['', [Validators.required, Validators.minLength(4)]],
-    username: ['', [Validators.required, Validators.minLength(4)]],
+    nombre: ['', [Validators.required, Validators.minLength(4), noWhitespaceValidator]],
+    username: ['', [Validators.required, Validators.minLength(4), noWhitespaceValidator]],
     correo: ['', [Validators.required, Validators.email]],
     area: ['', [Validators.required, Validators.minLength(4)]],
     estado: ['', [Validators.required, Validators.minLength(4)]],

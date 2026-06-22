@@ -10,4 +10,4 @@ export interface Incidencia {
   tecnico?: Usuario;
 }
 
-type Status = "ABIERTO" | "PENDIENTE" | "CERRADO";
+export type Status = "ABIERTO" | "PENDIENTE" | "CERRADO";

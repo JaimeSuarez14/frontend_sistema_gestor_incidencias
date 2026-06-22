@@ -20,7 +20,9 @@
     <span class="text-red-500 text-sm" style="display: block">
       Nombre debe tener minimo 4 caracteres
     </span>
-    }
+    }@else if (updateUserForm.get('nombre')?.hasError('onlyWhitespace')) {
+      <span class="text-red-500 text-sm" style="display: block">Prohibido solo espacios en blanco.</span>
+      }
     }
 
   </div>
@@ -64,7 +66,9 @@
     <span class="text-red-500 text-sm" style="display: block">
       Username debe tener minimo 4 caracteres
     </span>
-    }
+    }@else if (updateUserForm.get('username')?.hasError('onlyWhitespace')) {
+      <span class="text-red-500 text-sm" style="display: block">Prohibido solo espacios en blanco.</span>
+      }
 
     }
   </div>

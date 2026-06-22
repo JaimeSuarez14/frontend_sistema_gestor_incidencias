@@ -4,14 +4,15 @@
     <p class="text-gray-500 dark:text-gray-400">Listado completo de incidencias</p>
   </div>
 
-  <div class="max-w-sm">
-    <app-buscador
-      [items]="incidentService.incidencias()"
-      [searchFields]="['titulo', 'descripcion', 'estado']"
-      placeholder="Buscar por título, descripción o estado..."
-      [debounceTime]="300"
-      (filteredResults)="onSearchResults($event)"
-    />
+  <div class="flex justify-between">
+    <app-buscador [items]="incidentService.incidencias()" [searchFields]="['titulo', 'descripcion', 'estado']"
+      placeholder="Buscar por título, descripción o estado..." [debounceTime]="300"
+      (filteredResults)="onSearchResults($event)" />
+    <button
+      class="rounded-xl border border-gray-300 text-sm md:text-base bg-white disabled:bg-gray-200 px-5 py-3 font-medium text-gray-800 disabled:text-gray-400 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-500 dark:hover:text-indigo-400 disabled:dark:bg-gray-800"
+      (click)="changeIsOpenCreate()">
+      + Crear Incidencia
+    </button>
   </div>
 
   <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-0 overflow-hidden">
@@ -35,16 +36,17 @@
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">#{{ incident.id }}</td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ incident.titulo }}</td>
             <td class="py-3 px-4">
-             <span [class]="'px-2 py-1 text-xs font-medium rounded-full ' + (incident.estado === 'ABIERTO' ? 'bg-red-100 text-red-700' : incident.estado === 'PENDIENTE' ? 'bg-amber-100 text-amber-700' : incident.estado === 'CERRADO' ? 'bg-green-100 text-green-700' : '')" >
+              <span
+                [class]="'px-2 py-1 text-xs font-medium rounded-full ' + (incident.estado === 'ABIERTO' ? 'bg-red-100 text-red-700' : incident.estado === 'PENDIENTE' ? 'bg-amber-100 text-amber-700' : incident.estado === 'CERRADO' ? 'bg-green-100 text-green-700' : '')">
                 {{ incident.estado }}
               </span>
             </td>
             <td class="py-3 px-4 dark:text-gray-400">
-              <span class="px-3 py-1 text-xs font-medium rounded-full" >
+              <span class="px-3 py-1 text-xs font-medium rounded-full">
                 {{ incident.tecnico ? incident.tecnico.nombre : 'Sin Asignar'}}
               </span>
             </td>
-            <td class="py-3 px-4 text-sm dark:text-gray-400 text-gray-600">eee</td>
+            <td class="py-3 px-4 text-sm dark:text-gray-400 text-gray-600">{{incident.fechaCreacion}}</td>
             <td class="px-2">
               <button
                 class="dark:text-white p-2 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500"
@@ -78,4 +80,18 @@
   </div>
 </div>
 
-<app-detalle-incidencia [searchFields]="['']" [(modal)]="verDetalle" [(idEntity)]="idIncidencia"/>
+<app-detalle-modal [(modal)]="verDetalle" [data]="dataForModal()" [fields]="incidenciaFields"
+  title="Detalle de la Incidencia" description="Informacion completa del registro seleccionado">
+  <div footer class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+    <a routerLink="/incidencia/seguimiento" class="px-5 py-2 rounded-lg text-sm font-medium
+             bg-blue-600 text-white
+             hover:bg-blue-700 hover:scale-105
+             transition-all duration-300">
+      Ver seguimiento →
+    </a>
+  </div>
+</app-detalle-modal>
+
+<app-modal-generic [(isOpen)]="isOpenCreate" >
+  <app-incidencia-form  title="Crear Nueva Incidencia" [(isChange)]="isOpenCreate" (responseData)="submitCreate($event)"/>
+</app-modal-generic>
