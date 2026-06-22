@@ -9,3 +9,12 @@ export interface  Seguimiento {
   estado: "ACTIVO" | "INACTIVO"
   usuario: Usuario
 }
+
+export interface SeguimientoResponseDto{
+  id: bigint,
+  incidenciaId: number,
+  comentario: string,
+  fecha: string,
+  estado: "ACTIVO" | "INACTIVO"
+  nombreUsuario: string
+}
