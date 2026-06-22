@@ -1,4 +1,5 @@
 import { Incidencia } from "./incident.model";
+import { Usuario } from "./usuario.model";
 
 export interface  Seguimiento {
   id: bigint,
@@ -6,4 +7,5 @@ export interface  Seguimiento {
   comentario: string,
   fecha: string,
   estado: "ACTIVO" | "INACTIVO"
+  usuario: Usuario
 }

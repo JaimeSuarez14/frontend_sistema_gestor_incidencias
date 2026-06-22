@@ -7,6 +7,6 @@ export class SeguimientoService {
   private readonly apiUrl = 'http://localhost:8080/api/seguimiento';
 
   obtenerMisSeguimientos(id: number){
-
+    return this.http.get(`${this.apiUrl}/${id}/seguimientos`)
   }
 }
