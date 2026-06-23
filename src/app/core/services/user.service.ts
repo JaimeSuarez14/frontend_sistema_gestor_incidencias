@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { PaginatedResponse, Usuario } from '../models/usuario.model';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { ApiResponse } from '../models/auth.response';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -36,6 +37,10 @@ export class UserService {
 
   actualizarPerfil( usuario: {username: string, nombre: string, correo:string}){
     return this.http.post<Usuario>(`${this.apiUrl}/updatePerfil`, usuario);
+  }
+
+  cambiarRol(data:{id:number, rol: string}){
+    return this.http.post<ApiResponse<Usuario>>(`${this.apiUrl}/${data.id}/role`, {role: data.rol});
   }
 
 }

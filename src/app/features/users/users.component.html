@@ -1,4 +1,4 @@
-<div class="space-y-6 p-6 dark:bg-gray-800 h-screen">
+<div class="space-y-6 p-6 dark:bg-gray-800 min-h-screen">
   <div>
     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Usuarios</h1>
     <p class="text-gray-500 dark:text-gray-400">Gestión de usuarios del sistema</p>
@@ -19,7 +19,7 @@
       </select>
     </div>
     <button
-      class="rounded-xl border border-gray-300 text-sm md:text-base bg-white disabled:bg-gray-200 px-5 py-3 font-medium text-gray-800 disabled:text-gray-400 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-500 dark:hover:text-indigo-400 disabled:dark:bg-gray-800"
+      class="rounded-xl border border-gray-300 text-sm md:text-base bg-white disabled:bg-gray-200 px-5 py-3 font-medium text-gray-800 disabled:text-gray-400 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-400 dark:hover:text-indigo-400 disabled:dark:bg-gray-800"
       (click)="toogleIsCreate()">
       + Crear Usuario
     </button>
@@ -40,7 +40,8 @@
         </thead>
         <tbody class="">
           @if(loading()){
-          <tr>
+          <!--ESQUELETOR DE CARGA LOADING-->
+          <tr class="esqueltor">
             <td colspan="6" class="p-0">
               <div
                 class="before:absolute before:inset-0 before:-translate-x-full before:animate-skeleton before:bg-linear-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent relative overflow-hidden bg-gray-200  dark:bg-gray-900 text-center text-gray-500">
@@ -82,21 +83,34 @@
             </td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ user.correo }}</td>
             <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
-              <span [class]="'px-3 py-1 text-xs font-medium rounded-full ' + (user.roles[0].name === 'ROLE_ADMIN' ? 'bg-green-100 text-green-700' : user.roles[0].name === 'ROLE_TECNICO_NIVEL_1' ? 'bg-blue-100 text-blue-700' : user.roles[0].name === 'ROLE_EMPLEADO' ? 'bg-orange-100 text-orange-700' : '')
+              <div class="flex items-center">
+                <span [class]="'px-3 py-1 text-xs font-medium rounded-full ' + (user.roles[0].name === 'ROLE_ADMIN' ? 'bg-green-100 text-green-700' : user.roles[0].name === 'ROLE_TECNICO_NIVEL_1' ? 'bg-blue-100 text-blue-700' : user.roles[0].name === 'ROLE_EMPLEADO' ? 'bg-orange-100 text-orange-700' : '')
               ">
-                @switch (user.roles[0].name) {
-                @case ('ROLE_ADMIN'){
-                Admin
-                }
-                @case ('ROLE_TECNICO_NIVEL_1'){
-                Tecnico 1
-                }
-                @case ('ROLE_EMPLEADO'){
-                Empleado
+                  @switch (user.roles[0].name) {
+                  @case ('ROLE_ADMIN'){
+                  Admin
+                  }
+                  @case ('ROLE_TECNICO_NIVEL_1'){
+                  Tecnico 1
+                  }
+                  @case ('ROLE_EMPLEADO'){
+                  Empleado
 
+                  }
+                  }
+                </span>
+                @if (authService.isAdmin()) {
+                <button (click)="openRole(user, user.id)" class="p-1 hover:bg-amber-800 rounded-xl">
+                  <svg class="dark:text-white text-violet-800" fill="none" width="18" height="20" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                    </path>
+                  </svg>
+                </button>
                 }
-                }
-              </span>
+              </div>
+
             </td>
             <td class="px-2">
               <button
@@ -172,14 +186,65 @@
 </div>
 
 <app-modal-generic [(isOpen)]="isCreate">
-  <h2 class="text-2xl font-semibold text-white text-center mx-6">Crear Cuenta</h2>
+  <h2 class="text-2xl font-semibold dark:text-white text-center mx-6">Crear Cuenta</h2>
   <app-user-form-component [isAdmin]="true" (submitForm)="handleRegister($event)" />
 </app-modal-generic>
 
 <app-modal-generic [(isOpen)]="isUpdateUser">
-  <h2 class="text-2xl font-semibold text-white text-center mx-6">Actualizar Usuario</h2>
+  <h2 class="text-2xl font-semibold dark:text-white text-center mx-6">Actualizar Usuario</h2>
   <app-update-user-form [idUsuario]="idUser()" (dataResponse)="handleUpdate($event)" />
 </app-modal-generic>
 
 <app-detalle-modal [(modal)]="verDetalle" [data]="dataForModal()" title="Detalle de Usuario"
-description="Informacion completa del registro seleccionado" [fields]="fieldsUser" />
+  description="Informacion completa del registro seleccionado" [fields]="fieldsUser" />
+
+<app-modal-generic [(isOpen)]="isOpenRole">
+  <h2 class="text-xl font-semibold dark:text-white text-center my-2">Roles de Usuario</h2>
+  <div class="py-2 flex ">
+    <span class="text-gray-600 dark:text-gray-400 text-sm">Los roles de {{ nombreUsuario()}} :</span>
+    @for (item of rolesUsuario(); track $index) {
+    <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+      {{ item.name }}
+    </span>
+    }
+
+  </div>
+  <h2 class="text-xl font-semibold dark:text-white text-center my-2">Agregar Nuevo Rol</h2>
+  <p class="text-gray-400 dark:text-gray-600 text-sm mb-1.5">Esta Incidencia pertenece al Id:
+    {{this.formUpdateRole.value.id}}</p>
+
+  <form class="" [formGroup]="formUpdateRole" (ngSubmit)="submitChangeRole()">
+    <input type="number" formControlName="id"
+      class="w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+      readonly>
+    <div class="space-y-3 mt-4">
+      @let isTouchedEstado = formUpdateRole.get('rol')?.touched;
+      @let isErrorsEstado = formUpdateRole.get('rol')?.errors;
+
+      <label for="rol" class="block text-sm font-medium text-gray-400 dark:text-gray-600 mb-1.5">Nuevo Rol de
+        Usuario:</label>
+      <select id="rol" formControlName="rol"
+        [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsEstado ? 'border-green-500' : (!isTouchedEstado ? 'border-white/20' :'border-red-500'))">
+        @for (item of rolesTemplate; track $index) {
+        <option class="text-black" [value]="item">
+          {{ item }}
+        </option>
+        }
+      </select>
+      <button type="submit" [disabled]="formUpdateRole.invalid || loadingRole()"
+        class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
+        @if (loadingRole()) {
+        <span class="flex items-center justify-center gap-2">
+          <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+          Cargando...
+        </span>
+        } @else {
+        Agregar
+        }
+      </button>
+    </div>
+  </form>
+</app-modal-generic>

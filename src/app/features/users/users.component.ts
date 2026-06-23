@@ -1,13 +1,14 @@
 import { Component, effect, inject, linkedSignal, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '@services/user.service';
-import { Page, RegisterData, Role, Usuario } from 'src/app/core/models/usuario.model';
+import { Page, RegisterData, Rol, Role, Usuario } from 'src/app/core/models/usuario.model';
 import { BuscadorComponent } from 'src/app/shared/components/buscador/buscador.component';
 import { ModalGeneric } from '@shared/components/modal-generic/modal-generic';
 import { UserFormComponent } from '@shared/components/user-form-component/user-form-component';
 import { UpdateUserForm } from './update-user-form/update-user-form';
 import { AuthService } from '@services/auth.service';
 import { DetalleModal, DetalleField } from '@shared/components/detalle-modal/detalle-modal';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -19,6 +20,7 @@ import { DetalleModal, DetalleField } from '@shared/components/detalle-modal/det
     UserFormComponent,
     UpdateUserForm,
     DetalleModal,
+    ReactiveFormsModule
   ],
   templateUrl: './users.component.html',
 })
@@ -140,6 +142,52 @@ export class UsersComponent {
         console.error(err);
         this.error.set(err);
       },
+    });
+  }
+
+  /**ACTUALIZAR EL ROL DEL USUARIO */
+  //Cambiar el estado de la incidencia
+  isOpenRole = signal(false);
+  private fb = inject(FormBuilder);
+  formUpdateRole = this.fb.group({
+    id: [0, [Validators.min(1)]],
+    rol: ['', [Validators.required, Validators.minLength(4)]],
+  });
+  loadingRole = signal(false)
+  rolesUsuario = signal<Rol []>([]);
+  nombreUsuario = signal("");
+  rolesTemplate:string[] = ['EMPLEADO', 'TECNICO_NIVEL_1', 'TECNICO_NIVEL_2', 'TECNICO_NIVEL_3'];
+
+  openRole(usu : Usuario, id: bigint) {
+    const ids = Number(id);
+    this.formUpdateRole.patchValue({ id: ids });
+    this.isOpenRole.update((i) => !i);
+    this.rolesUsuario.set(usu.roles)
+    this.nombreUsuario.set(usu.username)
+  }
+
+  submitChangeRole() {
+    this.loadingRole.set(true)
+    if (this.formUpdateRole.invalid) {
+      this.formUpdateRole.markAllAsTouched();
+      return;
+    }
+    const payload = this.formUpdateRole.getRawValue();
+    const data: { id: number; rol: string } = {
+      id: payload.id!,
+      rol: payload.rol!,
+    };
+
+    this.userService.cambiarRol(data).subscribe({
+      next: ( response ) => {
+        this.loadingRole.set(false)
+        this.formUpdateRole.reset();
+        this.isOpenRole.set(false);
+        this.getUsuarios();
+      },
+      error:(e)=> {
+        console.log(e?.error.message);
+      }
     });
   }
 }

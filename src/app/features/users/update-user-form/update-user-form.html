@@ -7,9 +7,9 @@
   @let isErrorsNombre = updateUserForm.get("nombre")?.errors;
   @let isTouchedNombre = updateUserForm.get("nombre")?.touched;
   <div>
-    <label for="nombre" class="block text-sm font-medium text-purple-100 mb-1.5">Nombre completo</label>
+    <label for="nombre" class="block text-sm font-medium dark:text-gray-400 text-gray-600 mb-1.5">Nombre completo</label>
     <input type="text" id="nombre" formControlName="nombre"
-      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ' + (  !isErrorsNombre ? 'border-green-500' : (!isTouchedNombre ? 'border-white/20' :'border-red-500'))"
+      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ' + (  !isErrorsNombre ? 'border-green-500' : (!isTouchedNombre ? 'dark:border-white/20' :'border-red-500'))"
       placeholder="Tu nombre" />
     @if ( isTouchedNombre && isErrorsNombre) {
     @if (isErrorsNombre['required']) {
@@ -29,9 +29,9 @@
   @let isErrorsCorreo = updateUserForm.get("correo")?.errors;
   @let isTouchedCorreo = updateUserForm.get("correo")?.touched;
   <div class="relative">
-    <label for="email" class="block text-sm font-medium text-purple-100 mb-1.5">Correo electrónico</label>
+    <label for="email" class="block text-sm font-medium dark:text-gray-400 text-gray-600 mb-1.5">Correo electrónico</label>
     <input type="email" id="correo" formControlName="correo"
-      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ' + (  !isErrorsCorreo ? 'border-green-500' : (!isTouchedCorreo ? 'border-white/20' :'border-red-500'))"
+      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ' + (  !isErrorsCorreo ? 'border-green-500' : (!isTouchedCorreo ? 'dark:border-white/20' :'border-red-500'))"
       placeholder="correo@ejemplo.com" />
     @if (isTouchedCorreo && isErrorsCorreo) {
     @if (isErrorsCorreo['required']) {
@@ -52,9 +52,9 @@
   @let isErrorsUsername = updateUserForm.get("username")?.errors;
   @let isTouchedUsername = updateUserForm.get("username")?.touched;
   <div class="relative">
-    <label for="usuario" class="block text-sm font-medium text-purple-100 mb-1.5">Usuario</label>
+    <label for="usuario" class="block text-sm font-medium dark:text-gray-400 text-gray-600 mb-1.5">Usuario</label>
     <input type="text" id="usuario" formControlName="username"
-      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsUsername ? 'border-green-500' : (!isTouchedUsername ? 'border-white/20' :'border-red-500'))"
+      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsUsername ? 'border-green-500' : (!isTouchedUsername ? 'dark:border-white/20' :'border-red-500'))"
       placeholder="Tu usuario" />
 
     @if (isTouchedUsername && isErrorsUsername) {
@@ -74,9 +74,9 @@
   </div>
 
   <div>
-    <label for="area" class="block text-sm font-medium text-purple-100 mb-1.5">Area:</label>
+    <label for="area" class="block text-sm font-medium dark:text-gray-400 text-gray-600 mb-1.5">Area:</label>
     <select id="area" formControlName="area"
-      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsUsername ? 'border-green-500' : (!isTouchedUsername ? 'border-white/20' :'border-red-500'))"
+      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsUsername ? 'border-green-500' : (!isTouchedUsername ? 'dark:border-white/20' :'border-red-500'))"
       placeholder="Tu usuario">
       @for (item of areas; track $index) {
       <option class="text-black" [value]="item">
@@ -88,9 +88,9 @@
 
 
   <div>
-    <label for="estado" class="block text-sm font-medium text-purple-100 mb-1.5">Estado:</label>
+    <label for="estado" class="block text-sm font-medium dark:text-gray-400 text-gray-600 mb-1.5">Estado:</label>
     <select id="estado" formControlName="estado"
-      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsUsername ? 'border-green-500' : (!isTouchedUsername ? 'border-white/20' :'border-red-500'))"
+      [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsUsername ? 'border-green-500' : (!isTouchedUsername ? 'dark:border-white/20' :'border-red-500'))"
       placeholder="Tu usuario">
 
       <option class="text-black" value="ACTIVO">
@@ -112,10 +112,10 @@
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
       </svg>
-      Creando cuenta...
+      Actualizando cuenta...
     </span>
     } @else {
-    Crear Cuenta
+    Actualizar Usuario
     }
   </button>
 </form>

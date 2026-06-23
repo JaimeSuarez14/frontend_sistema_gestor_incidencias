@@ -5,7 +5,7 @@ export interface Incidencia {
   titulo: string;
   descripcion: string;
   estado: Status;
-  fechaCreacion: string;
+  fechaCreacion: Date;
   usuario: Usuario;
   tecnico?: Usuario;
 }

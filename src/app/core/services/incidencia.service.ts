@@ -11,6 +11,7 @@ export class IncidenciaService {
   private readonly _incidencias = signal<Incidencia[]>([]);
   readonly incidencias = this._incidencias.asReadonly();
 
+
   public getIncidencia(id: number) {
     return this.http.get<Incidencia>(this.apiUrl + '/' + id);
   }
@@ -19,7 +20,8 @@ export class IncidenciaService {
     let params = new HttpParams().set('page', page).set('size', size);
     return this.http.get<PaginatedResponse<Incidencia>>(this.apiUrl + '/paginado', { params }).pipe(
       tap((data) => {
-        this._incidencias.set(data.content);
+        const response =  data.content.map(d => ({...d, fechaCreacion: new Date(d.fechaCreacion)}))
+        this._incidencias.set( response );
       }),
     );
   }
@@ -28,11 +30,15 @@ export class IncidenciaService {
     return this.http.post<Incidencia>(this.apiUrl, data);
   }
 
-  public misIncidencias(){
+  public misIncidencias() {
     return this.http.get<Incidencia[]>(this.apiUrl + '/incidenciasPropias').pipe(
       tap((data) => {
         this._incidencias.set(data);
       }),
-    );;
+    );
+  }
+
+  public cambiarEstado(data : {idIncidencia: number, estado: string}){
+    return this.http.post<Incidencia>(`${this.apiUrl}/actualizarEstado`,data);
   }
 }

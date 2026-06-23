@@ -49,7 +49,7 @@ export interface CurrentUser {
   roles: Role[];
 }
 
-interface Rol {
+export interface Rol {
   id: bigint;
   name: Role;
 }

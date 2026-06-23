@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SeguimientoDTO, SeguimientoResponseDto } from './../../../core/models/seguimiento.model';
 import { SeguimientoService } from './../../../core/services/seguimiento.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { validate } from '@angular/forms/signals';
 import { AuthService } from '@services/auth.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-seguimiento-incidencia',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, DatePipe],
   templateUrl: './seguimiento-incidencia.html',
   styleUrl: './seguimiento-incidencia.css',
 })
@@ -24,7 +24,7 @@ export class SeguimientoIncidencia {
     this.activatedRoute.params.subscribe((params) => {
       const idStr = params['id'];
        if (idStr) {
-        // Convertir a número y validar
+        // convertir a numero y validar
         const idNum = Number(idStr);
         if (!isNaN(idNum) && idNum > 0) {
           this.incidenciaId.set(idNum);
@@ -48,7 +48,8 @@ export class SeguimientoIncidencia {
     this.seguimientoService.obtenerMisSeguimientos(id!).subscribe({
       next: (e) => {
         console.log(e);
-        this.misSeguimientos.set(e);
+        const seguimientos = e.map(e => ({...e, fecha: new Date(e.fecha)}))
+        this.misSeguimientos.set(seguimientos);
       },
       error: (err) => {
         console.error('Error al obtener seguimientos', err);

@@ -5,7 +5,7 @@ export interface  Seguimiento {
   id: bigint,
   incidencia: Incidencia,
   comentario: string,
-  fecha: string,
+  fecha: Date,
   estado: "ACTIVO" | "INACTIVO"
   usuario: Usuario
 }
@@ -14,7 +14,7 @@ export interface SeguimientoResponseDto{
   id: bigint,
   incidenciaId: number,
   comentario: string,
-  fecha: string,
+  fecha: Date,
   estado: "ACTIVO" | "INACTIVO"
   nombreUsuario: string
 }
