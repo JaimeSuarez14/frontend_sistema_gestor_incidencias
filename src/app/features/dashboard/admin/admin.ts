@@ -42,6 +42,16 @@ export class Admin {
   }
 
   getPriorityPercentage(priority: 'high' | 'medium' | 'low'): number {
+    if(priority=="high"){
+      return 90
+    };
+    if(priority=="medium"){
+      return 50
+    };
+
+    if(priority=="low"){
+      return 25
+    };
     return 0;
   }
 }

@@ -8,6 +8,7 @@ export class SessionThema {
   public _isDark =  this.isDark.asReadonly();
 
   constructor(){
+
     effect(() => {
       const thema = this.isDark();
       if(thema){

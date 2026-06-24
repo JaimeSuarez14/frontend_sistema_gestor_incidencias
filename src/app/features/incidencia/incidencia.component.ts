@@ -1,10 +1,10 @@
-import { Component, effect, inject, linkedSignal, signal } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IncidenciaService } from '../../core/services/incidencia.service';
 import { UserService } from '../../core/services/user.service';
 import { BuscadorComponent } from '../../shared/components/buscador/buscador.component';
 import { Incidencia, Status } from '../../core/models/incident.model';
-import { Usuario } from '../../core/models/usuario.model';
+import { Page, Usuario } from '../../core/models/usuario.model';
 import { DetalleModal, DetalleField } from '../../shared/components/detalle-modal/detalle-modal';
 import { RouterLink } from '@angular/router';
 import { ModalGeneric } from '@shared/components/modal-generic/modal-generic';
@@ -33,9 +33,7 @@ export class IncidenciaComponent {
   filteredIncidents = linkedSignal<Incidencia[]>(() => this.incidentService.incidencias());
 
   constructor() {
-    effect(() => {
-      this.getIncidencias();
-    });
+    effect(() => this.getIncidencias());
   }
 
   loading = signal(false);
@@ -43,17 +41,19 @@ export class IncidenciaComponent {
     this.loading.set(true);
     if (this.authService.isEmpleado() || this.authService.isTecnico()) {
       this.incidentService
-        .misIncidencias()
+        .misIncidencias(this.pageCurrent(), this.size())
         .pipe()
         .subscribe((e) => {
+          this.page.set(e?.page);
           this.loading.set(false);
           return e;
         });
     } else {
       this.incidentService
-        .getIncidencias()
+        .getIncidencias(this.pageCurrent(), this.size())
         .pipe()
         .subscribe((e) => {
+          this.page.set(e?.page);
           this.loading.set(false);
           return e;
         });
@@ -121,7 +121,7 @@ export class IncidenciaComponent {
     id: [0, [Validators.min(1)]],
     estado: ['', [Validators.required, Validators.minLength(4)]],
   });
-  loadingEstado = signal(false)
+  loadingEstado = signal(false);
   estados: Status[] = ['ABIERTO', 'CERRADO', 'PENDIENTE'];
 
   changeState(id: number, estado: Status) {
@@ -130,7 +130,7 @@ export class IncidenciaComponent {
   }
 
   submitChangeState() {
-    this.loadingEstado.set(true)
+    this.loadingEstado.set(true);
     if (this.formUpdateEstado.invalid) {
       this.formUpdateEstado.markAllAsTouched();
       return;
@@ -143,11 +143,63 @@ export class IncidenciaComponent {
 
     this.incidentService.cambiarEstado(data).subscribe({
       next: (incidenciaActualizada) => {
-        this.loadingEstado.set(false)
+        this.loadingEstado.set(false);
         this.formUpdateEstado.reset();
         this.isOpenChangeState.set(false);
         this.getIncidencias();
       },
     });
   }
+
+  isOpenModalTecnicos = signal(false);
+  changeIsOpenTecnicos() {
+    this.isOpenModalTecnicos.update((i) => !i);
+  }
+
+  /* PAGINACION */
+  pageCurrent = signal(0);
+  page = signal<Page | null>(null);
+  size = signal(5);
+
+  onPageChange(pagina: number) {
+    this.pageCurrent.set(pagina);
+  }
+
+  botones = computed(() => {
+    const total = this.page()?.totalPages || 1;
+    const current = this.pageCurrent();
+    const paginas: number[] = [];
+
+    if (total <= 7) {
+      // Caso simple: pocas páginas, se muestran todas
+      for (let i = 0; i < total; i++) paginas.push(i);
+      return { paginas, total };
+    }
+
+    // Siempre incluir primera página
+    paginas.push(0);
+
+    // Mostrar rango alrededor de la página actual
+    const start = Math.max(current - 2, 1);
+    const end = Math.min(current + 2, total - 2);
+
+    if (start > 1) {
+      // Hay hueco entre primera y el rango → insertar "..."
+      paginas.push(-1); // usamos -1 como marcador de "..."
+    }
+
+    for (let i = start; i <= end; i++) {
+      paginas.push(i);
+    }
+
+    if (end < total - 2) {
+      // Hay hueco entre el rango y la última → insertar "..."
+      paginas.push(-1);
+    }
+
+    // Siempre incluir última página
+    paginas.push(total - 1);
+
+    return { paginas, total };
+  });
 }

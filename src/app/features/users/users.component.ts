@@ -71,12 +71,40 @@ export class UsersComponent {
 
   botones = computed(() => {
     const total = this.page()?.totalPages || 1;
-    if (total <= 3) {
-      const paginas = Array.from({ length: total }, (_, i) => i);
+    const current = this.pageCurrent();
+    const paginas: number[] = [];
+
+    if (total <= 7) {
+      // Caso simple: pocas páginas, se muestran todas
+      for (let i = 0; i < total; i++) paginas.push(i);
       return { paginas, total };
     }
 
-    return { paginas: [0, 1, 2], total };
+    // Siempre incluir primera página
+    paginas.push(0);
+
+    // Mostrar rango alrededor de la página actual
+    const start = Math.max(current - 2, 1);
+    const end = Math.min(current + 2, total - 2);
+
+    if (start > 1) {
+      // Hay hueco entre primera y el rango → insertar "..."
+      paginas.push(-1); // usamos -1 como marcador de "..."
+    }
+
+    for (let i = start; i <= end; i++) {
+      paginas.push(i);
+    }
+
+    if (end < total - 2) {
+      // Hay hueco entre el rango y la última → insertar "..."
+      paginas.push(-1);
+    }
+
+    // Siempre incluir última página
+    paginas.push(total - 1);
+
+    return { paginas, total };
   });
 
   /**PARA VER DETALLES DEL USUARIO */
@@ -154,21 +182,21 @@ export class UsersComponent {
     id: [0, [Validators.min(1)]],
     rol: ['', [Validators.required, Validators.minLength(4)]],
   });
-  loadingRole = signal(false)
-  rolesUsuario = signal<Rol []>([]);
-  nombreUsuario = signal("");
-  rolesTemplate:string[] = ['EMPLEADO', 'TECNICO_NIVEL_1', 'TECNICO_NIVEL_2', 'TECNICO_NIVEL_3'];
+  loadingRole = signal(false);
+  rolesUsuario = signal<Rol[]>([]);
+  nombreUsuario = signal('');
+  rolesTemplate: string[] = ['EMPLEADO', 'TECNICO_NIVEL_1', 'TECNICO_NIVEL_2', 'TECNICO_NIVEL_3'];
 
-  openRole(usu : Usuario, id: bigint) {
+  openRole(usu: Usuario, id: bigint) {
     const ids = Number(id);
     this.formUpdateRole.patchValue({ id: ids });
     this.isOpenRole.update((i) => !i);
-    this.rolesUsuario.set(usu.roles)
-    this.nombreUsuario.set(usu.username)
+    this.rolesUsuario.set(usu.roles);
+    this.nombreUsuario.set(usu.username);
   }
 
   submitChangeRole() {
-    this.loadingRole.set(true)
+    this.loadingRole.set(true);
     if (this.formUpdateRole.invalid) {
       this.formUpdateRole.markAllAsTouched();
       return;
@@ -180,18 +208,18 @@ export class UsersComponent {
     };
 
     this.userService.cambiarRol(data).subscribe({
-      next: ( response ) => {
-        this.loadingRole.set(false)
+      next: (response) => {
+        this.loadingRole.set(false);
         this.formUpdateRole.reset();
         this.isOpenRole.set(false);
         this.getUsuarios();
       },
-      error:(e)=> {
+      error: (e) => {
         console.log(e?.error.message);
-      }
+      },
     });
   }
-  convertirRole(a: Role){
-    return convertirRol(a)
+  convertirRole(a: Role) {
+    return convertirRol(a);
   }
 }
