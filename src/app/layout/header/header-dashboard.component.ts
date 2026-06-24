@@ -2,6 +2,7 @@ import { Component, computed, inject, output } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { SessionThema } from 'src/app/shared/utils/session-tema';
+import { convertirRol } from '@shared/utils/convertidoFunction';
 
 @Component({
   selector: 'app-header',
@@ -20,5 +21,10 @@ export class HeaderDashboardComponent {
     this.router.navigate(['/auth/login']);
   }
 
-  rol = computed(() => this.authService.currentUser()?.roles[0]);
+  rol = computed(() => {
+    if (this.authService.currentUser()?.roles[0]) {
+      return convertirRol(this.authService.currentUser()?.roles[0]!);
+    }
+    return "Sin Rol"
+  });
 }

@@ -86,18 +86,7 @@
               <div class="flex items-center">
                 <span [class]="'px-3 py-1 text-xs font-medium rounded-full ' + (user.roles[0].name === 'ROLE_ADMIN' ? 'bg-green-100 text-green-700' : user.roles[0].name === 'ROLE_TECNICO_NIVEL_1' ? 'bg-blue-100 text-blue-700' : user.roles[0].name === 'ROLE_EMPLEADO' ? 'bg-orange-100 text-orange-700' : '')
               ">
-                  @switch (user.roles[0].name) {
-                  @case ('ROLE_ADMIN'){
-                  Admin
-                  }
-                  @case ('ROLE_TECNICO_NIVEL_1'){
-                  Tecnico 1
-                  }
-                  @case ('ROLE_EMPLEADO'){
-                  Empleado
-
-                  }
-                  }
+                 {{ convertirRole(user.roles[0].name) }}
                 </span>
                 @if (authService.isAdmin()) {
                 <button (click)="openRole(user, user.id)" class="p-1 hover:bg-amber-800 rounded-xl">
@@ -210,12 +199,12 @@
 
   </div>
   <h2 class="text-xl font-semibold dark:text-white text-center my-2">Agregar Nuevo Rol</h2>
-  <p class="text-gray-400 dark:text-gray-600 text-sm mb-1.5">Esta Incidencia pertenece al Id:
+  <p class="text-gray-400 dark:text-gray-600 text-sm mb-1.5">Este Usuario tiene el Id:
     {{this.formUpdateRole.value.id}}</p>
 
   <form class="" [formGroup]="formUpdateRole" (ngSubmit)="submitChangeRole()">
     <input type="number" formControlName="id"
-      class="w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:text-white placeholder-purple-300/50 outline-none focus:ring-0"
       readonly>
     <div class="space-y-3 mt-4">
       @let isTouchedEstado = formUpdateRole.get('rol')?.touched;
@@ -224,7 +213,7 @@
       <label for="rol" class="block text-sm font-medium text-gray-400 dark:text-gray-600 mb-1.5">Nuevo Rol de
         Usuario:</label>
       <select id="rol" formControlName="rol"
-        [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsEstado ? 'border-green-500' : (!isTouchedEstado ? 'border-white/20' :'border-red-500'))">
+        [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsEstado ? 'border-green-500' : (!isTouchedEstado ? 'dark:border-white/20' :'border-red-500'))">
         @for (item of rolesTemplate; track $index) {
         <option class="text-black" [value]="item">
           {{ item }}
@@ -232,7 +221,7 @@
         }
       </select>
       <button type="submit" [disabled]="formUpdateRole.invalid || loadingRole()"
-        class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
+        class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400">
         @if (loadingRole()) {
         <span class="flex items-center justify-center gap-2">
           <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">

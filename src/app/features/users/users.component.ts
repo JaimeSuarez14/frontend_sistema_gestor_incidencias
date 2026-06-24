@@ -1,3 +1,4 @@
+import { convertirRol } from './../../shared/utils/convertidoFunction';
 import { Component, effect, inject, linkedSignal, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '@services/user.service';
@@ -20,7 +21,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
     UserFormComponent,
     UpdateUserForm,
     DetalleModal,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './users.component.html',
 })
@@ -189,5 +190,8 @@ export class UsersComponent {
         console.log(e?.error.message);
       }
     });
+  }
+  convertirRole(a: Role){
+    return convertirRol(a)
   }
 }
