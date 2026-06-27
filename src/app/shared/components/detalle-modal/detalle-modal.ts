@@ -43,28 +43,24 @@ export class DetalleModal<T extends Record<string, any>> {
       return [];
     }
 
-    return this.fields().map(field => {
+    return this.fields().map((field) => {
       const rawValue = entity[field.key];
 
       return {
         label: field.label,
 
-        value: field.format
-          ? field.format(rawValue)
-          : rawValue,
+        value: field.format ? field.format(rawValue) : rawValue,
 
         isArray: !!field.isArray,
 
-        items: Array.isArray(rawValue)
-          ? rawValue as unknown[]
-          : [],
+        items: Array.isArray(rawValue) ? (rawValue as unknown[]) : [],
 
-        itemFormat: field.itemFormat
+        itemFormat: field.itemFormat,
       };
     });
   });
 
   openBox() {
-    this.modal.update(m => !m);
+    this.modal.update((m) => !m);
   }
 }

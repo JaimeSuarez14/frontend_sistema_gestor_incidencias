@@ -21,7 +21,6 @@ import { Subscription } from 'rxjs';
     CommonModule,
     DetalleModal,
     RouterLink,
-    BuscadorComponent,
     ReactiveFormsModule,
     ModalGeneric,
     IncidenciaForm,
@@ -37,11 +36,19 @@ export class IncidenciaComponent {
 
   constructor() {
     effect(() => {
+      this.searchTerm();
+      this.pageCurrent.set(0);
+    });
+
+    effect(() => {
+      this.pageCurrent();
+      this.size();
+      this.searchTerm();
       this.getIncidencias();
     });
   }
 
-  //PARA EVITAR LA CONDIION DE CARRERA
+  //PARA EVITAR LA CONDICION DE CARRERA
   private searchSub?: Subscription;
 
   loading = signal(false);
@@ -78,13 +85,7 @@ export class IncidenciaComponent {
     }
   }
 
-  //Obtener de la busqueda
-  terminoBuscar = signal('');
-  onSearchResults(results: Incidencia[]): void {
-    this.filteredIncidents.set(results);
-  }
-
-  //busqueda en el servidor
+  //busqueda en el servidor, se conecta con el modal del componente
   searchTerm = signal('');
 
   //PARA VER EL DETALLE DE LA INCIDENCIAS
