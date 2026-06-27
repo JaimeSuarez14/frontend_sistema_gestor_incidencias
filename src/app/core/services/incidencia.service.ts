@@ -16,8 +16,11 @@ export class IncidenciaService {
     return this.http.get<Incidencia>(this.apiUrl + '/' + id);
   }
 
-  public getIncidencias(page: number = 0, size: number = 6) {
-    let params = new HttpParams().set('page', page).set('size', size);
+  public getIncidencias(page: number = 0, size: number = 6, texto: string="") {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('texto', texto);
     return this.http.get<PaginatedResponse<Incidencia>>(this.apiUrl + '/paginado', { params }).pipe(
       tap((data) => {
         const response =  data.content.map(d => ({...d, fechaCreacion: new Date(d.fechaCreacion)}))
@@ -30,10 +33,12 @@ export class IncidenciaService {
     return this.http.post<Incidencia>(this.apiUrl, data);
   }
 
-  public misIncidencias(page: number = 0, size: number = 6) {
+  //recibe tanto las pagina, cantidad por pagina, busqueda
+  public misIncidencias(page: number = 0, size: number = 6, texto: string) {
     let params = new HttpParams()
         .set('page', page)
-        .set('size', size);
+        .set('size', size)
+        .set('texto', texto);
     return this.http.get<PaginatedResponse<Incidencia>>(this.apiUrl + '/incidenciasPropias', {params}).pipe(
       tap((data) => {
         const response =  data.content.map(d => ({...d, fechaCreacion: new Date(d.fechaCreacion)}))
@@ -45,4 +50,6 @@ export class IncidenciaService {
   public cambiarEstado(data : {idIncidencia: number, estado: string}){
     return this.http.post<Incidencia>(`${this.apiUrl}/actualizarEstado`,data);
   }
+
+
 }

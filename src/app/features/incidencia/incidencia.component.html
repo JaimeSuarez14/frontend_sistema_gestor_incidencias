@@ -5,9 +5,8 @@
   </div>
 
   <div class="max-w-md">
-    <app-buscador [items]="incidentService.incidencias()" [searchFields]="['titulo', 'descripcion', 'estado']"
-      placeholder="Buscar por título, descripción o estado..." [debounceTime]="300"
-      (filteredResults)="onSearchResults($event)" />
+    <app-buscador-input [debounceTime]="800" placeholder="Buscar por título o descripción..." [(searchTerm)]="searchTerm" />
+
   </div>
   <div class="dark:text-amber-50 flex justify-between items-center">
     <div class="space-x-1 ">

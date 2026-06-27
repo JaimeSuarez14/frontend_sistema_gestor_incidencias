@@ -11,6 +11,8 @@ import { ModalGeneric } from '@shared/components/modal-generic/modal-generic';
 import { IncidenciaForm } from '@shared/components/incidencia-form/incidencia-form';
 import { AuthService } from '@services/auth.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BuscadorInput } from '@shared/components/buscador-input/buscador-input';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-incidents',
@@ -23,6 +25,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
     ReactiveFormsModule,
     ModalGeneric,
     IncidenciaForm,
+    BuscadorInput,
   ],
   templateUrl: './incidencia.component.html',
 })
@@ -33,37 +36,56 @@ export class IncidenciaComponent {
   filteredIncidents = linkedSignal<Incidencia[]>(() => this.incidentService.incidencias());
 
   constructor() {
-    effect(() => this.getIncidencias());
+    effect(() => {
+      this.getIncidencias();
+    });
   }
 
+  //PARA EVITAR LA CONDIION DE CARRERA
+  private searchSub?: Subscription;
+
   loading = signal(false);
+
   getIncidencias() {
+    this.searchSub?.unsubscribe();
     this.loading.set(true);
+
     if (this.authService.isEmpleado() || this.authService.isTecnico()) {
-      this.incidentService
-        .misIncidencias(this.pageCurrent(), this.size())
-        .pipe()
-        .subscribe((e) => {
-          this.page.set(e?.page);
-          this.loading.set(false);
-          return e;
+      this.searchSub = this.incidentService
+        .misIncidencias(this.pageCurrent(), this.size(), this.searchTerm())
+        .subscribe({
+          next: (e) => {
+            console.log(e);
+            this.page.set(e?.page);
+            this.loading.set(false);
+          },
+          error: (e) => {
+            console.log(e);
+          },
         });
     } else {
-      this.incidentService
-        .getIncidencias(this.pageCurrent(), this.size())
-        .pipe()
-        .subscribe((e) => {
-          this.page.set(e?.page);
-          this.loading.set(false);
-          return e;
+      this.searchSub = this.incidentService
+        .getIncidencias(this.pageCurrent(), this.size(), this.searchTerm())
+        .subscribe({
+          next: (e) => {
+            this.page.set(e?.page);
+            this.loading.set(false);
+          },
+          error: (e) => {
+            console.log(e?.error?.message);
+          },
         });
     }
   }
 
   //Obtener de la busqueda
+  terminoBuscar = signal('');
   onSearchResults(results: Incidencia[]): void {
     this.filteredIncidents.set(results);
   }
+
+  //busqueda en el servidor
+  searchTerm = signal('');
 
   //PARA VER EL DETALLE DE LA INCIDENCIAS
   verDetalle = signal(false);
