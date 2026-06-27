@@ -55,9 +55,9 @@
             <td colspan="6" class="p-0">
               <div
                 class="before:absolute before:inset-0 before:-translate-x-full before:animate-skeleton before:bg-linear-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent relative overflow-hidden bg-gray-200  dark:bg-gray-900 text-center text-gray-500">
-                <div class="grid grid-cols-2">
-                  @for (item of [1,2,3,4,5,6,7]; track $index) {
-                  <div class="py-6 border-b dark:border-gray-800 border-gray-300"></div>
+                <div class="grid grid-cols-1">
+                  @for (item of esqueletor(); track $index) {
+                  <div class="h-[52.8px] border-b dark:border-gray-800 border-gray-300"></div>
                   }
                 </div>
               </div>

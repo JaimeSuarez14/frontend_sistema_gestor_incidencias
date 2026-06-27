@@ -4,14 +4,15 @@
     <p class="text-gray-500 dark:text-gray-400">Gestión de usuarios del sistema</p>
   </div>
   <div class="max-w-sm">
-    <app-buscador [items]="usuarios()" [searchFields]="['nombre', 'correo']"
-      placeholder="Buscar usuario por nombre y correo" (filteredResults)="onSearchResults($event)" />
+    <app-buscador-input [debounceTime]="800" placeholder="Buscar usuario por nombre y correo" [(searchTerm)]="searchTerm" />
+
   </div>
   <div class="dark:text-amber-50 flex justify-between items-center">
     <div class="space-x-1 ">
       <label for="pageSize">Registros por página:</label>
       <select id="pageSize" class="rounded-lg border border-gray-400 " [value]="size()"
         (change)="size.set($any($event.target).value); pageCurrent.set(0)">
+        <option class="text-black" [value]="1">1</option>
         <option class="text-black" [value]="2">2</option>
         <option class="text-black" [value]="5">5</option>
         <option class="text-black" [value]="10">10</option>
@@ -51,9 +52,9 @@
             <td colspan="6" class="p-0">
               <div
                 class="before:absolute before:inset-0 before:-translate-x-full before:animate-skeleton before:bg-linear-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent relative overflow-hidden bg-gray-200  dark:bg-gray-900 text-center text-gray-500">
-                <div class="grid grid-cols-2">
-                  @for (item of [1,2,3,4,5,6,7,8]; track $index) {
-                  <div class="py-6 border-b dark:border-gray-800 border-gray-300"></div>
+                <div class="grid grid-cols-1">
+                  @for (item of esqueletor(); track $index) {
+                  <div class=" border-b h-[64.8px] dark:border-gray-800 border-gray-300"></div>
                   }
                 </div>
               </div>

@@ -3,26 +3,27 @@ import { Component, effect, inject, linkedSignal, OnInit, signal, computed } fro
 import { CommonModule } from '@angular/common';
 import { UserService } from '@services/user.service';
 import { Page, RegisterData, Rol, Role, Usuario } from 'src/app/core/models/usuario.model';
-import { BuscadorComponent } from 'src/app/shared/components/buscador/buscador.component';
 import { ModalGeneric } from '@shared/components/modal-generic/modal-generic';
 import { UserFormComponent } from '@shared/components/user-form-component/user-form-component';
 import { UpdateUserForm } from './update-user-form/update-user-form';
 import { AuthService } from '@services/auth.service';
 import { DetalleModal, DetalleField } from '@shared/components/detalle-modal/detalle-modal';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BuscadorInput } from "@shared/components/buscador-input/buscador-input";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-users',
   standalone: true,
   imports: [
     CommonModule,
-    BuscadorComponent,
     ModalGeneric,
     UserFormComponent,
     UpdateUserForm,
     DetalleModal,
     ReactiveFormsModule,
-  ],
+    BuscadorInput
+],
   templateUrl: './users.component.html',
 })
 export class UsersComponent {
@@ -34,18 +35,23 @@ export class UsersComponent {
   filteredUsers = linkedSignal<Usuario[]>(() => this.usuarios());
 
   constructor() {
+
+    effect(() => {
+    this.searchTerm();      // dependencia
+    this.pageCurrent.set(0);
+  });
+
     effect(() => {
       this.getUsuarios();
     });
   }
 
-  onSearchResults(results: Usuario[]): void {
-    this.filteredUsers.set(results);
-  }
-
+  //PARA EVITAR LA CONDICION DE CARRERA
+  private searchSub?: Subscription;
   getUsuarios(): void {
+    this.searchSub?.unsubscribe();
     this.loading.set(true);
-    this.userService.getUsersPaginados(this.pageCurrent(), this.size()).subscribe({
+    this.searchSub = this.userService.getUsersPaginados(this.pageCurrent(), this.size(), this.searchTerm()).subscribe({
       next: (data) => {
         console.log(data);
         this.usuarios.set(data?.content);
@@ -59,6 +65,8 @@ export class UsersComponent {
       },
     });
   }
+  //BUSCAR
+  searchTerm=signal("");
 
   /* PAGINACION */
   pageCurrent = signal(0);
@@ -222,4 +230,6 @@ export class UsersComponent {
   convertirRole(a: Role) {
     return convertirRol(a);
   }
+
+  esqueletor = computed(() => Array.from({ length: this.size() }, (_, i) => i));
 }

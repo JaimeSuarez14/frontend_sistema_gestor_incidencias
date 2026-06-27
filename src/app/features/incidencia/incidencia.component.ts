@@ -225,4 +225,7 @@ export class IncidenciaComponent {
 
     return { paginas, total };
   });
+
+  esqueletor = computed(() => Array.from({ length: this.size() }, (_, i) => i));
+
 }

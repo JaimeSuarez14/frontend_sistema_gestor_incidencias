@@ -15,10 +15,11 @@ export class UserService {
     return this.http.get<Usuario[]>(this.apiUrl);
   }
 
-  getUsersPaginados(page: number = 0, size: number = 4): Observable< PaginatedResponse<Usuario> > {
+  getUsersPaginados(page: number = 0, size: number = 4, texto :string =""): Observable< PaginatedResponse<Usuario> > {
     let params = new HttpParams()
       .set('page', page)
-      .set('size', size);
+      .set('size', size)
+      .set('texto', texto);
     return this.http.get< PaginatedResponse<Usuario> >(`${this.apiUrl}/paginado`, {params});
   }
 
