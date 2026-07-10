@@ -157,6 +157,17 @@
     </div>
   </div>
 
+  <app-modal-generic [(isOpen)]="isOpenModal">
+    <button class="p-2 flex gap-4 hover:bg-slate-100  text-black dark:hover:bg-slate-800 dark:text-white rounded-full transition" (click)="irIncidencias()">
+      <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Volver a incidencias
+    </button>
+  <p class="text-red-800  p-4 text-center text-xl dark:text-red-600 font-bold">{{tituloModal()}}</p>
+  <p class="text-gray-500 p-4 text-center text-base dark:text-gray-300 ">{{ mensajeModal()}}</p>
+</app-modal-generic>
+
   <!-- Message Input
   <div class="px-4 py-3 bg-white border-t border-gray-200">
     <div class="flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2">

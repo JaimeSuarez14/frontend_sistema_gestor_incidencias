@@ -15,7 +15,7 @@ export class IncidenciaService {
     return this.http.get<Incidencia>(this.apiUrl + '/' + id);
   }
 
-  public getIncidencias(page: number = 0, size: number = 6, texto: string = '') {
+  public getIncidencias(page: number = 0, size: number = 5, texto: string = '') {
     let params = new HttpParams().set('page', page).set('size', size).set('texto', texto);
     return this.http.get<PaginatedResponse<Incidencia>>(this.apiUrl + '/paginado', { params }).pipe(
       tap((data) => {

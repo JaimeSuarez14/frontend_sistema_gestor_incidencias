@@ -1,4 +1,4 @@
-<div class="space-y-6 p-6 dark:bg-gray-800 h-screen">
+<div class="space-y-6 p-6 dark:bg-gray-800 min-h-screen">
   <div>
     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Incidencias</h1>
     <p class="text-gray-500 dark:text-gray-400">Listado completo de incidencias</p>
@@ -52,7 +52,7 @@
           @if(loading()){
           <!--ESQUELETOR DE CARGA LOADING-->
           <tr class="esqueltor">
-            <td colspan="6" class="p-0">
+            <td colspan="7" class="p-0">
               <div
                 class="before:absolute before:inset-0 before:-translate-x-full before:animate-skeleton before:bg-linear-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent relative overflow-hidden bg-gray-200  dark:bg-gray-900 text-center text-gray-500">
                 <div class="grid grid-cols-1">
@@ -245,3 +245,5 @@
 <app-modal-generic [(isOpen)]="isOpenModalTecnicos">
   <p class="text-gray-600 dark:text-gray-400">TECNICOS DISPONIBLES</p>
 </app-modal-generic>
+
+

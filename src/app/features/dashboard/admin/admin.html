@@ -9,9 +9,13 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Total Incidencias</p>
+          @if (dashboardService.data() ) {
           <p class="text-3xl font-bold text-gray-900 dark:text-white">
-            25
+            {{dashboardService.data()?.incidentStats?.total }}
           </p>
+          }@else if (loading()) {
+          <loading-spinner />
+          }
         </div>
         <div class="w-12 h-12 bg-indigo-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
           <svg class="w-6 h-6 text-indigo-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -26,9 +30,13 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Abiertas</p>
+          @if (dashboardService.data() ) {
           <p class="text-3xl font-bold text-red-600 dark:text-red-400">
-            12
+            {{dashboardService.data()?.incidentStats?.abiertas }}
           </p>
+          }@else if (loading()) {
+          <loading-spinner />
+          }
         </div>
         <div class="w-12 h-12 bg-red-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
           <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,9 +51,13 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">En Progreso</p>
+          @if (dashboardService.data() ) {
           <p class="text-3xl font-bold text-amber-600 dark:text-amber-400">
-            12
+            {{dashboardService.data()?.incidentStats?.enProgreso }}
           </p>
+          }@else if (loading()) {
+          <loading-spinner />
+          }
         </div>
         <div class="w-12 h-12 bg-amber-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
           <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,9 +72,13 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Cerradas</p>
+          @if (dashboardService.data() ) {
           <p class="text-3xl font-bold text-green-600 dark:text-green-400">
-            15
+            {{dashboardService.data()?.incidentStats?.cerradas }}
           </p>
+          }@else if (loading()) {
+          <loading-spinner />
+          }
         </div>
         <div class="w-12 h-12 bg-green-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
           <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,36 +92,37 @@
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-        Incidencias por Estado
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white mt-4">
+        Usuarios por Area
       </h2>
+      <h3 class=""><span class="text-sm font-medium text-gray-700 dark:text-gray-400">Total de Usuarios: 12</span></h3>
       <div class="flex items-center justify-center h-48">
         <div class="flex gap-8">
           <div class="text-center">
             <div class="w-20 h-20 rounded-full border-4 border-red-500 flex items-center justify-center mb-2">
               <span class="text-xl font-bold text-red-600 dark:text-red-400">
-                O
+                1
               </span>
             </div>
-            <span class="text-sm text-gray-500 dark:text-gray-400">Abiertas</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">RRHH</span>
           </div>
 
           <div class="text-center">
             <div class="w-20 h-20 rounded-full border-4 border-amber-500 flex items-center justify-center mb-2">
               <span class="text-xl font-bold text-amber-600 dark:text-amber-400">
-                P
+                5
               </span>
             </div>
-            <span class="text-sm text-gray-500 dark:text-gray-400">En Progreso</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">ADMINISTRACION</span>
           </div>
 
           <div class="text-center">
             <div class="w-20 h-20 rounded-full border-4 border-green-500 flex items-center justify-center mb-2">
               <span class="text-xl font-bold text-green-600 dark:text-green-400">
-                C
+                5
               </span>
             </div>
-            <span class="text-sm text-gray-500 dark:text-gray-400">Cerradas</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">SISTEMAS</span>
           </div>
         </div>
       </div>
@@ -113,15 +130,15 @@
 
     <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
       <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-        Incidencias por Prioridad
+        Ultimos Usuarios Registrados
       </h2>
 
       <div class="space-y-4">
         <div>
           <div class="flex justify-between mb-1">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Alta</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">nombre</span>
             <span class="text-sm font-medium text-red-600 dark:text-red-400">
-              baja
+              Alta
             </span>
           </div>
           <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
@@ -131,9 +148,9 @@
 
         <div>
           <div class="flex justify-between mb-1">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Media</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">nombre</span>
             <span class="text-sm font-medium text-amber-600 dark:text-amber-400">
-              medio
+              Alta
             </span>
           </div>
           <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
@@ -143,9 +160,9 @@
 
         <div>
           <div class="flex justify-between mb-1">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Baja</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">nombre</span>
             <span class="text-sm font-medium text-blue-600 dark:text-blue-400">
-              alta
+              Alta
             </span>
           </div>
           <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
@@ -180,8 +197,7 @@
             </th>
 
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">
-              Asignado a
-            </th>
+              Generado por </th>
             <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">
               Fecha
             </th>
@@ -199,18 +215,18 @@
             </td>
 
             <td class="py-3 px-4">
-              <span class="px-2 py-1 text-xs font-medium rounded-full" [class.bg-red-100]="incident.estado === 'ABIERTO'"
-                [class.text-red-700]="incident.estado === 'ABIERTO'"
+              <span class="px-2 py-1 text-xs font-medium rounded-full"
+                [class.bg-red-100]="incident.estado === 'ABIERTO'" [class.text-red-700]="incident.estado === 'ABIERTO'"
                 [class.bg-amber-100]="incident.estado === 'PENDIENTE'"
                 [class.text-amber-700]="incident.estado === 'PENDIENTE'"
                 [class.bg-green-100]="incident.estado === 'CERRADO'"
                 [class.text-green-700]="incident.estado === 'CERRADO'">
-                {{ getStatusLabel(incident.estado) }}
+                {{ incident.estado }}
               </span>
             </td>
 
             <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">
-              {{ getUserName(incident.usuario.id) }}
+              {{ incident.usuario.username }}
             </td>
 
             <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">

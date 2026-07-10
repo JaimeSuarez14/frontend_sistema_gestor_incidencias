@@ -5,10 +5,11 @@ import { SeguimientoService } from './../../../core/services/seguimiento.service
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { DatePipe } from '@angular/common';
+import { ModalGeneric } from "@shared/components/modal-generic/modal-generic";
 
 @Component({
   selector: 'app-seguimiento-incidencia',
-  imports: [ReactiveFormsModule, DatePipe],
+  imports: [ReactiveFormsModule, DatePipe, ModalGeneric],
   templateUrl: './seguimiento-incidencia.html',
   styleUrl: './seguimiento-incidencia.css',
 })
@@ -41,6 +42,14 @@ export class SeguimientoIncidencia {
         this.getMisSeguimientos();
       }
     });
+
+    /*effect(() => {
+      const isOpen = this.isOpenModal();
+      const mensaje = this.mensajeModal();
+      if (!isOpen && mensaje) {
+        this.irIncidencias();
+      }
+    });*/
   }
 
   getMisSeguimientos() {
@@ -52,7 +61,10 @@ export class SeguimientoIncidencia {
         this.misSeguimientos.set(seguimientos);
       },
       error: (err) => {
-        console.error('Error al obtener seguimientos', err);
+        this.isOpenModal.set(true)
+        this.mensajeModal.set(err?.error)
+        this.tituloModal.set('Error al obtener seguimientos')
+        console.error('Error al obtener seguimientos', err?.error);
       }
     });
   }
@@ -87,8 +99,19 @@ export class SeguimientoIncidencia {
         console.log(e);
         this.getMisSeguimientos();
         this.formSeguimiento.reset({id:this.incidenciaId()?.toString(), estado:"ACTIVO" })
+      },
+      error: (err) => {
+        this.isOpenModal.set(true)
+        this.mensajeModal.set(err?.error)
+        this.tituloModal.set('Error al crear Seguimiento')
+        console.error('Al crear Seguimientos', err?.error);
       }
     })
 
   }
+
+  //modal advertencia
+  isOpenModal =signal(false);
+  tituloModal = signal('')
+  mensajeModal =signal("");
 }
