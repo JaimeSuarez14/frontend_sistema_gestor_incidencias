@@ -95,35 +95,28 @@
       <h2 class="text-lg font-semibold text-gray-900 dark:text-white mt-4">
         Usuarios por Area
       </h2>
-      <h3 class=""><span class="text-sm font-medium text-gray-700 dark:text-gray-400">Total de Usuarios: 12</span></h3>
-      <div class="flex items-center justify-center h-48">
-        <div class="flex gap-8">
+      <h3 class=""><span class="text-sm font-medium text-gray-700 dark:text-gray-400">Total de Usuarios: {{
+          dashboardService.data()?.userStats?.totalUsuarios || 0 }}</span></h3>
+      <div class="flex items-center justify-center mt-3">
+        <div class="flex gap-3 flex-wrap">
+          @if (dashboardService.data() ) {
+          @for (item of dashboardService.data()?.userStats?.areas ; track $index) {
           <div class="text-center">
-            <div class="w-20 h-20 rounded-full border-4 border-red-500 flex items-center justify-center mb-2">
-              <span class="text-xl font-bold text-red-600 dark:text-red-400">
-                1
+            <div [class]="'w-15 h-15 m-auto rounded-full border-4  flex items-center justify-center mb-2 ' + ( item.area=='ADMINISTRACION' ? 'border-red-500 text-red-600 dark:text-red-400' :
+            item.area=='LOGISTICA' ? 'border-green-500 text-green-600 dark:text-green-400' :
+            item.area=='MANTENIMIENTO' ? 'border-yellow-500 text-yellow-600 dark:text-yellow-400' :
+            item.area=='CONTABILIDAD' ? 'border-blue-500 text-blue-600 dark:text-blue-400' :
+            item.area=='SISTEMAS' ? 'border-cyan-500 text-cyan-600 dark:text-cyan-400' :
+            item.area=='GERENCIA' ? 'border-purple-500 text-purple-600 dark:text-purple-400' : '' )" s>
+              <span class="text-xl font-bold ">
+                {{ item.cantidad }}
               </span>
             </div>
-            <span class="text-sm text-gray-500 dark:text-gray-400">RRHH</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">{{ item.area}}</span>
           </div>
+          }
+          }
 
-          <div class="text-center">
-            <div class="w-20 h-20 rounded-full border-4 border-amber-500 flex items-center justify-center mb-2">
-              <span class="text-xl font-bold text-amber-600 dark:text-amber-400">
-                5
-              </span>
-            </div>
-            <span class="text-sm text-gray-500 dark:text-gray-400">ADMINISTRACION</span>
-          </div>
-
-          <div class="text-center">
-            <div class="w-20 h-20 rounded-full border-4 border-green-500 flex items-center justify-center mb-2">
-              <span class="text-xl font-bold text-green-600 dark:text-green-400">
-                5
-              </span>
-            </div>
-            <span class="text-sm text-gray-500 dark:text-gray-400">SISTEMAS</span>
-          </div>
         </div>
       </div>
     </div>
@@ -134,41 +127,21 @@
       </h2>
 
       <div class="space-y-4">
+        @if(dashboardService.data()){
+        @for (user of dashboardService.data()?.latestUsers; track $index) {
         <div>
           <div class="flex justify-between mb-1">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">nombre</span>
-            <span class="text-sm font-medium text-red-600 dark:text-red-400">
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ user.nombre }}</span>
+            <span class="text-sm font-medium text-yellow-600 dark:text-yellow-400">
               Alta
             </span>
           </div>
           <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-            <div class="bg-red-500 h-2.5 rounded-full" [style.width.%]="getPriorityPercentage('high')"></div>
+            <div class="bg-green-500 h-1.5 rounded-full" [style.width.%]="getPriorityPercentage('high')"></div>
           </div>
         </div>
-
-        <div>
-          <div class="flex justify-between mb-1">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">nombre</span>
-            <span class="text-sm font-medium text-amber-600 dark:text-amber-400">
-              Alta
-            </span>
-          </div>
-          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-            <div class="bg-amber-500 h-2.5 rounded-full" [style.width.%]="getPriorityPercentage('medium')"></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex justify-between mb-1">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">nombre</span>
-            <span class="text-sm font-medium text-blue-600 dark:text-blue-400">
-              Alta
-            </span>
-          </div>
-          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-            <div class="bg-blue-500 h-2.5 rounded-full" [style.width.%]="getPriorityPercentage('low')"></div>
-          </div>
-        </div>
+        }
+        }
       </div>
     </div>
   </div>
