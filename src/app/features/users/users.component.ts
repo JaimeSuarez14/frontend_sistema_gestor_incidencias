@@ -233,25 +233,21 @@ export class UsersComponent {
   eliminarRol(rol:Role){
     console.log(rol +" "+ this.idUserRol());
     this.loadingRole.set(true);
-    if (this.formUpdateRole.invalid) {
-      this.formUpdateRole.markAllAsTouched();
-      return;
-    }
-    const payload = this.formUpdateRole.getRawValue();
+
     const data: { id: number; rol: string } = {
-      id: payload.id!,
-      rol: payload.rol!,
+      id: this.idUserRol(),
+      rol: rol,
     };
 
-    this.userService.cambiarRol(data).subscribe({
+    this.userService.eliminarRol(data).subscribe({
       next: (response) => {
         this.loadingRole.set(false);
-        this.formUpdateRole.reset();
         this.isOpenRole.set(false);
         this.getUsuarios();
       },
       error: (e) => {
         console.log(e?.error.message);
+        this.loadingRole.set(false);
       },
     });
   }

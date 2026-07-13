@@ -4,7 +4,7 @@ import { IncidenciaService } from '../../core/services/incidencia.service';
 import { UserService } from '../../core/services/user.service';
 import { BuscadorComponent } from '../../shared/components/buscador/buscador.component';
 import { Incidencia, Status } from '../../core/models/incident.model';
-import { Page, Usuario } from '../../core/models/usuario.model';
+import { Page, TecnicosDTO, Usuario } from '../../core/models/usuario.model';
 import { DetalleModal, DetalleField } from '../../shared/components/detalle-modal/detalle-modal';
 import { RouterLink } from '@angular/router';
 import { ModalGeneric } from '@shared/components/modal-generic/modal-generic';
@@ -224,18 +224,24 @@ export class IncidenciaComponent {
   esqueletor = computed(() => Array.from({ length: this.size() }, (_, i) => i));
 
   //Asignar un tecnico a la incidencia.
-  tecnicos = signal<Usuario[] | null>(null);
+  tecnicos = signal<TecnicosDTO[] | null>(null);
   isOpenModalTecnicos = signal(false);
-  changeIsOpenTecnicos() {
+  incidenciaModal = signal<Incidencia | null>(null);
+
+  changeIsOpenTecnicos(incidencia?: Incidencia) {
+    if(incidencia){
+      this.incidenciaModal.set(incidencia);
+    }
     this.isOpenModalTecnicos.update((i) => !i);
     if(this.isOpenModalTecnicos()){
       this.cargarTecnicos();
     }
   }
   loadingTecnicos = signal<boolean>(false);
+
   cargarTecnicos(isAvailable : boolean = false) {
     this.loadingTecnicos.set(true);
-    this.userService.listarTecnicos(isAvailable).subscribe({
+    this.userService.listarTecnicos().subscribe({
       next: (e) => {
         this.tecnicos.set(e.dato);
         console.log(e)
@@ -247,5 +253,9 @@ export class IncidenciaComponent {
 
       },
     });
+  }
+
+  convertirNumber(id: bigint){
+    return Number(id);
   }
 }

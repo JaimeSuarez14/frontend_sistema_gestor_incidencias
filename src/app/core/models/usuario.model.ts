@@ -63,3 +63,9 @@ export interface UserUpdate {
   area : Area;
 }
 
+export interface TecnicosDTO {
+  id: bigint;
+  nombre: string;
+  cantidadIncidenciaPendiente: bigint;
+}
+
