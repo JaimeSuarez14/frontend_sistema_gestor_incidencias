@@ -285,7 +285,7 @@
     }
   </div>
   <h2 class="text-xl font-semibold dark:text-white text-center my-2">Agregar Nuevo Rol</h2>
-  <p class="text-gray-400 dark:text-gray-600 text-sm mb-1.5">
+  <p class="text-gray-600 dark:text-gray-400 text-sm mb-1.5">
     Este Usuario tiene el Id: {{ this.formUpdateRole.value.id }}
   </p>
 
@@ -300,7 +300,7 @@
       @let isTouchedEstado = formUpdateRole.get('rol')?.touched;
       @let isErrorsEstado = formUpdateRole.get('rol')?.errors;
 
-      <label for="rol" class="block text-sm font-medium text-gray-400 dark:text-gray-600 mb-1.5"
+      <label for="rol" class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
         >Nuevo Rol de Usuario:</label
       >
       <select

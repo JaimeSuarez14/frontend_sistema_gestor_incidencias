@@ -300,11 +300,11 @@
 <app-modal-generic [(isOpen)]="isOpenChangeState">
   <h2 class="text-2xl font-semibold dark:text-white text-center mx-6">Modificar el Estado</h2>
   <div class="py-3">
-    <span class="text-gray-400 dark:text-gray-600 text-sm"
+    <span class="text-gray-600 dark:text-gray-400 text-sm"
       >** Los campos que no son editables, solo puede ser actualizados por el administrador.</span
     >
   </div>
-  <p class="text-gray-400 dark:text-gray-600 text-sm mb-1.5">
+  <p class="text-gray-600 dark:text-gray-400 text-sm mb-1.5">
     Esta Incidencia pertenece al Id: {{ this.formUpdateEstado.value.id }}
   </p>
 
@@ -312,14 +312,14 @@
     <input
       type="number"
       formControlName="id"
-      class="w-full px-4 py-3 bg-white/10 border rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+      class="w-full px-4 py-3 bg-white/10 border border-gray-300 dark:border-gray-600 rounded-lg dark:text-white placeholder-purple-300/50  outline-none focus:ring-0 focus:ring-purple-500 transition-all"
       readonly
     />
     <div class="space-y-3 mt-4">
       @let isTouchedEstado = formUpdateEstado.get('estado')?.touched;
       @let isErrorsEstado = formUpdateEstado.get('estado')?.errors;
 
-      <label for="estado" class="block text-sm font-medium text-gray-400 dark:text-gray-600 mb-1.5"
+      <label for="estado" class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5"
         >Estado de la incidencia:</label
       >
       <select

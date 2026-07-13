@@ -241,6 +241,7 @@ export class IncidenciaComponent {
     }else{
       this.elegirTecnico.set([]);
       this.idTecnicoUpdate.set(0n);
+      this.errorTecnico.set("")
     }
   }
   loadingTecnicos = signal<boolean>(false);
