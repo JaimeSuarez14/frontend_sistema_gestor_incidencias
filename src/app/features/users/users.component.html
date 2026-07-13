@@ -4,14 +4,21 @@
     <p class="text-gray-500 dark:text-gray-400">Gestión de usuarios del sistema</p>
   </div>
   <div class="max-w-sm">
-    <app-buscador-input [debounceTime]="800" placeholder="Buscar usuario por nombre y correo" [(searchTerm)]="searchTerm" />
-
+    <app-buscador-input
+      [debounceTime]="800"
+      placeholder="Buscar usuario por nombre y correo"
+      [(searchTerm)]="searchTerm"
+    />
   </div>
   <div class="dark:text-amber-50 flex justify-between items-center">
-    <div class="space-x-1 ">
+    <div class="space-x-1">
       <label for="pageSize">Registros por página:</label>
-      <select id="pageSize" class="rounded-lg border border-gray-400 " [value]="size()"
-        (change)="size.set($any($event.target).value); pageCurrent.set(0)">
+      <select
+        id="pageSize"
+        class="rounded-lg border border-gray-400"
+        [value]="size()"
+        (change)="size.set($any($event.target).value); pageCurrent.set(0)"
+      >
         <option class="text-black" [value]="1">1</option>
         <option class="text-black" [value]="2">2</option>
         <option class="text-black" [value]="5">5</option>
@@ -22,151 +29,217 @@
     <div class="space-x-1">
       <button
         class="rounded-xl border border-gray-300 text-sm md:text-base bg-white disabled:bg-gray-200 px-5 py-3 font-medium text-gray-800 disabled:text-gray-400 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-green-800 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-400 dark:hover:text-green-400 disabled:dark:bg-gray-800"
-        (click)="getUsuarios()">
-        + Actualizar Lista</button>
+        (click)="getUsuarios()"
+      >
+        <svg class="inline" width="18" height="20" fill="currentColor" viewBox="0 0 1024 1024">
+          <path
+            d="M887.467 601.6c-21.333-8.533-46.933 4.267-55.467 25.6-17.067 46.933-42.667 93.867-81.067 128-59.733 64-149.333 98.133-238.933 98.133 0 0 0 0 0 0-89.6 0-174.933-34.133-243.2-102.4l-119.467-110.933h149.333c25.6 0 42.667-17.067 42.667-42.667s-17.067-42.667-42.667-42.667h-256c0 0 0 0 0 0-4.267 0-8.533 0-8.533 0s-4.267 0-4.267 0c0 0-4.267 4.267-4.267 4.267-4.267 0-4.267 4.267-8.533 4.267 0 0 0 0 0 0s0 4.267-4.267 4.267c0 4.267-4.267 4.267-4.267 8.533s0 8.533 0 8.533c0 0 0 4.267 0 4.267v256c0 25.6 17.067 42.667 42.667 42.667s42.667-17.067 42.667-42.667v-157.867l123.733 119.467c72.533 89.6 179.2 132.267 294.4 132.267 0 0 0 0 0 0 115.2 0 221.867-42.667 302.933-123.733 42.667-42.667 81.067-98.133 102.4-157.867 4.267-25.6-8.533-51.2-29.867-55.467z M1024 430.933c0 0 0-4.267 0-4.267v-256c0-25.6-17.067-42.667-42.667-42.667s-42.667 17.067-42.667 42.667v157.867l-123.733-119.467c-42.667-42.667-98.133-81.067-157.867-102.4-226.133-76.8-469.333 42.667-546.133 264.533-8.533 21.333 4.267 46.933 25.6 51.2 21.333 8.533 46.933-4.267 55.467-25.6 59.733-174.933 256-268.8 435.2-204.8 46.933 17.067 93.867 42.667 128 81.067l119.467 110.933h-149.333c-25.6 0-42.667 17.067-42.667 42.667s17.067 42.667 42.667 42.667h256c4.267 0 12.8 0 17.067-4.267 0 0 0 0 0 0 4.267-4.267 8.533-4.267 12.8-8.533 0 0 0 0 0 0s0-4.267 4.267-4.267c0-4.267 4.267-4.267 4.267-8.533 4.267-4.267 4.267-8.533 4.267-12.8z"
+          ></path>
+        </svg>
+        Actualizar Lista
+      </button>
       <button
         class="rounded-xl border border-gray-300 text-sm md:text-base bg-white disabled:bg-gray-200 px-5 py-3 font-medium text-gray-800 disabled:text-gray-400 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-400 dark:hover:text-indigo-400 disabled:dark:bg-gray-800"
-        (click)="toogleIsCreate()">
+        (click)="toogleIsCreate()"
+      >
         + Crear Usuario
       </button>
     </div>
   </div>
 
-  <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-0 overflow-hidden">
+  <div
+    class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-0 overflow-hidden"
+  >
     <div class="overflow-x-auto">
       <table class="w-full">
         <thead>
           <tr class="bg-gray-200 dark:bg-gray-950 border-b border-gray-100 dark:border-gray-700">
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">N°</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Nombre</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Correo</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Rol</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Detalle</th>
-            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">Editar</th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+              N°
+            </th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+              Nombre
+            </th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+              Correo
+            </th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+              Rol
+            </th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+              Detalle
+            </th>
+            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+              Editar
+            </th>
           </tr>
         </thead>
         <tbody class="">
-          @if(loading()){
-          <!--ESQUELETOR DE CARGA LOADING-->
-          <tr class="esqueltor">
-            <td colspan="6" class="p-0">
-              <div
-                class="before:absolute before:inset-0 before:-translate-x-full before:animate-skeleton before:bg-linear-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent relative overflow-hidden bg-gray-200  dark:bg-gray-900 text-center text-gray-500">
-                <div class="grid grid-cols-1">
-                  @for (item of esqueletor(); track $index) {
-                  <div class=" border-b h-[64.8px] dark:border-gray-800 border-gray-300"></div>
-                  }
+          @if (loading()) {
+            <!--ESQUELETOR DE CARGA LOADING-->
+            <tr class="esqueltor">
+              <td colspan="6" class="p-0">
+                <div
+                  class="before:absolute before:inset-0 before:-translate-x-full before:animate-skeleton before:bg-linear-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent relative overflow-hidden bg-gray-200 dark:bg-gray-900 text-center text-gray-500"
+                >
+                  <div class="grid grid-cols-1">
+                    @for (item of esqueletor(); track $index) {
+                      <div class="border-b h-[64.8px] dark:border-gray-800 border-gray-300"></div>
+                    }
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-
-
-          }@else if (error()) {
-          <tr>
-            <td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">
-              {{ error() }}
-            </td>
-          </tr>
-          }@else if(filteredUsers().length === 0) {
-          <tr>
-            <td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">
-              No se encontraron usuarios que coincidan con la búsqueda
-            </td>
-          </tr>
-          }@else{
-          @for (user of filteredUsers(); track user.id) {
-          @if (user.nombre !=null) {
-          <tr
-            class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/90 transition-colors">
-            <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ $index + 1 }}</td>
-            <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                  <span class="text-indigo-600 font-medium">{{ user.nombre.charAt(0) }}</span>
-                </div>
-                <span class="text-sm font-medium text-gray-900 dark:text-gray-400">{{ user.nombre }}</span>
-              </div>
-            </td>
-            <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ user.correo }}</td>
-            <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
-              <div class="flex items-center">
-                <span [class]="'px-3 py-1 text-xs font-medium rounded-full ' + (user.roles[0].name === 'ROLE_ADMIN' ? 'bg-green-100 text-green-700' : user.roles[0].name === 'ROLE_TECNICO_NIVEL_1' ? 'bg-blue-100 text-blue-700' : user.roles[0].name === 'ROLE_EMPLEADO' ? 'bg-orange-100 text-orange-700' : '')
-              ">
-                  {{ convertirRole(user.roles[0].name) }}
-                </span>
-                @if (authService.isAdmin()) {
-                <button (click)="openRole(user, user.id)" class="p-1 hover:bg-amber-800 rounded-xl">
-                  <svg class="dark:text-white text-violet-800" fill="none" width="18" height="20" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                    </path>
-                  </svg>
-                </button>
-                }
-              </div>
-
-            </td>
-            <td class="px-2">
-              <button
-                class="dark:text-white p-2 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500"
-                (click)="openModal(user.id)">Ver</button>
-            </td>
-            <td class="p-2 ">
-              <button (click)="toogleIsUpdate(user.id)" class="flex items-center justify-start h-full ">
-                <span class="p-2 rounded-full  hover:bg-black/20 hover:cursor-pointer dark:hover:text-gray-500">
-                  <svg class="dark:text-white" aria-hidden="true" fill="none" stroke="currentColor"
-                    xmlns="http://www.w3.org/2000/svg" width="14" height="18">
-                    <path fill="currentColor"
-                      d="M3.645 13.792h6.708v-1.25H3.645v1.25Zm0-3.542h6.708V9H3.645v1.25Zm-2.063 7.083a1.2 1.2 0 0 1-.875-.375 1.2 1.2 0 0 1-.375-.875V1.917a1.2 1.2 0 0 1 .375-.875 1.2 1.2 0 0 1 .875-.375h7.52l4.563 4.562v10.854a1.2 1.2 0 0 1-.375.875 1.2 1.2 0 0 1-.875.375H1.582ZM8.478 5.792V1.917H1.582v14.166h10.833V5.792H8.478Z">
-                    </path>
-                  </svg>
-                </span>
-
-              </button>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          } @else if (error()) {
+            <tr>
+              <td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">
+                {{ error() }}
+              </td>
+            </tr>
+          } @else if (filteredUsers().length === 0) {
+            <tr>
+              <td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">
+                No se encontraron usuarios que coincidan con la búsqueda
+              </td>
+            </tr>
+          } @else {
+            @for (user of filteredUsers(); track user.id) {
+              @if (user.nombre != null) {
+                <tr
+                  class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/90 transition-colors"
+                >
+                  <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ $index + 1 }}</td>
+                  <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center"
+                      >
+                        <span class="text-indigo-600 font-medium">{{ user.nombre.charAt(0) }}</span>
+                      </div>
+                      <span class="text-sm font-medium text-gray-900 dark:text-gray-400">{{
+                        user.nombre
+                      }}</span>
+                    </div>
+                  </td>
+                  <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ user.correo }}</td>
+                  <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                    <div class="flex items-center">
+                      <span
+                        [class]="
+                          'px-3 py-1 text-xs font-medium rounded-full ' +
+                          (user.roles[0].name === 'ROLE_ADMIN'
+                            ? 'bg-green-100 text-green-700'
+                            : user.roles[0].name === 'ROLE_TECNICO_NIVEL_1'
+                              ? 'bg-blue-100 text-blue-700'
+                              : user.roles[0].name === 'ROLE_EMPLEADO'
+                                ? 'bg-orange-100 text-orange-700'
+                                : '')
+                        "
+                      >
+                        {{ convertirRole(user.roles[0].name) }}
+                      </span>
+                      @if (authService.isAdmin()) {
+                        <button
+                          (click)="openRole(user, user.id)"
+                          class="p-1 hover:bg-amber-800 rounded-xl"
+                        >
+                          <svg
+                            class="dark:text-white text-violet-800"
+                            fill="none"
+                            width="18"
+                            height="20"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="1.8"
+                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            ></path>
+                          </svg>
+                        </button>
+                      }
+                    </div>
+                  </td>
+                  <td class="px-2">
+                    <button
+                      class="dark:text-white p-2 hover:bg-black/20 hover:cursor-pointer rounded-xl dark:hover:text-gray-500"
+                      (click)="openModal(user.id)"
+                    >
+                      Ver
+                    </button>
+                  </td>
+                  <td class="p-2">
+                    <button
+                      (click)="toogleIsUpdate(user.id)"
+                      class="flex items-center justify-start h-full"
+                    >
+                      <span
+                        class="p-2 rounded-full hover:bg-black/20 hover:cursor-pointer dark:hover:text-gray-500"
+                      >
+                        <svg
+                          class="dark:text-white"
+                          aria-hidden="true"
+                          fill="none"
+                          stroke="currentColor"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="18"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M3.645 13.792h6.708v-1.25H3.645v1.25Zm0-3.542h6.708V9H3.645v1.25Zm-2.063 7.083a1.2 1.2 0 0 1-.875-.375 1.2 1.2 0 0 1-.375-.875V1.917a1.2 1.2 0 0 1 .375-.875 1.2 1.2 0 0 1 .875-.375h7.52l4.563 4.562v10.854a1.2 1.2 0 0 1-.375.875 1.2 1.2 0 0 1-.875.375H1.582ZM8.478 5.792V1.917H1.582v14.166h10.833V5.792H8.478Z"
+                          ></path>
+                        </svg>
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              }
+            }
           }
-          }
-
-          }
-
         </tbody>
       </table>
       <!-- Logica de Pagination -->
       <div class="flex items-center justify-center p-6">
-        <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-gray-100 px-6 py-5 shadow-md
-           dark:border-gray-700 dark:bg-gray-900">
-
+        <div
+          class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-gray-100 px-6 py-5 shadow-md dark:border-gray-700 dark:bg-gray-900"
+        >
           <!-- Previous -->
           <button
             class="rounded-xl border border-gray-300 text-sm md:text-base disabled:bg-gray-200 bg-white px-5 py-3 font-medium disabled:text-gray-400 text-gray-800 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-500 dark:hover:text-indigo-400 disabled:dark:bg-gray-800"
-            (click)="onPageChange(pageCurrent() - 1)" [disabled]="pageCurrent()===0">
+            (click)="onPageChange(pageCurrent() - 1)"
+            [disabled]="pageCurrent() === 0"
+          >
             « Anterior
           </button>
 
-          @for(pag of botones().paginas; track $index){
-          @if(pag === -1){
-          <span class="px-1 text-lg text-gray-400 dark:text-gray-500">...</span>
-          } @else {
-          <button (click)="onPageChange(pag)"
-            [class]="'rounded-xl border px-4 py-2.5 ' + (pag === pageCurrent() ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700')"
-            [disabled]="pag === pageCurrent()">
-            {{ pag + 1 }}
-          </button>
+          @for (pag of botones().paginas; track $index) {
+            @if (pag === -1) {
+              <span class="px-1 text-lg text-gray-400 dark:text-gray-500">...</span>
+            } @else {
+              <button
+                (click)="onPageChange(pag)"
+                [class]="
+                  'rounded-xl border px-4 py-2.5 ' +
+                  (pag === pageCurrent() ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700')
+                "
+                [disabled]="pag === pageCurrent()"
+              >
+                {{ pag + 1 }}
+              </button>
+            }
           }
-          }
-
-
 
           <!-- Next -->
           <button
             class="rounded-xl border border-gray-300 text-sm md:text-base bg-white disabled:bg-gray-200 px-5 py-3 font-medium text-gray-800 disabled:text-gray-400 transition-all duration-200 hover:border-indigo-400 hover:text-indigo-600 disabled:border-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 disabled:dark:text-gray-500 dark:hover:border-indigo-500 dark:hover:text-indigo-400 disabled:dark:bg-gray-800"
-            (click)="onPageChange(pageCurrent() + 1)" [disabled]="page()?.totalPages === pageCurrent() + 1">
+            (click)="onPageChange(pageCurrent() + 1)"
+            [disabled]="page()?.totalPages === pageCurrent() + 1"
+          >
             Siguiente »
           </button>
-
         </div>
       </div>
     </div>
@@ -183,54 +256,97 @@
   <app-update-user-form [idUsuario]="idUser()" (dataResponse)="handleUpdate($event)" />
 </app-modal-generic>
 
-<app-detalle-modal [(modal)]="verDetalle" [data]="dataForModal()" title="Detalle de Usuario"
-  description="Informacion completa del registro seleccionado" [fields]="fieldsUser" />
+<app-detalle-modal
+  [(modal)]="verDetalle"
+  [data]="dataForModal()"
+  title="Detalle de Usuario"
+  description="Informacion completa del registro seleccionado"
+  [fields]="fieldsUser"
+/>
 
 <app-modal-generic [(isOpen)]="isOpenRole">
   <h2 class="text-xl font-semibold dark:text-white text-center my-2">Roles de Usuario</h2>
-  <div class="py-2 flex ">
-    <span class="text-gray-600 dark:text-gray-400 text-sm">Los roles de {{ nombreUsuario()}} :</span>
+  <div class="py-2 flex flex-col items-start space-y-4">
+    <span class="text-gray-600 dark:text-gray-400 text-sm"
+      >Los roles de {{ nombreUsuario() }} :</span
+    >
     @for (item of rolesUsuario(); track $index) {
-    <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
-      {{ item.name }}
-    </span>
+      <div class="px-2 py-0.5 rounded-full relative bg-blue-100 text-blue-700">
+        {{ item.name }}
+        @if (rolesUsuario().length > 0 ) {
+          <button
+            class="absolute -top-1 -right-4 px-1 rounded-full text-sm dark:bg-red-400 border dark:border-black bg-gray-800 dark:text-gray-200 text-white hover:bg-red-500 hover:text-white transition-all duration-300 hover:scale-110"
+            (click)="eliminarRol(item.name)"
+          >
+            ✕
+          </button>
+        }
+      </div>
     }
-
   </div>
   <h2 class="text-xl font-semibold dark:text-white text-center my-2">Agregar Nuevo Rol</h2>
-  <p class="text-gray-400 dark:text-gray-600 text-sm mb-1.5">Este Usuario tiene el Id:
-    {{this.formUpdateRole.value.id}}</p>
+  <p class="text-gray-400 dark:text-gray-600 text-sm mb-1.5">
+    Este Usuario tiene el Id: {{ this.formUpdateRole.value.id }}
+  </p>
 
   <form class="" [formGroup]="formUpdateRole" (ngSubmit)="submitChangeRole()">
-    <input type="number" formControlName="id"
+    <input
+      type="number"
+      formControlName="id"
       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:text-white placeholder-purple-300/50 outline-none focus:ring-0"
-      readonly>
+      readonly
+    />
     <div class="space-y-3 mt-4">
       @let isTouchedEstado = formUpdateRole.get('rol')?.touched;
       @let isErrorsEstado = formUpdateRole.get('rol')?.errors;
 
-      <label for="rol" class="block text-sm font-medium text-gray-400 dark:text-gray-600 mb-1.5">Nuevo Rol de
-        Usuario:</label>
-      <select id="rol" formControlName="rol"
-        [class]="'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all '+ (  !isErrorsEstado ? 'border-green-500' : (!isTouchedEstado ? 'dark:border-white/20' :'border-red-500'))">
+      <label for="rol" class="block text-sm font-medium text-gray-400 dark:text-gray-600 mb-1.5"
+        >Nuevo Rol de Usuario:</label
+      >
+      <select
+        id="rol"
+        formControlName="rol"
+        [class]="
+          'w-full px-4 py-3 bg-white/10 border  rounded-lg dark:text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ' +
+          (!isErrorsEstado
+            ? 'border-green-500'
+            : !isTouchedEstado
+              ? 'dark:border-white/20'
+              : 'border-red-500')
+        "
+      >
         @for (item of rolesTemplate; track $index) {
-        <option class="text-black" [value]="item">
-          {{ item }}
-        </option>
+          <option class="text-black" [value]="item">
+            {{ item }}
+          </option>
         }
       </select>
-      <button type="submit" [disabled]="formUpdateRole.invalid || loadingRole()"
-        class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400">
+      <button
+        type="submit"
+        [disabled]="formUpdateRole.invalid || loadingRole()"
+        class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400"
+      >
         @if (loadingRole()) {
-        <span class="flex items-center justify-center gap-2">
-          <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-          </svg>
-          Cargando...
-        </span>
+          <span class="flex items-center justify-center gap-2">
+            <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              ></path>
+            </svg>
+            Cargando...
+          </span>
         } @else {
-        Agregar
+          Agregar
         }
       </button>
     </div>

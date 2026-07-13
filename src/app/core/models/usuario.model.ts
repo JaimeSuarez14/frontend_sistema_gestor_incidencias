@@ -42,6 +42,7 @@ export interface RegisterData {
   password: string;
   confirmPassword: string;
   area : Area;
+  rol: string
 }
 
 export interface CurrentUser {

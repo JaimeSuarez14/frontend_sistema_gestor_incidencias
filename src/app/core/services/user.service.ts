@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, resource, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { PaginatedResponse, Usuario } from '../models/usuario.model';
 import { Observable } from 'rxjs';
@@ -40,8 +40,18 @@ export class UserService {
     return this.http.post<Usuario>(`${this.apiUrl}/updatePerfil`, usuario);
   }
 
+  eliminarRol( data:{id:number, rol: string} ){
+    return this.http.post<Usuario>(`${this.apiUrl}/${data.id}/eliminarRol`, {role:data.rol});
+  }
+
   cambiarRol(data:{id:number, rol: string}){
     return this.http.post<ApiResponse<Usuario>>(`${this.apiUrl}/${data.id}/role`, {role: data.rol});
+  }
+
+  listarTecnicos(isAvailable : boolean = false){
+    if(isAvailable) return this.http.get<ApiResponse<Usuario[]>>(`${this.apiUrl}/tecnicos_disponibles`);
+
+    return this.http.get<ApiResponse<Usuario[]>>(`${this.apiUrl}/lista_tecnicos`);
   }
 
 }

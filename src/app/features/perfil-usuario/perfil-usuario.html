@@ -116,7 +116,8 @@
 
             </div>
             <div class="py-3">
-              <span class="text-gray-400 text-sm">** Los campos que no son editables, solo puede ser actualizados por el administrador.</span>
+              <span class="text-gray-400 text-sm">** Los campos que no son editables, solo puede ser actualizados por el
+                administrador.</span>
             </div>
             <!-- Botones -->
             <div class="flex justify-end gap-3 mt-6">
@@ -124,7 +125,8 @@
               <!-- Modo vista -->
               @if (!editMode())
               {
-              <button type="button" (click)="editar()" class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
+              <button type="button" (click)="editar()"
+                class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
                 Editar
               </button>
               }
@@ -137,7 +139,13 @@
                   Cancelar
                 </button>
 
-                <button type="submit" [disabled]="form.invalid" class="px-4 py-2 rounded-xl bg-green-600  hover:bg-green-700">
+                <button type="submit" [disabled]="form.invalid"
+                  class="px-4 py-2 rounded-xl bg-green-600  hover:bg-green-700">
+                  <svg class="inline " width="18" height="20" fill="currentColor" viewBox="0 0 1024 1024">
+                    <path
+                      d="M887.467 601.6c-21.333-8.533-46.933 4.267-55.467 25.6-17.067 46.933-42.667 93.867-81.067 128-59.733 64-149.333 98.133-238.933 98.133 0 0 0 0 0 0-89.6 0-174.933-34.133-243.2-102.4l-119.467-110.933h149.333c25.6 0 42.667-17.067 42.667-42.667s-17.067-42.667-42.667-42.667h-256c0 0 0 0 0 0-4.267 0-8.533 0-8.533 0s-4.267 0-4.267 0c0 0-4.267 4.267-4.267 4.267-4.267 0-4.267 4.267-8.533 4.267 0 0 0 0 0 0s0 4.267-4.267 4.267c0 4.267-4.267 4.267-4.267 8.533s0 8.533 0 8.533c0 0 0 4.267 0 4.267v256c0 25.6 17.067 42.667 42.667 42.667s42.667-17.067 42.667-42.667v-157.867l123.733 119.467c72.533 89.6 179.2 132.267 294.4 132.267 0 0 0 0 0 0 115.2 0 221.867-42.667 302.933-123.733 42.667-42.667 81.067-98.133 102.4-157.867 4.267-25.6-8.533-51.2-29.867-55.467z M1024 430.933c0 0 0-4.267 0-4.267v-256c0-25.6-17.067-42.667-42.667-42.667s-42.667 17.067-42.667 42.667v157.867l-123.733-119.467c-42.667-42.667-98.133-81.067-157.867-102.4-226.133-76.8-469.333 42.667-546.133 264.533-8.533 21.333 4.267 46.933 25.6 51.2 21.333 8.533 46.933-4.267 55.467-25.6 59.733-174.933 256-268.8 435.2-204.8 46.933 17.067 93.867 42.667 128 81.067l119.467 110.933h-149.333c-25.6 0-42.667 17.067-42.667 42.667s17.067 42.667 42.667 42.667h256c4.267 0 12.8 0 17.067-4.267 0 0 0 0 0 0 4.267-4.267 8.533-4.267 12.8-8.533 0 0 0 0 0 0s0-4.267 4.267-4.267c0-4.267 4.267-4.267 4.267-8.533 4.267-4.267 4.267-8.533 4.267-12.8z">
+                    </path>
+                  </svg>
                   Guardar
                 </button>
               </div>
@@ -158,6 +166,6 @@
 <app-modal-generic [(isOpen)]="openModal">
   <h2 class="py-4 text-2xl font-bold text-white text-center">Advertencia</h2>
   <div class="text-gray-400">
-   Se cerrará sesión en un instante 😢, vuelve a iniciar sesión para continuar 😉 ....
+    Se cerrará sesión en un instante 😢, vuelve a iniciar sesión para continuar 😉 ....
   </div>
 </app-modal-generic>

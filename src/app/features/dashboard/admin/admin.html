@@ -115,6 +115,8 @@
             <span class="text-sm text-gray-500 dark:text-gray-400">{{ item.area}}</span>
           </div>
           }
+          }@else if (loading()) {
+          <loading-spinner />
           }
 
         </div>
@@ -141,6 +143,8 @@
           </div>
         </div>
         }
+        }@else if (loading()) {
+        <loading-spinner />
         }
       </div>
     </div>

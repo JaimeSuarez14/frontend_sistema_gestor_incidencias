@@ -174,11 +174,6 @@ export class IncidenciaComponent {
     });
   }
 
-  isOpenModalTecnicos = signal(false);
-  changeIsOpenTecnicos() {
-    this.isOpenModalTecnicos.update((i) => !i);
-  }
-
   /* PAGINACION */
   pageCurrent = signal(0);
   page = signal<Page | null>(null);
@@ -228,4 +223,29 @@ export class IncidenciaComponent {
 
   esqueletor = computed(() => Array.from({ length: this.size() }, (_, i) => i));
 
+  //Asignar un tecnico a la incidencia.
+  tecnicos = signal<Usuario[] | null>(null);
+  isOpenModalTecnicos = signal(false);
+  changeIsOpenTecnicos() {
+    this.isOpenModalTecnicos.update((i) => !i);
+    if(this.isOpenModalTecnicos()){
+      this.cargarTecnicos();
+    }
+  }
+  loadingTecnicos = signal<boolean>(false);
+  cargarTecnicos(isAvailable : boolean = false) {
+    this.loadingTecnicos.set(true);
+    this.userService.listarTecnicos(isAvailable).subscribe({
+      next: (e) => {
+        this.tecnicos.set(e.dato);
+        console.log(e)
+        this.loadingTecnicos.set(true);
+      },
+      error: (error) => {
+        console.log(error?.error);
+        this.loadingTecnicos.set(true);
+
+      },
+    });
+  }
 }

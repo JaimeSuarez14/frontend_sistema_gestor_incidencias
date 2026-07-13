@@ -1,3 +1,4 @@
+import { Incidencia } from './incident.model';
 export interface DashboardAdmin {
   incidentStats: IncidentStatsDTO,
   userStats: UserStats,
@@ -5,7 +6,7 @@ export interface DashboardAdmin {
 }
 
 
-interface IncidentStatsDTO {
+export interface IncidentStatsDTO {
   total: number, abiertas: number, enProgreso: number, cerradas: number
 }
 
@@ -21,4 +22,9 @@ interface AreasTotal {
 
 interface LatestUserDTO {
   nombre: string, estado: string
+}
+
+export interface IncedenteStatsUsuario {
+  incidentStats : IncidentStatsDTO,
+  incidenciasRecientes : Incidencia[]
 }

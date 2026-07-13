@@ -147,7 +147,7 @@ export class UsersComponent {
   }
 
   handleRegister(event: RegisterData) {
-    this.authService.registerNewUser(event).subscribe({
+   this.authService.registerNewUser(event).subscribe({
       next: (data) => {
         console.log(data);
         this.getUsuarios();
@@ -194,6 +194,7 @@ export class UsersComponent {
   rolesUsuario = signal<Rol[]>([]);
   nombreUsuario = signal('');
   rolesTemplate: string[] = ['EMPLEADO', 'TECNICO_NIVEL_1', 'TECNICO_NIVEL_2', 'TECNICO_NIVEL_3'];
+  idUserRol = signal(0);
 
   openRole(usu: Usuario, id: bigint) {
     const ids = Number(id);
@@ -201,6 +202,7 @@ export class UsersComponent {
     this.isOpenRole.update((i) => !i);
     this.rolesUsuario.set(usu.roles);
     this.nombreUsuario.set(usu.username);
+    this.idUserRol.set(ids);
   }
 
   submitChangeRole() {
@@ -227,6 +229,33 @@ export class UsersComponent {
       },
     });
   }
+
+  eliminarRol(rol:Role){
+    console.log(rol +" "+ this.idUserRol());
+    this.loadingRole.set(true);
+    if (this.formUpdateRole.invalid) {
+      this.formUpdateRole.markAllAsTouched();
+      return;
+    }
+    const payload = this.formUpdateRole.getRawValue();
+    const data: { id: number; rol: string } = {
+      id: payload.id!,
+      rol: payload.rol!,
+    };
+
+    this.userService.cambiarRol(data).subscribe({
+      next: (response) => {
+        this.loadingRole.set(false);
+        this.formUpdateRole.reset();
+        this.isOpenRole.set(false);
+        this.getUsuarios();
+      },
+      error: (e) => {
+        console.log(e?.error.message);
+      },
+    });
+  }
+
   convertirRole(a: Role) {
     return convertirRol(a);
   }

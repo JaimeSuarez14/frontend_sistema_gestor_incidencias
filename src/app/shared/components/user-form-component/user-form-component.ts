@@ -32,6 +32,7 @@ export class UserFormComponent {
     username: '',
     password: '',
     confirmPassword: '',
+    rol: '',
   });
 
   usuarioForm = form(
@@ -114,13 +115,13 @@ export class UserFormComponent {
             username: field.username!().value(),
             password: field.password().value(),
             confirmPassword: field.confirmPassword().value(),
+            rol: field.rol().value(),
           };
           this.submitForm.emit(newUser);
         },
       },
     },
   );
-
 
   notSpaces(path: SchemaPath<string>, options: { message: string }) {
     validate(path, ({ value }) => {
@@ -141,4 +142,27 @@ export class UserFormComponent {
       return undefined; // no error
     });
   }
+
+  roles = [
+    {
+      id: 1,
+      name: 'ROLE_ADMIN',
+    },
+    {
+      id: 2,
+      name: 'ROLE_EMPLEADO',
+    },
+    {
+      id: 3,
+      name: 'ROLE_TECNICO_NIVEL_1',
+    },
+    {
+      id: 4,
+      name: 'ROLE_TECNICO_NIVEL_2',
+    },
+    {
+      id: 5,
+      name: 'ROLE_TECNICO_NIVEL_3',
+    },
+  ];
 }

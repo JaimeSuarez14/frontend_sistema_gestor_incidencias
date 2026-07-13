@@ -19,6 +19,7 @@ export class RegisterComponent {
     username: '',
     password: '',
     confirmPassword: '',
+    rol: ''
   });
 
   success = signal(false);
@@ -70,4 +71,27 @@ export class RegisterComponent {
   goToLogin(): void {
     this.router.navigate(['/auth/login']);
   }
+
+  roles = [
+    {
+        "id": 1,
+        "name": "ROLE_ADMIN"
+    },
+    {
+        "id": 2,
+        "name": "ROLE_EMPLEADO"
+    },
+    {
+        "id": 3,
+        "name": "ROLE_TECNICO_NIVEL_1"
+    },
+    {
+        "id": 4,
+        "name": "ROLE_TECNICO_NIVEL_2"
+    },
+    {
+        "id": 5,
+        "name": "ROLE_TECNICO_NIVEL_3"
+    }
+]
 }

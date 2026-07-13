@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
-import { DashboardAdmin } from '../models/dashboard.model';
+import { DashboardAdmin, IncedenteStatsUsuario, IncidentStatsDTO } from '../models/dashboard.model';
 import { tap } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
@@ -18,5 +18,9 @@ export class DashboardService {
         this._data.set(data);
       }),
     );
+  }
+
+  public getIncientesStats() {
+    return this.http.get<IncedenteStatsUsuario>(this.apiUrl + '/usuario');
   }
 }

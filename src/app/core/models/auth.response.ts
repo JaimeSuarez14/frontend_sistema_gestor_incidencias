@@ -13,7 +13,7 @@ export interface ApiResponse<T> {
   success: boolean;
   message: String;
   status: number;
-  data: T;
+  dato: T;
 }
 
 export interface UsuarioResponseDto {
