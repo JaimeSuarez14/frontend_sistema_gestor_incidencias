@@ -12,7 +12,8 @@ import { IncidenciaForm } from '@shared/components/incidencia-form/incidencia-fo
 import { AuthService } from '@services/auth.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BuscadorInput } from '@shared/components/buscador-input/buscador-input';
-import { Subscription } from 'rxjs';
+import { single, Subscription } from 'rxjs';
+import { LoadingSpinner } from "@shared/components/loading-spinner/loading-spinner";
 
 @Component({
   selector: 'app-incidents',
@@ -25,7 +26,8 @@ import { Subscription } from 'rxjs';
     ModalGeneric,
     IncidenciaForm,
     BuscadorInput,
-  ],
+    LoadingSpinner
+],
   templateUrl: './incidencia.component.html',
 })
 export class IncidenciaComponent {
@@ -227,6 +229,7 @@ export class IncidenciaComponent {
   tecnicos = signal<TecnicosDTO[] | null>(null);
   isOpenModalTecnicos = signal(false);
   incidenciaModal = signal<Incidencia | null>(null);
+  elegirTecnico = signal(Array.from({ length: this.tecnicos()?.length || 0 }, (s, i) => false));
 
   changeIsOpenTecnicos(incidencia?: Incidencia) {
     if(incidencia){
@@ -235,25 +238,60 @@ export class IncidenciaComponent {
     this.isOpenModalTecnicos.update((i) => !i);
     if(this.isOpenModalTecnicos()){
       this.cargarTecnicos();
+    }else{
+      this.elegirTecnico.set([]);
+      this.idTecnicoUpdate.set(0n);
     }
   }
   loadingTecnicos = signal<boolean>(false);
 
-  cargarTecnicos(isAvailable : boolean = false) {
+  cargarTecnicos() {
     this.loadingTecnicos.set(true);
     this.userService.listarTecnicos().subscribe({
       next: (e) => {
         this.tecnicos.set(e.dato);
         console.log(e)
-        this.loadingTecnicos.set(true);
+        this.elegirTecnico.set(Array.from({ length: e.dato.length }, () => false));
+        this.loadingTecnicos.set(false);
       },
       error: (error) => {
         console.log(error?.error);
-        this.loadingTecnicos.set(true);
+        this.loadingTecnicos.set(false);
 
       },
     });
   }
+
+  idTecnicoUpdate = signal(0n);
+  seleccionarTecnico(index: number, id: bigint){
+    this.elegirTecnico.update(e => e.map((val, i) => index === i ? !val : false));
+    this.idTecnicoUpdate.set(id);
+  }
+  errorTecnico = signal("");
+  asignarTecnicoIncidencia(){
+    this.errorTecnico.set("");
+    this.loadingTecnicos.set(true);
+    const data: { idIncidencia: number; idTecnico: number } = {
+      idIncidencia: this.incidenciaModal()?.id!,
+      idTecnico: this.convertirNumber(this.idTecnicoUpdate()),
+    };
+    this.incidentService.cambiarTecnico(data).subscribe({
+      next:() => {
+        this.loadingTecnicos.set(false);
+        this.elegirTecnico.set([]);
+        this.idTecnicoUpdate.set(0n);
+        this.isOpenModalTecnicos.set(false)
+        this.getIncidencias();
+
+      },
+      error:(error) => {
+        this.errorTecnico.set(error?.error?.message)
+        console.log(error);
+        this.loadingTecnicos.set(false);
+      }
+    })
+  }
+
 
   convertirNumber(id: bigint){
     return Number(id);

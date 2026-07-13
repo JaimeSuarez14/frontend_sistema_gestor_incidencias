@@ -51,4 +51,8 @@ export class IncidenciaService {
   public cambiarEstado(data: { idIncidencia: number; estado: string }) {
     return this.http.post<Incidencia>(`${this.apiUrl}/actualizarEstado`, data);
   }
+
+  public cambiarTecnico(data: { idIncidencia: number; idTecnico: number }) {
+    return this.http.post<Incidencia>(`${this.apiUrl}/actualizarTecnico`, data);
+  }
 }
